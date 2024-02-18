@@ -1,0 +1,36 @@
+<div class="main-container">
+  <div class="left-container">
+    <div class="logo-container">
+      <img class="logo" [src]="AlternateLogoPath" alt="Logo" />
+    </div>
+    <div class="login-container">
+      <h1>Login</h1>
+      <h2>Seja bem-vindo de volta!</h2>
+      <div class="inputs-container">
+        <div class="email-container">
+          <h3>Usuário/email</h3>
+          <input />
+        </div>
+        <div class="password-container">
+          <h3>Senha</h3>
+          <input />
+        </div>
+        <div class="options-container">
+          <div class="remember-container">
+            <input type="radio" />
+            <label>Lembrar de mim</label>
+          </div>
+          <p>Esqueceu sua senha?</p>
+        </div>
+        <app-submit-button />
+      </div>
+      <div class="invite-container">
+        <h3 class="no-account">Ainda nao possui uma conta?</h3>
+        <h3 class="create-account">Crie já sua conta</h3>
+      </div>
+    </div>
+  </div>
+  <div class="right-container">
+    <img class="car-image" [src]="carImagePath" alt="Car Image" />
+  </div>
+</div>

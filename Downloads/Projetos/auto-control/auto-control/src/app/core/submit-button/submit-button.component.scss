@@ -1,0 +1,27 @@
+button {
+  background-color: #0C2D57;
+  border: none;
+  margin: 0;
+  padding: 0;
+  text-align: inherit;
+  font: inherit;
+  border-radius: 0;
+  appearance: none;
+  width: 100%;
+  height: 3rem;
+  outline: none;
+  color: white;
+  font-weight: 500;
+  font-size: 1rem;
+  box-shadow: none;
+  text-align: center;
+  -webkit-box-shadow: 10px 10px 0px -6px rgba(219, 219, 219, 1);
+  -moz-box-shadow: 10px 10px 0px -6px rgba(219, 219, 219, 1);
+  box-shadow: 10px 10px 0px -6px rgba(219, 219, 219, 1);
+  cursor: pointer;
+  transition: 200ms ease-in-out;
+
+  &:hover {
+    box-shadow: none;
+  }
+}
