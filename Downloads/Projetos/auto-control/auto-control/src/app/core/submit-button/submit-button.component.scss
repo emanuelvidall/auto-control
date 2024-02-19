@@ -1,5 +1,10 @@
 button {
-  background-color: #0C2D57;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  gap: 1rem;
+  background-color: #0c2d57;
   border: none;
   margin: 0;
   padding: 0;
@@ -21,7 +26,11 @@ button {
   cursor: pointer;
   transition: 200ms ease-in-out;
 
-  &:hover {
+  &:active {
     box-shadow: none;
+    svg {
+      transition: 200ms ease-in-out;
+      transform: translateX(25px);
+    }
   }
 }

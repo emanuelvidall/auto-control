@@ -17,7 +17,6 @@
 }
 
 .right-container {
-  background-color: yellow;
   width: 50%;
   height: 100%;
   display: flex;
@@ -29,7 +28,7 @@
 }
 
 .login-container {
-  width: 50%;
+  width: 500px;
   height: 70%;
   border-radius: 8px;
   padding: 1rem;
@@ -37,28 +36,19 @@
   flex-direction: column;
   align-items: flex-start;
   gap: 1rem;
-
-  h2 {
-    font-weight: 400;
-    opacity: 40%;
-    font-size: 18px
+  h1 {
+    font-size: 24px;
   }
 }
 
 .logo-container {
-  width: 50%;
+  width: 500px;
 }
 
 .logo {
-  max-width: 50%;
+  max-width: 250px;
   cursor: pointer;
   padding: 1rem 0 0 1rem;
-}
-
-.login-container {
-  h1 {
-    font-size: 28px;
-  }
 }
 
 .inputs-container {
@@ -121,5 +111,21 @@
 
   .no-account {
     opacity: 50%;
+  }
+}
+
+.hide-password-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  .eye-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f3f3f1;
+    height: 3rem;
+    padding-right: 1rem;
+    cursor: pointer;
   }
 }
