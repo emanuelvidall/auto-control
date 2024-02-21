@@ -2,7 +2,7 @@ import { Component } from '@angular/core'
 import { SubmitButtonComponent } from '../submit-button/submit-button.component'
 import { CommonModule } from '@angular/common'
 import { HttpClient } from '@angular/common/http'
-import { FormsModule } from '@angular/forms'
+import { FormsModule, NgForm } from '@angular/forms'
 
 @Component({
   selector: 'app-login',
@@ -38,7 +38,7 @@ export class LoginComponent {
     this.userData.password = ''
   }
 
-  submitLogin() {
+  submitLogin(f: NgForm) {
     const url = 'https://httpbin.org/post'
     this.http.post(url, this.userData).subscribe({
       next: (response) => {

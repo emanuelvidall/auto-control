@@ -1,75 +1,85 @@
 <div class="main-container">
-  <div class="left-container">
-    <div class="logo-container">
-      <img class="logo" [src]="AlternateLogoPath" alt="Logo" />
-    </div>
-    <div class="login-container">
-      <h1>Login</h1>
-      <div class="inputs-container">
-        <div class="email-container">
-          <h3>Usuário/email</h3>
-          <input type="email" [(ngModel)]="userData.email" />
-        </div>
-        <div class="password-container">
-          <h3>Senha</h3>
-          <div class="hide-password-container">
+  <form #f="ngForm" (ngSubmit)="submitLogin(f)">
+    <div class="left-container">
+      <div class="logo-container">
+        <img class="logo" [src]="AlternateLogoPath" alt="Logo" />
+      </div>
+      <div class="login-container">
+        <h1>Login</h1>
+        <div class="inputs-container">
+          <div class="email-container">
+            <h3>Usuário/email</h3>
             <input
-              [type]="showPassword ? 'text' : 'password'"
-              [(ngModel)]="userData.password"
+              type="email"
+              [(ngModel)]="userData.email"
+              name="email"
+              required
+              email
             />
-            <div class="eye-container" *ngIf="showEye" (click)="toggleEye()">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="feather feather-eye"
-              >
-                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                <circle cx="12" cy="12" r="3"></circle>
-              </svg>
-            </div>
-            <div class="eye-container" *ngIf="!showEye" (click)="toggleEye()">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="feather feather-eye-off"
-              >
-                <path
-                  d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"
-                ></path>
-                <line x1="1" y1="1" x2="23" y2="23"></line>
-              </svg>
+          </div>
+          <div class="password-container">
+            <h3>Senha</h3>
+            <div class="hide-password-container">
+              <input
+                [type]="showPassword ? 'text' : 'password'"
+                [(ngModel)]="userData.password"
+                required
+                name="password"
+              />
+              <div class="eye-container" *ngIf="showEye" (click)="toggleEye()">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="feather feather-eye"
+                >
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+              </div>
+              <div class="eye-container" *ngIf="!showEye" (click)="toggleEye()">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="feather feather-eye-off"
+                >
+                  <path
+                    d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"
+                  ></path>
+                  <line x1="1" y1="1" x2="23" y2="23"></line>
+                </svg>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="options-container">
-          <div class="remember-container">
-            <input type="radio" />
-            <label>Lembrar de mim</label>
+          <div class="options-container">
+            <div class="remember-container">
+              <input type="radio" />
+              <label>Lembrar de mim</label>
+            </div>
+            <p>Esqueceu sua senha?</p>
           </div>
-          <p>Esqueceu sua senha?</p>
-        </div>
-        <app-submit-button (click)="submitLogin()" />
-        <div class="invite-container">
-          <h3 class="no-account">Ainda nao possui uma conta?</h3>
-          <h3 class="create-account">Crie já sua conta</h3>
+          <app-submit-button type="submit" />
+          <div class="invite-container">
+            <h3 class="no-account">Ainda nao possui uma conta?</h3>
+            <h3 class="create-account">Crie já sua conta</h3>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  </form>
   <div class="right-container">
     <img class="car-image" [src]="carImagePath" alt="Car Image" />
   </div>
