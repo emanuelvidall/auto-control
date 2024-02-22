@@ -1,5 +1,5 @@
 <div class="main-container">
-  <form #f="ngForm" (ngSubmit)="submitLogin(f)">
+  <form [formGroup]="registerForm" (ngSubmit)="submitLogin()">
     <div class="left-container">
       <div class="logo-container">
         <img class="logo" [src]="AlternateLogoPath" alt="Logo" />
@@ -11,21 +11,30 @@
             <h3>Usuário/email</h3>
             <input
               type="email"
-              [(ngModel)]="userData.email"
+              formControlName="email"
               name="email"
               required
               email
             />
+            <div *ngIf="submitted && f.email.errors">
+              <div *ngIf="f.email.errors.required">Email is required</div>
+              <div *ngIf="f.email.errors.email">Email must be valid</div>
+            </div>
           </div>
           <div class="password-container">
             <h3>Senha</h3>
             <div class="hide-password-container">
               <input
                 [type]="showPassword ? 'text' : 'password'"
-                [(ngModel)]="userData.password"
                 required
                 name="password"
+                formControlName="password"
               />
+              <div *ngIf="submitted && f.password.errors">
+                <div *ngIf="f.password.errors.required">
+                  password is required
+                </div>
+              </div>
               <div class="eye-container" *ngIf="showEye" (click)="toggleEye()">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

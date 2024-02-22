@@ -7,6 +7,10 @@ const routes: Routes = [
     path: '',
     component: LoginComponent,
   },
+  {
+    path: '',
+    component: CreateAccountComponent,
+  },
 ]
 
 @NgModule({

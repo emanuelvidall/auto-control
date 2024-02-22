@@ -1,18 +1,51 @@
-import { Component } from '@angular/core'
-import { SubmitButtonComponent } from '../submit-button/submit-button.component'
-import { CommonModule } from '@angular/common'
+import { Component, OnInit } from '@angular/core'
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  ReactiveFormsModule,
+  FormsModule,
+} from '@angular/forms'
 import { HttpClient } from '@angular/common/http'
-import { FormsModule, NgForm } from '@angular/forms'
+import { CommonModule, NgIf } from '@angular/common'
+import { SubmitButtonComponent } from '../submit-button/submit-button.component'
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [SubmitButtonComponent, CommonModule, FormsModule],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.scss',
+  styleUrls: ['./login.component.scss'],
+  imports: [
+    ReactiveFormsModule,
+    CommonModule,
+    NgIf,
+    FormsModule,
+    SubmitButtonComponent,
+  ],
 })
-export class LoginComponent {
-  constructor(private http: HttpClient) {}
+export class LoginComponent implements OnInit {
+  registerForm: FormGroup = new FormGroup({})
+  submitted = false
+
+  constructor(private http: HttpClient, private formBuilder: FormBuilder) {}
+
+  ngOnInit() {
+    this.registerForm = this.formBuilder.group({
+      email: [
+        '',
+        [
+          Validators.required,
+          Validators.email,
+          Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),
+        ],
+      ],
+      password: ['', [Validators.required]],
+    })
+  }
+
+  get f() {
+    return this.registerForm.controls
+  }
 
   carImagePath: string = 'assets/car.jpg'
   logoPath: string = 'assets/logo.png'
@@ -23,24 +56,23 @@ export class LoginComponent {
   showEye: boolean = false
   showPassword: boolean = false
 
-  userData = {
-    email: '',
-    password: '',
-  }
-
   toggleEye() {
     this.showEye = !this.showEye
     this.showPassword = !this.showPassword
   }
 
   clearForm() {
-    this.userData.email = ''
-    this.userData.password = ''
+    this.registerForm.reset()
+    this.submitted = false
   }
 
-  submitLogin(f: NgForm) {
+  submitLogin() {
+    this.submitted = true
+    if (this.registerForm.invalid) {
+      return
+    }
     const url = 'https://httpbin.org/post'
-    this.http.post(url, this.userData).subscribe({
+    this.http.post(url, this.registerForm.value).subscribe({
       next: (response) => {
         this.clearForm()
         console.log(response)
