@@ -16,9 +16,9 @@
               required
               email
             />
-            <div *ngIf="submitted && f.email.errors">
-              <div *ngIf="f.email.errors.required">Email is required</div>
-              <div *ngIf="f.email.errors.email">Email must be valid</div>
+            <div *ngIf="submitted && f['email'].errors">
+              <div *ngIf="f['email'].errors['required']">Email is required</div>
+              <div *ngIf="f['email'].errors['email']">Email must be valid</div>
             </div>
           </div>
           <div class="password-container">
@@ -30,8 +30,8 @@
                 name="password"
                 formControlName="password"
               />
-              <div *ngIf="submitted && f.password.errors">
-                <div *ngIf="f.password.errors.required">
+              <div *ngIf="submitted && f['password'].errors">
+                <div *ngIf="f['password'].errors['required']">
                   password is required
                 </div>
               </div>
