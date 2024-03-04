@@ -1,12 +1,20 @@
-import { Component } from '@angular/core'
+import { CommonModule } from '@angular/common'
+import { Component, Input } from '@angular/core'
 
 @Component({
   selector: 'app-submit-button',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './submit-button.component.html',
-  styleUrl: './submit-button.component.scss',
+  styleUrls: ['./submit-button.component.scss'],
 })
 export class SubmitButtonComponent {
-  arrowRight: string = 'assets/arrow-right.svg'
+  @Input() buttonStyle: string = 'buttonStyle'
+  @Input() buttonText: string = 'Botao'
+
+  ngOnInit() { // Step 3: Add ngOnInit method
+    // Log the input properties to the console
+    console.log('Button Style:', this.buttonStyle);
+    console.log('Button Text:', this.buttonText);
+  }
 }

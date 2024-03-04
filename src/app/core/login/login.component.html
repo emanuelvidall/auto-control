@@ -8,7 +8,7 @@
         <h1>Login</h1>
         <div class="inputs-container">
           <div class="email-container">
-            <h3>Usuário/email</h3>
+            <h3>Email</h3>
             <input
               type="email"
               formControlName="email"
@@ -16,9 +16,11 @@
               required
               email
             />
-            <div *ngIf="submitted && f['email'].errors">
-              <div *ngIf="f['email'].errors['required']">Email is required</div>
-              <div *ngIf="f['email'].errors['email']">Email must be valid</div>
+            <div *ngIf="submitted && f['email'].errors" class="email-error">
+              <div *ngIf="f['email'].errors['required']">*Preencha o email</div>
+              <div *ngIf="f['email'].errors['email']">
+                *Formato de email inválido
+              </div>
             </div>
           </div>
           <div class="password-container">
@@ -67,9 +69,12 @@
                 </svg>
               </div>
             </div>
-            <div *ngIf="submitted && f['password'].errors">
+            <div
+              *ngIf="submitted && f['password'].errors"
+              class="password-error"
+            >
               <div *ngIf="f['password'].errors['required']">
-                password is required
+                *Preencha a senha
               </div>
             </div>
           </div>
@@ -80,10 +85,18 @@
             </div>
             <p>Esqueceu sua senha?</p>
           </div>
-          <app-submit-button type="submit" />
+          <app-submit-button
+            type="submit"
+            buttonText="Login"
+            buttonStyle="login-button"
+          />
           <div class="invite-container">
             <h3 class="no-account">Ainda nao possui uma conta?</h3>
-            <h3 class="create-account">Crie já sua conta</h3>
+            <app-submit-button
+              type="submit"
+              buttonText="Criar conta"
+              buttonStyle="create-account-button"
+            />
           </div>
         </div>
       </div>
