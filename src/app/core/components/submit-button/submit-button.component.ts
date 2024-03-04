@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common'
-import { Component, Input } from '@angular/core'
+import { Component, EventEmitter, Input, Output } from '@angular/core'
+import { Router } from '@angular/router'
 
 @Component({
   selector: 'app-submit-button',
@@ -11,10 +12,9 @@ import { Component, Input } from '@angular/core'
 export class SubmitButtonComponent {
   @Input() buttonStyle: string = 'buttonStyle'
   @Input() buttonText: string = 'Botao'
+  @Output() buttonClick = new EventEmitter<void>();
 
-  ngOnInit() { // Step 3: Add ngOnInit method
-    // Log the input properties to the console
-    console.log('Button Style:', this.buttonStyle);
-    console.log('Button Text:', this.buttonText);
+  onClick() {
+    this.buttonClick.emit();
   }
 }

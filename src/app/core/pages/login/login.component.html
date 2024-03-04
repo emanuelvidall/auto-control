@@ -89,13 +89,15 @@
             type="submit"
             buttonText="Login"
             buttonStyle="login-button"
+            (buttonClick)="submitLogin()"
           />
           <div class="invite-container">
             <h3 class="no-account">Ainda nao possui uma conta?</h3>
             <app-submit-button
-              type="submit"
+              type="button"
               buttonText="Criar conta"
               buttonStyle="create-account-button"
+              (buttonClick)="goToCreateAccount()"
             />
           </div>
         </div>

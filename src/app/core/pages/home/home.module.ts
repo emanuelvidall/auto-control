@@ -6,7 +6,7 @@ import {
   withFetch,
 } from '@angular/common/http'
 import { HomeRoutingModule } from './home-routing.module'
-import { SubmitButtonComponent } from '../submit-button/submit-button.component'
+import { SubmitButtonComponent } from '../../components/submit-button/submit-button.component'
 
 @NgModule({
   exports: [SubmitButtonComponent],

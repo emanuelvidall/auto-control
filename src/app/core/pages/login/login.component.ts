@@ -8,7 +8,8 @@ import {
 } from '@angular/forms'
 import { HttpClient } from '@angular/common/http'
 import { CommonModule, NgIf } from '@angular/common'
-import { SubmitButtonComponent } from '../submit-button/submit-button.component'
+import { SubmitButtonComponent } from '../../components/submit-button/submit-button.component'
+import { Router } from '@angular/router'
 
 @Component({
   selector: 'app-login',
@@ -27,7 +28,7 @@ export class LoginComponent implements OnInit {
   registerForm: FormGroup = new FormGroup({})
   submitted = false
 
-  constructor(private http: HttpClient, private formBuilder: FormBuilder) {}
+  constructor(private http: HttpClient, private formBuilder: FormBuilder, private router: Router) {}
 
   ngOnInit() {
     this.registerForm = this.formBuilder.group({
@@ -56,6 +57,8 @@ export class LoginComponent implements OnInit {
   showEye: boolean = false
   showPassword: boolean = false
 
+  createAccountPath: string = 'create-account'
+
   toggleEye() {
     this.showEye = !this.showEye
     this.showPassword = !this.showPassword
@@ -64,6 +67,10 @@ export class LoginComponent implements OnInit {
   clearForm() {
     this.registerForm.reset()
     this.submitted = false
+  }
+
+  goToCreateAccount(){
+    this.router.navigate([this.createAccountPath])
   }
 
   submitLogin() {
