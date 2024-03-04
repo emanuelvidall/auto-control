@@ -30,11 +30,6 @@
                 name="password"
                 formControlName="password"
               />
-              <div *ngIf="submitted && f['password'].errors">
-                <div *ngIf="f['password'].errors['required']">
-                  password is required
-                </div>
-              </div>
               <div class="eye-container" *ngIf="showEye" (click)="toggleEye()">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -70,6 +65,11 @@
                   ></path>
                   <line x1="1" y1="1" x2="23" y2="23"></line>
                 </svg>
+              </div>
+            </div>
+            <div *ngIf="submitted && f['password'].errors">
+              <div *ngIf="f['password'].errors['required']">
+                password is required
               </div>
             </div>
           </div>
