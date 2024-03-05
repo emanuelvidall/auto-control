@@ -1,3 +1,4 @@
-<button [ngClass]="buttonStyle" (click)="onClick()">
-  {{ buttonText }}
+<button [ngClass]="buttonStyle" [disabled]="isLoading">
+  <span *ngIf="isLoading && loginButton" class="loader"></span>
+  <span *ngIf="!isLoading || !loginButton">{{ buttonText }}</span>
 </button>

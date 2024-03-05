@@ -12,9 +12,11 @@ import { Router } from '@angular/router'
 export class SubmitButtonComponent {
   @Input() buttonStyle: string = 'buttonStyle'
   @Input() buttonText: string = 'Botao'
-  @Output() buttonClick = new EventEmitter<void>();
+  @Output() buttonClick = new EventEmitter<void>()
+  @Input() isLoading: boolean = false
+  loginButton: boolean = false
 
   onClick() {
-    this.buttonClick.emit();
+    this.buttonClick.emit()
   }
 }

@@ -6,10 +6,16 @@ import {
   ReactiveFormsModule,
   FormsModule,
 } from '@angular/forms'
-import { HttpClient } from '@angular/common/http'
+import {
+  HttpClient,
+  HttpClientModule,
+  HttpResponse,
+} from '@angular/common/http'
 import { CommonModule, NgIf } from '@angular/common'
 import { SubmitButtonComponent } from '../../components/submit-button/submit-button.component'
-import { Router } from '@angular/router'
+import { Data, Router } from '@angular/router'
+import { DataService } from '../../data.service'
+import { catchError, first, throwError } from 'rxjs'
 
 @Component({
   selector: 'app-login',
@@ -22,13 +28,20 @@ import { Router } from '@angular/router'
     NgIf,
     FormsModule,
     SubmitButtonComponent,
+    HttpClientModule,
   ],
 })
 export class LoginComponent implements OnInit {
   registerForm: FormGroup = new FormGroup({})
   submitted = false
+  data: any
 
-  constructor(private http: HttpClient, private formBuilder: FormBuilder, private router: Router) {}
+  constructor(
+    private http: HttpClient,
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private dataService: DataService
+  ) {}
 
   ngOnInit() {
     this.registerForm = this.formBuilder.group({
@@ -53,6 +66,7 @@ export class LoginComponent implements OnInit {
   AlternateLogoPath: string = 'assets/logo-alternate.png'
   eyeOn: string = 'assets/eye.svg'
   eyeOff: string = 'assets/eye-off.svg'
+  isLoading: boolean = false
 
   showEye: boolean = false
   showPassword: boolean = false
@@ -69,22 +83,25 @@ export class LoginComponent implements OnInit {
     this.submitted = false
   }
 
-  goToCreateAccount(){
+  goToCreateAccount() {
     this.router.navigate([this.createAccountPath])
   }
 
   submitLogin() {
-    this.submitted = true
-    if (this.registerForm.invalid) {
-      return
-    }
-    const url = 'https://httpbin.org/post'
-    this.http.post(url, this.registerForm.value).subscribe({
-      next: (response) => {
-        this.clearForm()
-        console.log(response)
-      },
-      error: (error) => console.error(error),
-    })
+    this.isLoading = true
+    this.dataService
+      .getData()
+      .pipe(
+        first(),
+        catchError((error: any) => {
+          this.isLoading = false
+          return throwError(() => error)
+        })
+      )
+      .subscribe((result) => {
+        this.data = result
+        console.log(result)
+        this.isLoading = false
+      })
   }
 }

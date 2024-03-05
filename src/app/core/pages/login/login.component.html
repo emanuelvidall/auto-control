@@ -5,7 +5,7 @@
         <img class="logo" [src]="AlternateLogoPath" alt="Logo" />
       </div>
       <div class="login-container">
-        <h1>Login</h1>
+        <h1>Bem vindo de volta!</h1>
         <div class="inputs-container">
           <div class="email-container">
             <h3>Email</h3>
@@ -80,16 +80,17 @@
           </div>
           <div class="options-container">
             <div class="remember-container">
-              <input type="radio" />
+              <input type="checkbox" />
               <label>Lembrar de mim</label>
             </div>
-            <p>Esqueceu sua senha?</p>
+            <p class="forgot-password">Esqueceu sua senha?</p>
           </div>
           <app-submit-button
             type="submit"
             buttonText="Login"
             buttonStyle="login-button"
             (buttonClick)="submitLogin()"
+            loginButton
           />
           <div class="invite-container">
             <h3 class="no-account">Ainda nao possui uma conta?</h3>
@@ -97,7 +98,7 @@
               type="button"
               buttonText="Criar conta"
               buttonStyle="create-account-button"
-              (buttonClick)="goToCreateAccount()"
+              (click)="goToCreateAccount()"
             />
           </div>
         </div>
