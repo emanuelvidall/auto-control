@@ -67,6 +67,7 @@ export class LoginComponent implements OnInit {
   showEye: boolean = false
   showPassword: boolean = false
   createAccountPath: string = 'create-account'
+  dashboardPath: string = 'dashboard'
 
   useData: UserLoginData = {
     email: this.email,
@@ -106,6 +107,7 @@ export class LoginComponent implements OnInit {
         this.data = result
         console.log(result)
         this.isLoading = false
+        this.router.navigate([this.dashboardPath])
       })
   }
 }

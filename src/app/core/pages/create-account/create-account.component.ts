@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core'
+import { CalendarModule } from 'primeng/calendar'
 import { SubmitButtonComponent } from '../../components/submit-button/submit-button.component'
 import {
   FormBuilder,
@@ -22,6 +23,7 @@ import { Router } from '@angular/router'
     NgIf,
     FormsModule,
     SubmitButtonComponent,
+    CalendarModule,
   ],
   templateUrl: './create-account.component.html',
   styleUrl: './create-account.component.scss',
@@ -35,6 +37,7 @@ export class CreateAccountComponent implements OnInit {
   showEye: boolean = false
   showPassword: boolean = false
   isLoading: boolean = false
+  date: string = ''
 
   constructor(
     private http: HttpClient,
