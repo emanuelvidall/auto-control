@@ -1,16 +1,45 @@
 import { Injectable } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
-import { Observable } from 'rxjs'
+import { Observable, throwError } from 'rxjs'
+import { catchError } from 'rxjs/operators'
+import { environment } from '../../environments/environment' // Adjust path as necessary
+
+export interface UserLoginData {
+  email: string
+  password: string
+}
+
+export interface UserData {
+  name: string
+  email: string
+  cnh: string
+  password: string
+}
 
 @Injectable({
   providedIn: 'root',
 })
 export class DataService {
-  private apiUrl = 'https://httpbin.org/get'
+  private apiUrl = environment.apiUrl
 
   constructor(private http: HttpClient) {}
 
-  getData(): Observable<any> {
-    return this.http.get(this.apiUrl)
+  login(data: UserLoginData): Observable<any> {
+    return this.http
+      .post<any>(`${this.apiUrl}post`, data)
+      .pipe(catchError(this.handleError))
+  }
+
+  createAccount(data: UserData): Observable<any> {
+    return this.http
+      .post<any>(`${this.apiUrl}post`, data)
+      .pipe(catchError(this.handleError))
+  }
+
+  private handleError(error: any) {
+    console.error('An error occurred:', error)
+    return throwError(
+      () => new Error('Something bad happened; please try again later.')
+    )
   }
 }

@@ -6,15 +6,11 @@ import {
   ReactiveFormsModule,
   FormsModule,
 } from '@angular/forms'
-import {
-  HttpClient,
-  HttpClientModule,
-  HttpResponse,
-} from '@angular/common/http'
+import { HttpClientModule } from '@angular/common/http'
 import { CommonModule, NgIf } from '@angular/common'
 import { SubmitButtonComponent } from '../../components/submit-button/submit-button.component'
-import { Data, Router } from '@angular/router'
-import { DataService } from '../../data.service'
+import { Router } from '@angular/router'
+import { DataService, UserLoginData } from '../../data.service'
 import { catchError, first, throwError } from 'rxjs'
 
 @Component({
@@ -35,9 +31,10 @@ export class LoginComponent implements OnInit {
   registerForm: FormGroup = new FormGroup({})
   submitted = false
   data: any
+  email: string = ''
+  password: string = ''
 
   constructor(
-    private http: HttpClient,
     private formBuilder: FormBuilder,
     private router: Router,
     private dataService: DataService
@@ -67,11 +64,14 @@ export class LoginComponent implements OnInit {
   eyeOn: string = 'assets/eye.svg'
   eyeOff: string = 'assets/eye-off.svg'
   isLoading: boolean = false
-
   showEye: boolean = false
   showPassword: boolean = false
-
   createAccountPath: string = 'create-account'
+
+  useData: UserLoginData = {
+    email: this.email,
+    password: this.password,
+  }
 
   toggleEye() {
     this.showEye = !this.showEye
@@ -90,7 +90,7 @@ export class LoginComponent implements OnInit {
   submitLogin() {
     this.isLoading = true
     this.dataService
-      .getData()
+      .login(this.useData)
       .pipe(
         first(),
         catchError((error: any) => {

@@ -3,11 +3,7 @@
     <div class="create-account-container">
       <img class="logo" [src]="AlternateLogoPath" alt="Logo" />
       <h1>Crie sua conta Autocontrol</h1>
-      <form
-        class="inputs-inner"
-        [formGroup]="registerForm"
-        (ngSubmit)="handleCreateAccount()"
-      >
+      <form class="inputs-inner" [formGroup]="registerForm">
         <div class="icon">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
             <path
