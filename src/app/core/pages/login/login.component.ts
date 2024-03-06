@@ -10,7 +10,7 @@ import { HttpClientModule } from '@angular/common/http'
 import { CommonModule, NgIf } from '@angular/common'
 import { SubmitButtonComponent } from '../../components/submit-button/submit-button.component'
 import { Router } from '@angular/router'
-import { DataService, UserLoginData } from '../../data.service'
+import { DataService, UserLoginData } from '../../services/data.service'
 import { catchError, first, throwError } from 'rxjs'
 
 @Component({
@@ -88,6 +88,10 @@ export class LoginComponent implements OnInit {
   }
 
   submitLogin() {
+    this.submitted = true
+    if (this.registerForm.invalid) {
+      return
+    }
     this.isLoading = true
     this.dataService
       .login(this.useData)

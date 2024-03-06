@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 import { Observable, throwError } from 'rxjs'
 import { catchError } from 'rxjs/operators'
-import { environment } from '../../environments/environment' // Adjust path as necessary
+import { environment } from '../../../environments/environment' // Adjust path as necessary
 
 export interface UserLoginData {
   email: string
