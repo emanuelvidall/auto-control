@@ -9,11 +9,11 @@
 
 .create-account-container{
   background-color: white;
-  width: 360px;
+  min-width: 360px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 3rem;
+  padding: 2rem;
   margin-top: 5rem;
   -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.15);
     -moz-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.15);
@@ -22,6 +22,7 @@
     font-size: 1.15rem;
     font-weight: 700;
     margin-bottom: 2rem;
+    color: var(--tertiary-color);
   }
   img{
     width: 45%;
@@ -29,12 +30,12 @@
   }
   input {
     width: 100%;
-    height: 2.055rem;
+    height: 2.355rem;
     border: none;
     background-color: #f3f3f1;
     padding: 1rem;
     outline: none;
-    font-size: 14px;
+    font-size: 0.875rem;
     border-radius: 4px;
   }
   .icon{
@@ -46,14 +47,19 @@
     margin-bottom: .82353rem;
     margin-top: .82353rem;
     width: 100%;
+    color: var(--tertiary-color);
+    stroke: var(--tertiary-color);;
   }
   svg{
     width: .82353rem;
     height: .82353rem;
+    fill: var(--tertiary-color);
   }
   h3{
     font-weight: 400;
-    font-size: .82353rem;
+    font-size: 1rem;
+    color: var(--tertiary-color);
+    line-height: 0.8rem;
   }
   .inputs-inner{
     width: 100%;
@@ -87,7 +93,7 @@
     align-items: center;
     justify-content: center;
     background-color: #f3f3f1;
-    height: 2.055rem;
+    height: 2.355rem;
     padding-right: 1rem;
     cursor: pointer;
   }
@@ -95,7 +101,7 @@
 
 .name-error, .password-error, .drivers-license-error, .email-error{
   color: red;
-  font-size: .72353rem;
+  font-size: .82353rem;
 }
 
 .button-container{

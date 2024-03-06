@@ -49,6 +49,7 @@ form {
     font-size: 1.15rem;
     font-weight: 700;
     letter-spacing: 0.05rem;
+    color: var(--tertiary-color);
   }
 }
 
@@ -73,7 +74,10 @@ form {
   width: 100%;
 
   h3 {
-    font-size: 0.82353rem;
+    font-weight: 400;
+    font-size: 1rem;
+    color: var(--tertiary-color);
+    line-height: 0.8rem;
     margin-bottom: 0.5rem;
   }
 
@@ -120,6 +124,9 @@ form {
 
 .forgot-password{
   cursor: pointer;
+  color: var(--tertiary-color);
+  font-weight: 400;
+  text-decoration: underline;
 }
 
 .invite-container {
