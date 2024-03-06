@@ -58,7 +58,7 @@ export class LoginComponent implements OnInit {
     return this.registerForm.controls
   }
 
-  carImagePath: string = 'assets/car.jpg'
+  carImagePath: string = 'assets/car.webp'
   logoPath: string = 'assets/logo.png'
   AlternateLogoPath: string = 'assets/logo-alternate.png'
   eyeOn: string = 'assets/eye.svg'
