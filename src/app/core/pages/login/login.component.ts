@@ -69,11 +69,6 @@ export class LoginComponent implements OnInit {
   createAccountPath: string = 'create-account'
   dashboardPath: string = 'dashboard'
 
-  useData: UserLoginData = {
-    email: this.email,
-    password: this.password,
-  }
-
   toggleEye() {
     this.showEye = !this.showEye
     this.showPassword = !this.showPassword
@@ -89,13 +84,18 @@ export class LoginComponent implements OnInit {
   }
 
   submitLogin() {
+    const userData: UserLoginData = {
+      email: this.registerForm.get('email')?.value,
+      password: this.registerForm.get('password')?.value,
+    }
+
     this.submitted = true
     if (this.registerForm.invalid) {
       return
     }
     this.isLoading = true
     this.dataService
-      .login(this.useData)
+      .login(userData)
       .pipe(
         first(),
         catchError((error: any) => {
