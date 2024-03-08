@@ -1,0 +1,61 @@
+.car-selector-container{
+  background-color: #f8fafc;
+  width: 425px;
+  height: 180px;
+  border-radius: 8px;
+  padding: 2rem;
+  display: flex;
+  align-items: center; 
+  
+  .upper-section{
+    h3{
+      color: var(--tertiary-color);
+    }
+    p{
+      font-size: 12px;
+    }
+    padding: 1rem;
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    .car-info-container{
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      .car-info-inner{
+        display: flex;
+        flex-direction: row;
+        gap: 0.5rem;
+      }
+    }
+    .car-expenses{
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      h3{
+        color: var(--secondary-color);
+      }
+    }
+    .car-image-container{
+      width: 100px;
+      height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+  .car-icon{
+    img{
+      width: 25px;
+      height: 25px;
+      opacity: 50%;
+      margin-top: 1rem;
+    }
+  }
+}
