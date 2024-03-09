@@ -12,7 +12,14 @@
           </svg>
           <h3>Nome</h3>
         </div>
-        <input type="text" formControlName="name" name="name" required name />
+        <input
+          title="name"
+          type="text"
+          formControlName="name"
+          name="name"
+          required
+          name
+        />
         <div *ngIf="submitted && f['name'].errors" class="name-error">
           <div *ngIf="f['name'].errors['required']">*Preencha o nome</div>
         </div>
@@ -25,6 +32,7 @@
           <h3>Email</h3>
         </div>
         <input
+          title="email"
           type="email"
           formControlName="email"
           name="email"
@@ -46,6 +54,7 @@
           <h3>CNH</h3>
         </div>
         <input
+          title="driversLicense"
           type="text"
           formControlName="driversLicense"
           name="driversLicense"
@@ -71,6 +80,7 @@
         <div class="password-container">
           <div class="hide-password-container">
             <input
+              title="passwod"
               [type]="showPassword ? 'text' : 'password'"
               required
               name="password"
@@ -131,7 +141,6 @@
           buttonStyle="continue-button"
           (click)="handleCreateAccount()"
         />
-        <p-calendar [(ngModel)]="date"></p-calendar>
       </div>
     </div>
   </div>

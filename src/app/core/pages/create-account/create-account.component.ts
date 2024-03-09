@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core'
-import { CalendarModule } from 'primeng/calendar'
 import { SubmitButtonComponent } from '../../components/submit-button/submit-button.component'
 import {
   FormBuilder,
@@ -23,7 +22,6 @@ import { Router } from '@angular/router'
     NgIf,
     FormsModule,
     SubmitButtonComponent,
-    CalendarModule,
   ],
   templateUrl: './create-account.component.html',
   styleUrl: './create-account.component.scss',
