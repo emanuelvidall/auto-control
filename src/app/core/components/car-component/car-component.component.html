@@ -3,23 +3,24 @@
     <div class="upper-section">
       <div class="car-image-container">
         <img
-          src="{{
-            car.pictureUrl.length > 0 ? Vehicle.pictureUrl : defaultCar
-          }}"
+          src="{{ car.pictureUrl ? car.pictureUrl : defaultCar }}"
           alt="car picture"
         />
       </div>
       <div class="car-info-container">
         <div class="car-info-inner">
-          <h3>{{ Vehicle.make }}</h3>
-          <h3>{{ Vehicle.model }}</h3>
+          <h3>{{ car.make }}</h3>
+          <h3>{{ car.model }}</h3>
         </div>
         <div class="car-icon">
-          <img src="{{ Vehicle.type == 'car' ? carIcon : motorcycleIcon }}" />
+          <img
+            src="{{ car.type == 'car' ? carIcon : motorcycleIcon }}"
+            alt="vehicle type"
+          />
         </div>
         <div class="car-expenses">
           <p>Despesas Totais:</p>
-          <h3>{{ Vehicle.expenses }}</h3>
+          <h3>{{ car.expenses }}</h3>
         </div>
       </div>
     </div>

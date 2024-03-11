@@ -18,6 +18,8 @@
     </div>
   </div>
   <div class="middle-section">
-    <app-car-component />
+    <div *ngFor="let cars of cars">
+      <app-car-component [car]="cars" />
+    </div>
   </div>
 </div>
