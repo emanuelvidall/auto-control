@@ -32,7 +32,7 @@ export class DataService {
 
   createAccount(data: UserData): Observable<any> {
     return this.http
-      .post<any>(`${this.apiUrl}post`, data)
+      .post<any>(`${this.apiUrl + 'users/register-user'}`, data)
       .pipe(catchError(this.handleError))
   }
 
