@@ -5,7 +5,7 @@ import { catchError } from 'rxjs/operators'
 import { environment } from '../../../environments/environment' // Adjust path as necessary
 
 export interface UserLoginData {
-  email: string
+  username: string
   password: string
 }
 
@@ -26,13 +26,13 @@ export class DataService {
 
   login(data: UserLoginData): Observable<any> {
     return this.http
-      .post<any>(`${this.apiUrl}post`, data)
+      .post<any>(`${this.apiUrl}login/`, data)
       .pipe(catchError(this.handleError))
   }
 
   createAccount(data: UserData): Observable<any> {
     return this.http
-      .post<any>(`${this.apiUrl + 'users/register-user'}`, data)
+      .post<any>(`${this.apiUrl + 'api/v1/users/register-user/'}`, data)
       .pipe(catchError(this.handleError))
   }
 

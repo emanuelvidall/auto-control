@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router'
 import { LoginComponent } from '../login/login.component'
 import { CreateAccountComponent } from '../create-account/create-account.component'
 import { DashboardComponent } from '../dashboard/dashboard.component'
+import { AccountCreatedSuccessfullyComponent } from '../account-created-successfully/account-created-successfully.component'
 
 const routes: Routes = [
   {
@@ -12,6 +13,10 @@ const routes: Routes = [
   {
     path: 'create-account',
     component: CreateAccountComponent,
+  },
+  {
+    path: 'account-created-successfully',
+    component: AccountCreatedSuccessfullyComponent,
   },
   {
     path: 'dashboard',

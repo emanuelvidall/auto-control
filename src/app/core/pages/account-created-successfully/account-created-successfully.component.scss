@@ -1,0 +1,121 @@
+.main-container {
+  background-color: rgb(245, 245, 245);
+  width: 100%;
+  min-height: 100vh;
+  justify-content: center;
+  display: flex;
+
+}
+
+.create-account-container {
+  background-color: white;
+  min-width: 360px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  margin-top: 5rem;
+  -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.15);
+  -moz-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.15);
+  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.15);
+
+  h1 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    color: var(--tertiary-color);
+  }
+
+  img {
+    width: 45%;
+    margin-bottom: 2rem;
+  }
+
+  input {
+    width: 100%;
+    height: 2.355rem;
+    border: none;
+    background-color: #f3f3f1;
+    padding: 1rem;
+    outline: none;
+    font-size: 0.875rem;
+    border-radius: 4px;
+  }
+
+  .icon {
+    display: flex;
+    flex-direction: row;
+    gap: .72353rem;
+    justify-content: flex-start;
+    align-items: flex-end;
+    margin-bottom: .82353rem;
+    margin-top: .82353rem;
+    width: 100%;
+    color: var(--tertiary-color);
+    stroke: var(--tertiary-color);
+    ;
+  }
+
+  svg {
+    width: 3.82353rem;
+    height: 3.82353rem;
+    fill: var(--tertiary-color);
+  }
+
+  h3 {
+    font-weight: 400;
+    font-size: 1rem;
+    color: var(--tertiary-color);
+    line-height: 0.8rem;
+  }
+
+  .inputs-inner {
+    width: 100%;
+  }
+
+  p {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+}
+
+.upper-container {
+  height: 100%;
+}
+
+.hide-password-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  input {
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+  }
+
+  .eye-container {
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f3f3f1;
+    height: 2.355rem;
+    padding-right: 1rem;
+    cursor: pointer;
+  }
+}
+
+.name-error,
+.password-error,
+.drivers-license-error,
+.email-error {
+  color: red;
+  font-size: .82353rem;
+}
+
+.button-container {
+  width: 100%;
+}

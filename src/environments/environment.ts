@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  apiUrl: 'http://192.168.0.239:8000/api/v1/',
+  apiUrl: 'http://127.0.0.1:8000/',
   loggingLevel: 'error', // Only log errors in production
   featureToggle: {
     enableExperimentalFeatures: false,

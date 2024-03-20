@@ -89,8 +89,9 @@
             type="submit"
             buttonText="Login"
             buttonStyle="login-button"
-            loginButton
+            [loginButton]="loginButton"
             (click)="submitLogin()"
+            [isLoading]="isLoading"
           />
           <div class="invite-container">
             <h3 class="no-account">Ainda nao possui uma conta?</h3>

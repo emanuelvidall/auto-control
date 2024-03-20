@@ -128,14 +128,15 @@
             <div *ngIf="f['password']?.errors?.['required']">
               *Preencha a senha
             </div>
-            <div *ngIf="f['password']?.errors?.['passwordNoNumber']">
-              *Preencha sua senha deve ter no mínimo 1 número
+            <div *ngIf="f['password']?.errors">
+              *Preencha sua senha deve ter no mínimo 8 caractéres
             </div>
           </div>
         </div>
       </form>
       <div class="button-container">
         <app-submit-button
+          [isLoading]="isLoading"
           type="submit"
           buttonText="Continuar"
           buttonStyle="continue-button"

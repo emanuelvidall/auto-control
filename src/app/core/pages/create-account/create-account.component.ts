@@ -37,6 +37,7 @@ export class CreateAccountComponent implements OnInit {
   showPassword: boolean = false
   isLoading: boolean = false
   date: string = ''
+  accountCreatedSuccessfullyPath: string = 'account-created-successfully'
 
   constructor(
     private formBuilder: FormBuilder,
@@ -56,7 +57,7 @@ export class CreateAccountComponent implements OnInit {
         ],
       ],
       driversLicense: ['', [Validators.required]],
-      password: ['', Validators.required, Validators.minLength(8)],
+      password: ['', [Validators.required, Validators.minLength(8)]],
     })
   }
 
@@ -75,18 +76,20 @@ export class CreateAccountComponent implements OnInit {
   }
 
   handleCreateAccount() {
+    this.isLoading = true
     this.submitted = true
-    console.log(this.registerForm.value, 'valor do form')
+    if (this.registerForm.invalid) {
+      return
+    }
     this.dataService
       .createAccount(this.registerForm.value)
       .subscribe((response) => {
         console.log(response)
+        this.isLoading = false
+        this.router.navigate([this.accountCreatedSuccessfullyPath])
       })
     {
       this.clearForm()
-    }
-    if (this.registerForm.invalid) {
-      return
     }
   }
 }

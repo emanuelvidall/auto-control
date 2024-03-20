@@ -14,7 +14,7 @@ export class SubmitButtonComponent {
   @Input() buttonText: string = 'Botao'
   @Output() buttonClick = new EventEmitter<void>()
   @Input() isLoading: boolean = false
-  loginButton: boolean = false
+  @Input() loginButton: boolean = false
 
   onClick() {
     this.buttonClick.emit()

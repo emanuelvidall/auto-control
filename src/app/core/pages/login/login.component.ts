@@ -68,6 +68,7 @@ export class LoginComponent implements OnInit {
   showPassword: boolean = false
   createAccountPath: string = 'create-account'
   dashboardPath: string = 'dashboard'
+  loginButton: boolean = true
 
   toggleEye() {
     this.showEye = !this.showEye
@@ -84,16 +85,15 @@ export class LoginComponent implements OnInit {
   }
 
   submitLogin() {
+    this.isLoading = true
     const userData: UserLoginData = {
-      email: this.registerForm.get('email')?.value,
+      username: this.registerForm.get('email')?.value,
       password: this.registerForm.get('password')?.value,
     }
-
     this.submitted = true
     if (this.registerForm.invalid) {
       return
     }
-    this.isLoading = true
     this.dataService
       .login(userData)
       .pipe(
@@ -106,8 +106,10 @@ export class LoginComponent implements OnInit {
       .subscribe((result) => {
         this.data = result
         console.log(result)
-        this.isLoading = false
-        this.router.navigate([this.dashboardPath])
+        setTimeout(() => {
+          this.router.navigate([this.dashboardPath])
+          this.isLoading = false
+        }, 3000)
       })
   }
 }
