@@ -18,8 +18,20 @@
     </div>
   </div>
   <div class="middle-section">
-    <div *ngFor="let cars of cars">
-      <app-car-component [car]="cars" />
-    </div>
+    <ng-container *ngIf="cars.length > 0">
+      <div *ngFor="let car of cars">
+        <app-car-component [car]="car"></app-car-component>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="cars.length <= 0">
+      <div class="register-vehicle-container">
+        <h1>Não há veículos registrados</h1>
+        <app-submit-button
+          class="dashboard-register-vehicle"
+          buttonText="Adicionar Veículo"
+          (click)="openDialog()"
+        />
+      </div>
+    </ng-container>
   </div>
 </div>

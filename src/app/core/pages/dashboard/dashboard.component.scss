@@ -35,10 +35,17 @@
 }
 
 .middle-section {
-border: solid red 1px;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 2rem;
-  min-height: 500px;
+  min-height: 90%;
+  border-radius: 8px;
+  background-color: gainsboro;
+}
+
+.register-vehicle-container{
+  flex-direction: column;
+  display: flex;
+  gap: 2rem;
 }

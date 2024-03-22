@@ -1,0 +1,38 @@
+<div class="dialog-container">
+  <h2 mat-dialog-title>Registrar Veículo</h2>
+  <mat-dialog-content>
+    <h3>Tipo</h3>
+    <div class="type-selector-container">
+      <div class="type-selector">
+        <label for="carro">Carro</label>
+        <input type="radio" id="carro" name="type" value="Carro" title="type" />
+      </div>
+      <div class="type-selector">
+        <label for="moto">Moto</label>
+        <input type="radio" id="moto" name="type" value="Moto" title="type" />
+      </div>
+    </div>
+    <h3>Marca</h3>
+    <input
+      title="brand"
+      type="text"
+      formControlName="brand"
+      name="brand"
+      required
+      brand
+    />
+    <h3>Modelo</h3>
+    <input
+      title="brand"
+      type="text"
+      formControlName="brand"
+      name="brand"
+      required
+      brand
+    />
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button mat-button [mat-dialog-close]="true">OK</button>
+  </mat-dialog-actions>
+</div>
