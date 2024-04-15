@@ -16,6 +16,10 @@ export interface UserData {
   password: string
 }
 
+export interface VehicleBrand {
+  name: string
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -33,6 +37,12 @@ export class DataService {
   createAccount(data: UserData): Observable<any> {
     return this.http
       .post<any>(`${this.apiUrl + 'api/v1/users/register-user/'}`, data)
+      .pipe(catchError(this.handleError))
+  }
+
+  getVehicleBrands(): Observable<VehicleBrand[]> {
+    return this.http
+      .get<VehicleBrand[]>(`${this.apiUrl + 'api/v1/vehicles/brands/'}`)
       .pipe(catchError(this.handleError))
   }
 

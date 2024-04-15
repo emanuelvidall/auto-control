@@ -11,6 +11,19 @@ input {
   outline: none;
   font-size: 0.875rem;
   border-radius: 4px;
+  margin-bottom: 1rem;
+}
+
+mat-dialog-content{
+  padding: 0 !important;
+}
+mat-dialog-actions{
+  padding:  !important;
+}
+
+.input-description{
+  height: 4.7rem;
+  margin-bottom: 1rem;
 }
 
 .type-selector-container{
@@ -19,4 +32,8 @@ input {
   justify-content: space-between;
   padding-left: 3rem;
   padding-right: 3rem;
+}
+
+mat-form-field{
+  width: 100%;
 }

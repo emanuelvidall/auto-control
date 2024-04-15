@@ -1,18 +1,29 @@
 <div class="dialog-container">
   <h2 mat-dialog-title>Registrar Veículo</h2>
   <mat-dialog-content>
-    <h3>Tipo</h3>
-    <div class="type-selector-container">
-      <div class="type-selector">
-        <label for="carro">Carro</label>
-        <input type="radio" id="carro" name="type" value="Carro" title="type" />
-      </div>
-      <div class="type-selector">
-        <label for="moto">Moto</label>
-        <input type="radio" id="moto" name="type" value="Moto" title="type" />
-      </div>
-    </div>
-    <h3>Marca</h3>
+    <mat-form-field>
+      <mat-label>Escolha um tipo:</mat-label>
+      <mat-select>
+        <mat-option value="option1">Carro</mat-option>
+        <mat-option value="option3">Moto</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <mat-label>Marca</mat-label>
+      <input
+        type="text"
+        placeholder="Escolha a marca"
+        aria-label="brand"
+        matInput
+        [matAutocomplete]="auto"
+      />
+      <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+        @for (option of vehicleBrands; track option) {
+        <mat-option [value]="brand">{{ brand }}</mat-option>
+        }
+      </mat-autocomplete>
+    </mat-form-field>
+    <!-- <h3>Marca</h3>
     <input
       title="brand"
       type="text"
@@ -20,7 +31,7 @@
       name="brand"
       required
       brand
-    />
+    /> -->
     <h3>Modelo</h3>
     <input
       title="brand"
@@ -30,9 +41,20 @@
       required
       brand
     />
+    <h3>Descrição</h3>
+    <input
+      class="input-description"
+      title="description"
+      type="text"
+      formControlName="description"
+      name="description"
+      description
+    />
   </mat-dialog-content>
   <mat-dialog-actions align="end">
-    <button mat-button mat-dialog-close>Cancel</button>
-    <button mat-button [mat-dialog-close]="true">OK</button>
+    <button mat-flat-button color="warn" mat-dialog-close>Cancelar</button>
+    <button mat-flat-button color="primary" [mat-dialog-close]="true">
+      Registrar
+    </button>
   </mat-dialog-actions>
 </div>
