@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core'
-import { FormControl } from '@angular/forms'
+import { map, startWith } from 'rxjs/operators'
+
+import { AsyncPipe } from '@angular/common'
+import { FormControl, FormGroup, Validators } from '@angular/forms'
 import {
   MatDialogContent,
   MatDialogActions,
@@ -11,9 +14,10 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete'
 import { MatRadioModule } from '@angular/material/radio'
 import { MatFormFieldModule } from '@angular/material/form-field'
 import { ReactiveFormsModule } from '@angular/forms'
-import { Observable } from 'rxjs'
+import { Observable, catchError, of } from 'rxjs'
 import { DataService, VehicleBrand } from '../../services/data.service'
 import { InputTextComponent } from '../input-text/input-text.component'
+import { MatInputModule } from '@angular/material/input'
 
 @Component({
   selector: 'app-dialog',
@@ -29,30 +33,50 @@ import { InputTextComponent } from '../input-text/input-text.component'
     MatRadioModule,
     MatFormFieldModule,
     ReactiveFormsModule,
+    AsyncPipe,
+    MatInputModule,
   ],
   templateUrl: './dialog.component.html',
   styleUrls: ['./dialog.component.scss'],
 })
 export class DialogComponent implements OnInit {
-  myControl = new FormControl()
-  filteredOptions: Observable<string[]>
+  addVehicleForm = new FormGroup({
+    type: new FormControl('', Validators.required),
+    brand: new FormControl('', Validators.required),
+    model: new FormControl('', Validators.required),
+    description: new FormControl(''),
+  })
+  myControl = new FormControl('')
   vehicleBrands: VehicleBrand[] = []
-  brand = ''
+  brand: any
 
   constructor(private dataService: DataService) {}
+  options: VehicleBrand[] = []
+  filteredOptions: Observable<VehicleBrand[]> = of([])
 
   ngOnInit() {
-    this.dataService.getVehicleBrands().subscribe({
-      next: (brands) => {
-        this.vehicleBrands = brands
-        console.log('Marcas getadas: ', brands)
-        this.filteredOptions = this.filterBrands('')
-      },
-      error: (err) => console.error('Erro ao pegar marcas', err),
-    })
+    this.dataService
+      .getVehicleBrands()
+      .pipe(
+        catchError((err) => {
+          console.error('Erro ao pegar marcas', err)
+          return of([])
+        })
+      )
+      .subscribe((brands) => {
+        this.options = brands as VehicleBrand[]
+        console.log(this.options)
+      })
+    this.filteredOptions = this.myControl.valueChanges.pipe(
+      startWith(''),
+      map((value: any) => this._filter(value || ''))
+    )
   }
 
-  private filterBrands(value: string): Observable<string[]> {
-    return this.dataService.filterBrands(value)
+  private _filter(value: string): VehicleBrand[] {
+    const filterValue = value.toLowerCase()
+    return this.options.filter((option) =>
+      option.name.toLowerCase().includes(filterValue)
+    )
   }
 }

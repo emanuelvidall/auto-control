@@ -18,14 +18,17 @@
     </div>
   </div>
   <div class="middle-section">
-    <ng-container *ngIf="cars.length > 0">
-      <div *ngFor="let car of cars">
-        <app-car-component [car]="car"></app-car-component>
+    <ng-container *ngIf="vehicles.length > 0">
+      <div *ngFor="let car of vehicles">
+        <app-car-component></app-car-component>
       </div>
     </ng-container>
-    <ng-container *ngIf="cars.length <= 0">
+    <ng-container *ngIf="vehicles.length <= 0">
       <div class="register-vehicle-container">
         <h1>Não há veículos registrados</h1>
+        <div class="car-icon-container">
+          <img class="car-icon" [src]="CarIconPath" alt="CarIcon" />
+        </div>
         <app-submit-button
           class="dashboard-register-vehicle"
           buttonText="Adicionar Veículo"
