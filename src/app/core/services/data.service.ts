@@ -66,26 +66,35 @@ export class DataService {
       .pipe(catchError(this.handleError))
   }
 
-  // getUserData() {
-  //   const userData = sessionStorage.getItem('userData')
-  //   console.log('user data fetched!', userData)
-  //   return userData ? JSON.parse(userData) : null
-  // }
-
-  getVehicleBrands(): Observable<string[]> {
-    return this.http
-      .get<string[]>(`${this.apiUrl + 'api/v1/app-vehicles/brands/'}`)
-      .pipe(catchError(this.handleError))
+  getVehicleBrands(token: string): Observable<string[]> {
+    const headers = new HttpHeaders({
+      Authorization: `Token ${token}`,
+    })
+    return this.http.get<string[]>(
+      `${this.apiUrl + 'api/v1/app-vehicles/brands/'}`,
+      { headers: headers }
+    )
   }
 
   getVehiclesById(userId: number, token: string): Observable<Vehicle[]> {
     const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`,
+      Authorization: `Token ${token}`,
     })
 
     return this.http.get<Vehicle[]>(
       `${this.apiUrl}api/v1/app-vehicles/vehicles/?owner=${userId}`,
       { headers: headers }
+    )
+  }
+
+  addVehicle(vehicleData: any, token: string): Observable<any> {
+    const headers = new HttpHeaders({
+      Authorization: `Token ${token}`,
+    })
+    return this.http.post(
+      `${this.apiUrl}api/v1/app-vehicles/vehicles/`,
+      vehicleData,
+      { headers }
     )
   }
 

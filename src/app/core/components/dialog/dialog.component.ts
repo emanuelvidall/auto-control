@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, Inject, Input, OnInit } from '@angular/core'
 import { map, startWith } from 'rxjs/operators'
 
 import { AsyncPipe } from '@angular/common'
@@ -18,6 +18,7 @@ import { Observable, catchError, of } from 'rxjs'
 import { DataService, VehicleBrand } from '../../services/data.service'
 import { InputTextComponent } from '../input-text/input-text.component'
 import { MatInputModule } from '@angular/material/input'
+import { MAT_DIALOG_DATA } from '@angular/material/dialog'
 
 @Component({
   selector: 'app-dialog',
@@ -40,23 +41,27 @@ import { MatInputModule } from '@angular/material/input'
   styleUrls: ['./dialog.component.scss'],
 })
 export class DialogComponent implements OnInit {
+  @Input() token!: string
   addVehicleForm = new FormGroup({
     type: new FormControl('', Validators.required),
     brand: new FormControl('', Validators.required),
-    model: new FormControl('', Validators.required),
+    name: new FormControl('', Validators.required),
     description: new FormControl(''),
   })
   myControl = new FormControl('')
   vehicleBrands: VehicleBrand[] = []
   brand: any
 
-  constructor(private dataService: DataService) {}
+  constructor(
+    private dataService: DataService,
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) {}
   options: VehicleBrand[] = []
   filteredOptions: Observable<VehicleBrand[]> = of([])
 
   ngOnInit() {
     this.dataService
-      .getVehicleBrands()
+      .getVehicleBrands(this.data.token)
       .pipe(
         catchError((err) => {
           console.error('Erro ao pegar marcas', err)
@@ -67,10 +72,36 @@ export class DialogComponent implements OnInit {
         this.options = brands as VehicleBrand[]
         console.log(this.options)
       })
-    this.filteredOptions = this.myControl.valueChanges.pipe(
+    this.filteredOptions = this.addVehicleForm.controls.brand.valueChanges.pipe(
       startWith(''),
       map((value: any) => this._filter(value || ''))
     )
+  }
+
+  teste() {
+    console.log(this.data.id)
+    console.log(this.myControl.value)
+  }
+
+  handleAddVehicle(): void {
+    if (this.addVehicleForm.valid) {
+      const vehicleData = {
+        type: this.addVehicleForm.value.type,
+        brand: '1',
+        name: this.addVehicleForm.value.name,
+        description: this.addVehicleForm.value.description,
+        owner: this.data.id,
+      }
+      console.log(vehicleData, 'dados a serem enviados')
+      this.dataService.addVehicle(vehicleData, this.data.token).subscribe({
+        next: (response) => {
+          console.log('Vehicle added successfully', response)
+        },
+        error: (error) => console.error('Error adding vehicle:', error),
+      })
+    } else {
+      console.error('Form is not valid:', this.addVehicleForm.value)
+    }
   }
 
   private _filter(value: string): VehicleBrand[] {

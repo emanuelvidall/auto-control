@@ -20,7 +20,7 @@
   <div class="middle-section">
     <ng-container *ngIf="vehicles.length > 0">
       <div *ngFor="let car of vehicles">
-        <app-car-component></app-car-component>
+        <app-car-component [car]="car"></app-car-component>
       </div>
     </ng-container>
     <ng-container *ngIf="vehicles.length <= 0">

@@ -1,12 +1,12 @@
-<form [formGroup]="addVehicleForm">
+<form [formGroup]="addVehicleForm" (ngSubmit)="handleAddVehicle()">
   <div class="dialog-container">
     <h2 mat-dialog-title>Registrar Veículo</h2>
     <mat-dialog-content>
       <mat-form-field>
         <mat-label>Escolha um tipo:</mat-label>
         <mat-select formControlName="type" type>
-          <mat-option value="option1">Carro</mat-option>
-          <mat-option value="option3">Moto</mat-option>
+          <mat-option value="1">Carro</mat-option>
+          <mat-option value="2">Moto</mat-option>
         </mat-select>
       </mat-form-field>
       <mat-form-field class="example-full-width">
@@ -15,8 +15,10 @@
           type="text"
           placeholder="Escolha uma marca"
           aria-label="brand"
+          brand
+          required
           matInput
-          [formControl]="myControl"
+          formControlName="brand"
           [matAutocomplete]="auto"
         />
         <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
@@ -27,12 +29,12 @@
       </mat-form-field>
       <h3>Modelo</h3>
       <input
-        title="model"
+        title="name"
         type="text"
-        formControlName="model"
-        name="model"
+        formControlName="name"
+        name="name"
         required
-        model
+        name
       />
       <h3>Descrição</h3>
       <input
@@ -46,9 +48,15 @@
     </mat-dialog-content>
     <mat-dialog-actions align="end">
       <button mat-flat-button color="warn" mat-dialog-close>Cancelar</button>
-      <button mat-flat-button color="primary" [mat-dialog-close]="true">
+      <button
+        mat-flat-button
+        color="primary"
+        [mat-dialog-close]="true"
+        type="submit"
+      >
         Registrar
       </button>
+      <button (click)="teste()">teste</button>
     </mat-dialog-actions>
   </div>
 </form>

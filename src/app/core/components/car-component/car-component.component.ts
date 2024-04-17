@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core'
-import { Car } from './car-interface'
+import { Vehicle } from '../../services/data.service'
 
 @Component({
   selector: 'app-car-component',
@@ -10,8 +10,6 @@ import { Car } from './car-interface'
 })
 export class CarComponentComponent {
   defaultCar: string = '/assets/defaultcar.jpg'
-  carIcon: string = '/assets/car-icon.png'
-  motorcycleIcon: string = '/assets/motorcycle-icon.png'
 
-  @Input() car!: Car
+  @Input() car!: Vehicle
 }

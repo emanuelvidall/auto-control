@@ -17,7 +17,13 @@ import { Observable } from 'rxjs'
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CarComponentComponent, NgFor, NgIf, SubmitButtonComponent],
+  imports: [
+    CarComponentComponent,
+    NgFor,
+    NgIf,
+    SubmitButtonComponent,
+    DialogComponent,
+  ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
 })
@@ -28,12 +34,15 @@ export class DashboardComponent implements OnInit {
 
   vehicles: Vehicle[] = []
 
+  myToken = ''
+  myId = ''
+
   teste = {}
 
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogComponent, {
       width: '350px',
-      data: {},
+      data: { token: this.myToken, id: this.myId },
     })
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -45,10 +54,13 @@ export class DashboardComponent implements OnInit {
     const userData = sessionStorage.getItem('userData')
     const parsedUserData = userData ? JSON.parse(userData) : null
     const id = parsedUserData?.user_id
+    this.myId = id
     const token = parsedUserData?.token
+    this.myToken = token
     this.dataService.getVehiclesById(id, token).subscribe(
       (carros) => {
-        console.log(carros, 'carros') // Now 'carros' will log the actual data
+        this.vehicles = carros
+        console.log(carros, 'carros')
       },
       (error) => {
         console.error('Error fetching vehicles:', error)
