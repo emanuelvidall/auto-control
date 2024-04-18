@@ -78,16 +78,11 @@ export class DialogComponent implements OnInit {
     )
   }
 
-  teste() {
-    console.log(this.data.id)
-    console.log(this.myControl.value)
-  }
-
   handleAddVehicle(): void {
     if (this.addVehicleForm.valid) {
       const vehicleData = {
         type: this.addVehicleForm.value.type,
-        brand: '1',
+        brand: this.addVehicleForm.value.brand,
         name: this.addVehicleForm.value.name,
         description: this.addVehicleForm.value.description,
         owner: this.data.id,
