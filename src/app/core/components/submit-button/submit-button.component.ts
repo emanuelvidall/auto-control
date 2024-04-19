@@ -13,7 +13,7 @@ export class SubmitButtonComponent {
   @Input() buttonStyle: string = 'buttonStyle'
   @Input() buttonText: string = 'Botao'
   @Output() buttonClick = new EventEmitter<void>()
-  @Input() isLoading: boolean = false
+  // @Input() isLoading: boolean = false
   @Input() loginButton: boolean = false
 
   onClick() {
