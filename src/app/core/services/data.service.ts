@@ -1,5 +1,10 @@
 import { Injectable } from '@angular/core'
-import { HttpClient, HttpHeaders } from '@angular/common/http'
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+  HttpResponseBase,
+} from '@angular/common/http'
 import { Observable, throwError, catchError, tap } from 'rxjs'
 import { environment } from '../../../environments/environment' // Adjust path as necessary
 
@@ -108,10 +113,25 @@ export class DataService {
     )
   }
 
-  private handleError(error: any) {
+  private handleError(error: HttpErrorResponse) {
     console.error('An error occurred:', error)
-    return throwError(
-      () => new Error('Something bad happened; please try again later.')
-    )
+    if (error.error instanceof ErrorEvent) {
+      console.error(
+        'A client-side or network error occurred:',
+        error.error.message
+      )
+      return throwError(
+        () =>
+          new Error(
+            'An error occurred; please check your network connection and try again.'
+          )
+      )
+    } else {
+      console.error(
+        `Backend returned code ${error.status}, body was: `,
+        error.error
+      )
+      return throwError(() => error)
+    }
   }
 }

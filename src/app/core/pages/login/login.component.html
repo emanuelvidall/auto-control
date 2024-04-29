@@ -22,6 +22,9 @@
               <div *ngIf="f['email'].errors['email']">
                 *Formato de email inválido
               </div>
+              <div *ngIf="f['email'].errors['customError']">
+                {{ f['email'].errors['customError'] }}
+              </div>
             </div>
           </div>
           <div class="password-container">
