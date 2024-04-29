@@ -98,6 +98,16 @@ export class DataService {
     )
   }
 
+  deleteVehicle(vehicleId: any, token: string) {
+    const headers = new HttpHeaders({
+      Authorization: `Token ${token}`,
+    })
+    return this.http.delete(
+      `${this.apiUrl}api/v1/app-vehicles/vehicles/${vehicleId}/`,
+      { headers }
+    )
+  }
+
   private handleError(error: any) {
     console.error('An error occurred:', error)
     return throwError(

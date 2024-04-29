@@ -15,6 +15,7 @@
               name="email"
               required
               email
+              title="email"
             />
             <div *ngIf="submitted && f['email'].errors" class="email-error">
               <div *ngIf="f['email'].errors['required']">*Preencha o email</div>
@@ -91,7 +92,6 @@
             buttonStyle="login-button"
             [loginButton]="loginButton"
             (click)="submitLogin()"
-            [isLoading]="isLoading"
           />
           <div class="invite-container">
             <h3 class="no-account">Ainda nao possui uma conta?</h3>

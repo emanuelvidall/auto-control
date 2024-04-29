@@ -39,6 +39,9 @@
           required
           email
         />
+        <div *ngIf="errorMessage" class="error-message">
+          *{{ errorMessage }}
+        </div>
         <div *ngIf="submitted && f['email'].errors" class="email-error">
           <div *ngIf="f['email'].errors['required']">*Preencha o email</div>
           <div *ngIf="f['email'].errors['email']">
@@ -54,20 +57,15 @@
           <h3>CNH</h3>
         </div>
         <input
-          title="driversLicense"
+          title="cnh"
           type="text"
-          formControlName="driversLicense"
-          name="driversLicense"
+          formControlName="cnh"
+          name="cnh"
           required
-          driversLicense
+          cnh
         />
-        <div
-          *ngIf="submitted && f['driversLicense'].errors"
-          class="drivers-license-error"
-        >
-          <div *ngIf="f['driversLicense'].errors['required']">
-            *Preencha sua CNH
-          </div>
+        <div *ngIf="submitted && f['cnh'].errors" class="drivers-license-error">
+          <div *ngIf="f['cnh'].errors['required']">*Preencha sua CNH</div>
         </div>
         <div class="icon">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
@@ -136,7 +134,6 @@
       </form>
       <div class="button-container">
         <app-submit-button
-          [isLoading]="isLoading"
           type="submit"
           buttonText="Continuar"
           buttonStyle="continue-button"

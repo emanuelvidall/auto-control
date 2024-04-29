@@ -56,10 +56,12 @@ export class CreateAccountComponent implements OnInit {
           Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),
         ],
       ],
-      driversLicense: ['', [Validators.required]],
+      cnh: ['', [Validators.required]],
       password: ['', [Validators.required, Validators.minLength(8)]],
     })
   }
+
+  errorMessage: string = ''
 
   get f() {
     return this.registerForm.controls
@@ -78,18 +80,31 @@ export class CreateAccountComponent implements OnInit {
   handleCreateAccount() {
     this.isLoading = true
     this.submitted = true
+
     if (this.registerForm.invalid) {
+      this.isLoading = false
       return
     }
-    this.dataService
-      .createAccount(this.registerForm.value)
-      .subscribe((response) => {
-        console.log(response)
-        this.isLoading = false
+
+    this.dataService.createAccount(this.registerForm.value).subscribe({
+      next: (response) => {
+        console.log('Account created:', response)
         this.router.navigate([this.accountCreatedSuccessfullyPath])
-      })
-    {
-      this.clearForm()
-    }
+        this.clearForm()
+        this.isLoading = false
+      },
+      error: (error) => {
+        this.isLoading = false
+        if (
+          error.status === 309 &&
+          error.error.detail === 'E-mail já cadastrado.'
+        ) {
+          this.errorMessage = 'E-mail já cadastrado.'
+        } else {
+          this.errorMessage = 'E-mail já cadastrado.'
+        }
+        console.error('Error creating account:', error)
+      },
+    })
   }
 }

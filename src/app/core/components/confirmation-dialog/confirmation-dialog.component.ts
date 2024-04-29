@@ -26,7 +26,7 @@ export class ConfirmationDialogComponent {
   constructor(public dialog: MatDialog, private dataService: DataService) {}
 
   deleteVehicle(vehicleId: any) {
-    console.log(vehicleId, 'vehicle id no modal')
+    const id = console.log(vehicleId, 'vehicle id no modal')
     console.log('clicked')
     const userData = JSON.parse(sessionStorage.getItem('userData') || '{}')
     console.log(vehicleId, 'vehicleId')
