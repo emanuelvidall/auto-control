@@ -1,5 +1,6 @@
-import { Component } from '@angular/core'
+import { Component, EventEmitter, Inject, Output } from '@angular/core'
 import {
+  MAT_DIALOG_DATA,
   MatDialog,
   MatDialogActions,
   MatDialogClose,
@@ -23,21 +24,26 @@ import { DataService } from '../../services/data.service'
   styleUrl: './confirmation-dialog.component.scss',
 })
 export class ConfirmationDialogComponent {
-  constructor(public dialog: MatDialog, private dataService: DataService) {}
+  @Output() vehicleDeleted = new EventEmitter<void>()
 
-  deleteVehicle(vehicleId: any) {
-    const id = console.log(vehicleId, 'vehicle id no modal')
-    console.log('clicked')
+  constructor(
+    public dialog: MatDialog,
+    private dataService: DataService,
+    @Inject(MAT_DIALOG_DATA) public data: { vehicleId: string }
+  ) {}
+
+  deleteVehicle() {
     const userData = JSON.parse(sessionStorage.getItem('userData') || '{}')
-    console.log(vehicleId, 'vehicleId')
-    console.log(userData.token, 'token')
-    this.dataService.deleteVehicle(vehicleId, userData.token).subscribe(
-      (response) => {
-        console.log('vehicle deleted successfully', response)
-      },
-      (error) => {
-        console.error('Error deleting vehicle: ', error)
-      }
-    )
+    this.dataService
+      .deleteVehicle(this.data.vehicleId, userData.token)
+      .subscribe(
+        (response) => {
+          this.vehicleDeleted.emit()
+          console.log('vehicle deleted successfully', response)
+        },
+        (error) => {
+          console.error('Error deleting vehicle: ', error)
+        }
+      )
   }
 }

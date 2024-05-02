@@ -32,7 +32,10 @@
   <div class="middle-section">
     <ng-container *ngIf="vehicles.length > 0">
       <div *ngFor="let car of vehicles">
-        <app-car-component [car]="car"></app-car-component>
+        <app-car-component
+          [car]="car"
+          (vehicleDeleted)="onVehicleDeleted()"
+        ></app-car-component>
       </div>
       <app-expense-component />
     </ng-container>

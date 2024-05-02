@@ -52,12 +52,23 @@ export class DashboardComponent implements OnInit {
       data: { token: this.myToken, id: this.myId },
     })
 
+    dialogRef.componentInstance.vehicleAdded.subscribe(
+      (newVehicle: Vehicle) => {
+        this.vehicles.push(newVehicle)
+        console.log('New vehicle added:', newVehicle)
+      }
+    )
+
     dialogRef.afterClosed().subscribe((result) => {
       console.log('The dialog was closed. Result:', result)
     })
   }
 
-  ngOnInit(): void {
+  onVehicleDeleted() {
+    this.loadVehicles()
+  }
+
+  loadVehicles() {
     const userData = sessionStorage.getItem('userData')
     const parsedUserData = userData ? JSON.parse(userData) : null
     const id = parsedUserData?.user_id
@@ -77,6 +88,10 @@ export class DashboardComponent implements OnInit {
     console.log('id', id)
     console.log('user data fetched!', parsedUserData)
     return parsedUserData
+  }
+
+  ngOnInit(): void {
+    this.loadVehicles()
   }
 
   logout() {

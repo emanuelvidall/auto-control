@@ -1,4 +1,11 @@
-import { Component, Inject, Input, OnInit } from '@angular/core'
+import {
+  Component,
+  EventEmitter,
+  Inject,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core'
 import { map, startWith } from 'rxjs/operators'
 
 import { AsyncPipe } from '@angular/common'
@@ -41,6 +48,7 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog'
   styleUrls: ['./dialog.component.scss'],
 })
 export class DialogComponent implements OnInit {
+  @Output() vehicleAdded = new EventEmitter<any>()
   @Input() token!: string
   addVehicleForm = new FormGroup({
     type: new FormControl('', Validators.required),
@@ -92,6 +100,7 @@ export class DialogComponent implements OnInit {
       this.dataService.addVehicle(vehicleData, this.data.token).subscribe({
         next: (response) => {
           console.log('Vehicle added successfully', response)
+          this.vehicleAdded.emit(response)
         },
         error: (error) => console.error('Error adding vehicle:', error),
       })

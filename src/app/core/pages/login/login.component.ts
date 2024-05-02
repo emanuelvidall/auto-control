@@ -102,9 +102,10 @@ export class LoginComponent implements OnInit {
         first(),
         catchError((error: any) => {
           this.isLoading = false
-          const message = error?.error?.username
-            ? 'Email ou senha inválidos'
-            : 'Something bad happened; please try again later.'
+          const message =
+            error?.error?.username || error?.error?.password
+              ? 'Email ou senha inválidos'
+              : 'Something bad happened; please try again later.'
           this.registerForm.get('email')?.setErrors({ customError: message })
           return throwError(() => error)
         })
