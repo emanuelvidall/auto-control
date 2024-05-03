@@ -71,6 +71,18 @@ export class DataService {
       .pipe(catchError(this.handleError))
   }
 
+  forgetPassword(data: UserData): Observable<any> {
+    return this.http
+      .post<any>(`${this.apiUrl + 'request-reset-password/'}`, data)
+      .pipe(catchError(this.handleError))
+  }
+
+  resetPassword(data: UserData): Observable<any> {
+    return this.http
+      .post<any>(`${this.apiUrl + 'reset-password/'}`, data)
+      .pipe(catchError(this.handleError))
+  }
+
   getVehicleBrands(token: string): Observable<string[]> {
     const headers = new HttpHeaders({
       Authorization: `Token ${token}`,

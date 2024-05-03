@@ -67,6 +67,7 @@ export class LoginComponent implements OnInit {
   showEye: boolean = false
   showPassword: boolean = false
   createAccountPath: string = 'create-account'
+  forgetPasswordPath: string = 'forget-password'
   dashboardPath: string = 'dashboard'
   loginButton: boolean = true
   validCredentials: boolean = true
@@ -83,6 +84,10 @@ export class LoginComponent implements OnInit {
 
   goToCreateAccount() {
     this.router.navigate([this.createAccountPath])
+  }
+
+  goToForgetPassword() {
+    this.router.navigate([this.forgetPasswordPath])
   }
 
   submitLogin() {
