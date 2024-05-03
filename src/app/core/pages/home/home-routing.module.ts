@@ -3,6 +3,8 @@ import { RouterModule, Routes } from '@angular/router'
 import { LoginComponent } from '../login/login.component'
 import { CreateAccountComponent } from '../create-account/create-account.component'
 import { DashboardComponent } from '../dashboard/dashboard.component'
+import { ForgetPasswordComponent } from '../forget-password/forget-password.component'
+import { CreateNewPasswordComponent } from '../create-new-password/create-new-password.component' 
 import { AccountCreatedSuccessfullyComponent } from '../account-created-successfully/account-created-successfully.component'
 
 const routes: Routes = [
@@ -22,6 +24,14 @@ const routes: Routes = [
     path: 'dashboard',
     component: DashboardComponent,
   },
+  {
+    path: 'forget-password',
+    component: ForgetPasswordComponent,
+  },
+  {
+    path: 'reset-password',
+    component: CreateNewPasswordComponent,
+  }
 ]
 
 @NgModule({
