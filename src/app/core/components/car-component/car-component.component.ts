@@ -4,6 +4,7 @@ import { DataService } from '../../services/data.service'
 import { MatIcon } from '@angular/material/icon'
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component'
 import { MatDialog } from '@angular/material/dialog'
+import { ExpenseDialogComponent } from '../expense-dialog/expense-dialog.component'
 
 @Component({
   selector: 'app-car-component',
@@ -30,6 +31,16 @@ export class CarComponentComponent {
 
     dialogRef.componentInstance.vehicleDeleted.subscribe(() => {
       this.vehicleDeleted.emit()
+    })
+  }
+
+  openExpenseDialog(): void {
+    const dialogRef = this.dialog.open(ExpenseDialogComponent, {
+      width: '350px',
+    })
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log('The dialog was closed. Result:', result)
     })
   }
 }
