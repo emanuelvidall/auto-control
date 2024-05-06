@@ -122,7 +122,7 @@ export class LoginComponent implements OnInit {
           setTimeout(() => {
             this.router.navigate([this.dashboardPath])
             this.isLoading = false
-          }, 3000)
+          }, 1000)
         },
         error: (error) => {
           console.error('Failed to log in:', error)

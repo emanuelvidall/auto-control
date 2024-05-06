@@ -7,10 +7,14 @@
   <mat-form-field>
     <mat-label>Valor</mat-label>
     <input matInput />
+    <mat-icon matSuffix>attach_money</mat-icon>
   </mat-form-field>
   <mat-form-field>
     <mat-label>Data</mat-label>
-    <input matInput />
+    <input matInput [matDatepicker]="picker" />
+
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
   </mat-form-field>
   <mat-form-field>
     <mat-label>Descrição</mat-label>
@@ -20,4 +24,15 @@
     <mat-label>Comprovante</mat-label>
     <input type="file" />
   </div>
+  <mat-dialog-actions align="end">
+    <button mat-flat-button color="warn" mat-dialog-close>Cancelar</button>
+    <button
+      mat-flat-button
+      color="primary"
+      [mat-dialog-close]="true"
+      type="submit"
+    >
+      Registrar
+    </button>
+  </mat-dialog-actions>
 </div>

@@ -12,6 +12,14 @@ import { MatInputModule } from '@angular/material/input'
 import { MatFormFieldModule } from '@angular/material/form-field'
 import { FormControl, FormGroup, Validators } from '@angular/forms'
 import { ReactiveFormsModule } from '@angular/forms'
+import { MatButtonModule } from '@angular/material/button'
+import { MatDatepickerModule } from '@angular/material/datepicker'
+import { MatIconModule } from '@angular/material/icon'
+
+import {
+  MAT_DATE_LOCALE,
+  provideNativeDateAdapter,
+} from '@angular/material/core'
 
 @Component({
   selector: 'app-expense-dialog',
@@ -25,6 +33,13 @@ import { ReactiveFormsModule } from '@angular/forms'
     MatSelectModule,
     MatInputModule,
     MatFormFieldModule,
+    MatButtonModule,
+    MatDatepickerModule,
+    MatIconModule,
+  ],
+  providers: [
+    provideNativeDateAdapter(),
+    { provide: MAT_DATE_LOCALE, useValue: 'pt-BR' },
   ],
   templateUrl: './expense-dialog.component.html',
   styleUrls: ['./expense-dialog.component.scss'],
