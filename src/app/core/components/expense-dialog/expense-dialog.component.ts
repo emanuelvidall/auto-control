@@ -16,6 +16,10 @@ import { MatButtonModule } from '@angular/material/button'
 import { MatDatepickerModule } from '@angular/material/datepicker'
 import { MatIconModule } from '@angular/material/icon'
 
+import { DataService } from '../../services/data.service'
+
+import { Expense } from '../../services/data.service'
+
 import {
   MAT_DATE_LOCALE,
   provideNativeDateAdapter,
@@ -45,16 +49,20 @@ import {
   styleUrls: ['./expense-dialog.component.scss'],
 })
 export class ExpenseDialogComponent {
+  constructor(private dataService: DataService) {}
+
   addExpenseForm = new FormGroup({
     name: new FormControl('', Validators.required),
-    vehicle: new FormControl(null, Validators.required),
+    value: new FormControl(0, Validators.required),
+    date: new FormControl(new Date(), Validators.required),
     description: new FormControl(''),
-    type: new FormControl(null, Validators.required),
     file: new FormControl(''),
+    vehicleId: new FormControl(0, Validators.required),
   })
 
   handleAddExpense() {
     if (this.addExpenseForm.valid) {
+      this.dataService.addExpense(this.addExpenseForm.value as Expense)
       console.log('Expense Data:', this.addExpenseForm.value)
     } else {
       console.log('Form is not valid')
