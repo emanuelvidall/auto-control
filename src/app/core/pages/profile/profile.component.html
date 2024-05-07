@@ -1,0 +1,32 @@
+<div class="main-container">
+  <div class="top-bar">
+    <div class="logo-container">
+      <img class="logo" [src]="AlternateLogoPath" alt="Logo" />
+    </div>
+    <div class="top-options">
+      <h3>Dashboard</h3>
+      <h3>Veículos</h3>
+      <h3>Despesas</h3>
+      <h3>Sobre</h3>
+      <h3>Ajuda</h3>
+    </div>
+    <button
+      class="mat-icon-button"
+      mat-icon-button
+      [matMenuTriggerFor]="menu"
+      aria-label="Example icon-button with a menu"
+    >
+      <mat-icon class="mat-face">face</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item>
+        <mat-icon>edit_square</mat-icon>
+        <span>Editar perfil</span>
+      </button>
+      <button mat-menu-item (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        <span>Sair</span>
+      </button>
+    </mat-menu>
+  </div>
+</div>

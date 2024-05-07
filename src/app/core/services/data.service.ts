@@ -46,6 +46,16 @@ export interface Vehicle {
   created_at: string
 }
 
+export interface Expense {
+  name: string
+  vehicleId: number
+  description: string
+  typeId?: number
+  file?: File
+  value: number
+  date: Date | string
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -121,6 +131,17 @@ export class DataService {
     })
     return this.http.delete(
       `${this.apiUrl}api/v1/app-vehicles/vehicles/${vehicleId}/`,
+      { headers }
+    )
+  }
+
+  addExpense(expenseData: Expense): Observable<any> {
+    const headers = new HttpHeaders({
+      Authorization: `Token ${sessionStorage.getItem('userData')}`,
+    })
+    return this.http.post(
+      `${this.apiUrl}api/v1/app-expenses/expenses/`,
+      expenseData,
       { headers }
     )
   }
