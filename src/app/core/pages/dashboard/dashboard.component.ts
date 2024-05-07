@@ -8,6 +8,7 @@ import { Router } from '@angular/router'
 
 import { CarComponentComponent } from '../../components/car-component/car-component.component'
 import { SubmitButtonComponent } from '../../components/submit-button/submit-button.component'
+import { NavbarComponent } from '../../components/navbar/navbar.component'
 import { DialogComponent } from '../../components/dialog/dialog.component'
 import {
   UserData,
@@ -29,6 +30,7 @@ import { ExpenseComponentComponent } from '../../components/expense-component/ex
     ExpenseComponentComponent,
     MatIconModule,
     MatMenuModule,
+    NavbarComponent,
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
@@ -90,15 +92,10 @@ export class DashboardComponent implements OnInit {
     return parsedUserData
   }
 
+  AlternateLogoPath: string = 'assets/logo-alternate.png'
+  CarIconPath: string = 'assets/car-icon.png'
+
   ngOnInit(): void {
     this.loadVehicles()
   }
-
-  logout() {
-    sessionStorage.removeItem('userData')
-    this.router.navigate([this.loginPath])
-  }
-
-  AlternateLogoPath: string = 'assets/logo-alternate.png'
-  CarIconPath: string = 'assets/car-icon.png'
 }

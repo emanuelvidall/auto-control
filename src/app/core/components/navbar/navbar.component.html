@@ -4,11 +4,11 @@
       <img class="logo" [src]="AlternateLogoPath" alt="Logo" />
     </div>
     <div class="top-options">
-      <h3>Dashboard</h3>
-      <h3>Veículos</h3>
-      <h3>Despesas</h3>
-      <h3>Sobre</h3>
-      <h3>Ajuda</h3>
+      <a href="/dashboard">Dashboard</a>
+      <a href="/veiculos">Veículos</a>
+      <a href="/despesas">Despesas</a>
+      <a href="/sobre">Sobre</a>
+      <a href="ajuda">Ajuda</a>
     </div>
     <button
       class="mat-icon-button"
@@ -19,7 +19,7 @@
       <mat-icon class="mat-face">face</mat-icon>
     </button>
     <mat-menu #menu="matMenu">
-      <button mat-menu-item>
+      <button mat-menu-item (click)="goToProfile()">
         <mat-icon>edit_square</mat-icon>
         <span>Editar perfil</span>
       </button>

@@ -146,6 +146,12 @@ export class DataService {
     )
   }
 
+  getUserData() {
+    const userData = sessionStorage.getItem('userData')
+    const parsedUserData = userData ? JSON.parse(userData) : null
+    return parsedUserData
+  }
+
   private handleError(error: HttpErrorResponse) {
     console.error('An error occurred:', error)
     if (error.error instanceof ErrorEvent) {

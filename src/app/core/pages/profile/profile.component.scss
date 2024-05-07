@@ -1,97 +1,54 @@
-.main-container {
-  width: 100%;
-  height: 100vh;
-  background-color: white;
-}
-
-.logo-container {
-  margin-left: 1.5rem;
-  width: 10%;
-  img {
-    width: 100%;
-  }
-  cursor: pointer;
-}
-
-.top-bar {
-  width: 100%;
-  padding: 1rem;
+.profile-container {
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  flex-direction: column;
   align-items: center;
-  background-color: rgb(226, 231, 246);
+  flex: 1;
+  min-height: 89.5%;
+  padding-top: 5rem;
 }
 
-.mat-face {
-  font-size: 48px;
-  height: 48px;
-  width: 48px;
-  display: flex;
-  align-items: center;
-}
-
-.top-options {
-  display: flex;
-  flex-direction: row;
+.profile-head {
+  border: solid blue 2px;
+  margin-bottom: 5rem;
   width: 50%;
-  padding: 0rem 2rem 0rem 2rem;
-  justify-content: space-between;
-  align-items: center;
+  gap: 2rem;
+  display: flex;
+  flex-direction: row;
   h3 {
-    margin-bottom: 0px;
-    font-size: 18px;
-    font-weight: bold;
-    opacity: 0.6;
+    font-size: 24px;
   }
-}
-
-.mat-icon-button {
-  cursor: pointer;
-  border-radius: 100px;
-  border: transparent;
-}
-
-.middle-section {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: space-between;
-  // align-items: flex-start;
-  padding: 2rem;
-  min-height: 90%;
-  border-radius: 8px;
 }
 
-.register-vehicle-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background-color: rgb(226, 231, 246);
-  width: 30%;
-  gap: 1rem;
-  padding: 1rem;
-  height: 250px;
-  border-radius: 8px;
-  h1 {
-    opacity: 60%;
-  }
-}
-
-app-submit-button {
-  width: 50%;
-}
-
-.car-icon {
-  opacity: 25%;
-  width: 50px;
-}
-
-.car-icon-container {
-  background-color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 1rem;
+.profile-picture img {
+  width: 200px;
+  height: 200px;
   border-radius: 100px;
+  background-color: white;
+  border: #fc6736 solid 3px;
+}
+
+.profile-head-buttons {
+  gap: 2rem;
+  margin-top: 3rem;
+  display: flex;
+}
+
+input {
+  width: 100%;
+  height: 2.355rem;
+  border: none;
+  background-color: #f3f3f1;
+  padding: 1rem;
+  outline: none;
+  font-size: 0.875rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
+
+.profile-edit-inputs {
+  border: solid green 2px;
+  width: 50%;
 }

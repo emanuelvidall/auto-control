@@ -1,56 +1,25 @@
-<div class="main-container">
-  <div class="top-bar">
-    <div class="logo-container">
-      <img class="logo" [src]="AlternateLogoPath" alt="Logo" />
+<app-navbar />
+<div class="middle-section">
+  <ng-container *ngIf="vehicles.length > 0">
+    <div *ngFor="let car of vehicles">
+      <app-car-component
+        [car]="car"
+        (vehicleDeleted)="onVehicleDeleted()"
+      ></app-car-component>
     </div>
-    <div class="top-options">
-      <h3>Dashboard</h3>
-      <h3>Veículos</h3>
-      <h3>Despesas</h3>
-      <h3>Sobre</h3>
-      <h3>Ajuda</h3>
+    <app-expense-component />
+  </ng-container>
+  <ng-container *ngIf="vehicles.length <= 0">
+    <div class="register-vehicle-container">
+      <h1>Não há veículos registrados</h1>
+      <div class="car-icon-container">
+        <img class="car-icon" [src]="CarIconPath" alt="CarIcon" />
+      </div>
+      <app-submit-button
+        class="dashboard-register-vehicle"
+        buttonText="Adicionar Veículo"
+        (click)="openDialog()"
+      />
     </div>
-    <button
-      class="mat-icon-button"
-      mat-icon-button
-      [matMenuTriggerFor]="menu"
-      aria-label="Example icon-button with a menu"
-    >
-      <mat-icon class="mat-face">face</mat-icon>
-    </button>
-    <mat-menu #menu="matMenu">
-      <button mat-menu-item>
-        <mat-icon>edit_square</mat-icon>
-        <span>Editar perfil</span>
-      </button>
-      <button mat-menu-item (click)="logout()">
-        <mat-icon>logout</mat-icon>
-        <span>Sair</span>
-      </button>
-    </mat-menu>
-  </div>
-  <div class="middle-section">
-    <ng-container *ngIf="vehicles.length > 0">
-      <div *ngFor="let car of vehicles">
-        <app-car-component
-          [car]="car"
-          (vehicleDeleted)="onVehicleDeleted()"
-        ></app-car-component>
-      </div>
-      <app-expense-component />
-    </ng-container>
-    <ng-container *ngIf="vehicles.length <= 0">
-      <div class="register-vehicle-container">
-        <h1>Não há veículos registrados</h1>
-        <div class="car-icon-container">
-          <img class="car-icon" [src]="CarIconPath" alt="CarIcon" />
-        </div>
-        <app-submit-button
-          class="dashboard-register-vehicle"
-          buttonText="Adicionar Veículo"
-          (click)="openDialog()"
-        />
-      </div>
-    </ng-container>
-  </div>
+  </ng-container>
 </div>

@@ -1,32 +1,58 @@
-<div class="main-container">
-  <div class="top-bar">
-    <div class="logo-container">
-      <img class="logo" [src]="AlternateLogoPath" alt="Logo" />
+<app-navbar />
+<div class="profile-container">
+  <div class="profile-head">
+    <div class="profile-picture">
+      <img src="https://via.placeholder.com/200" alt="Profile Picture" />
     </div>
-    <div class="top-options">
-      <h3>Dashboard</h3>
-      <h3>Veículos</h3>
-      <h3>Despesas</h3>
-      <h3>Sobre</h3>
-      <h3>Ajuda</h3>
+    <div class="profile-head-text">
+      <h3>Edição de Perfil</h3>
+      <div class="profile-head-buttons">
+        <button mat-flat-button color="primary">Mudar Imagem</button>
+        <button mat-flat-button disabled>Remover Imagem</button>
+      </div>
     </div>
-    <button
-      class="mat-icon-button"
-      mat-icon-button
-      [matMenuTriggerFor]="menu"
-      aria-label="Example icon-button with a menu"
-    >
-      <mat-icon class="mat-face">face</mat-icon>
-    </button>
-    <mat-menu #menu="matMenu">
-      <button mat-menu-item>
-        <mat-icon>edit_square</mat-icon>
-        <span>Editar perfil</span>
-      </button>
-      <button mat-menu-item (click)="logout()">
-        <mat-icon>logout</mat-icon>
-        <span>Sair</span>
-      </button>
-    </mat-menu>
+  </div>
+  <div class="profile-edit-inputs">
+    <h3>Nome</h3>
+    <input
+      title="name"
+      type="text"
+      formControlName="name"
+      name="name"
+      required
+      name
+      placeholder="Digite seu nome"
+    />
+    <h3>Email</h3>
+    <input
+      class="input-Email"
+      title="Email"
+      type="text"
+      formControlName="Email"
+      name="Email"
+      Email
+      required
+      placeholder="Digite seu email"
+    />
+    <h3>CNH</h3>
+    <input
+      title="CNH"
+      type="text"
+      formControlName="CNH"
+      name="CNH"
+      required
+      CNH
+      placeholder="Digite sua CNH"
+    />
+    <h3>Senha</h3>
+    <input
+      class="input-Senha"
+      title="Senha"
+      type="password"
+      formControlName="Senha"
+      name="Senha"
+      Senha
+      placeholder="Digite sua senha"
+    />
   </div>
 </div>
