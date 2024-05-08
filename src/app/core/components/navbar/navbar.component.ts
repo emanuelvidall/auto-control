@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core'
 import { MatIconModule } from '@angular/material/icon'
 import { MatMenuModule } from '@angular/material/menu'
 import { Router } from '@angular/router'
@@ -15,16 +15,27 @@ import {
   styleUrl: './navbar.component.scss',
 })
 export class NavbarComponent implements OnInit {
-  constructor(private router: Router, private dataService: DataService) {}
+  AlternateLogoPath: string
+  CarIconPath: string
+
+  constructor(
+    private router: Router,
+    private dataService: DataService,
+    private cd: ChangeDetectorRef
+  ) {
+    this.AlternateLogoPath = '/assets/logo-alternate.png'
+    this.CarIconPath = '/assets/car-icon.png'
+  }
 
   userData: userDataSessionStorage | null = null
 
   ngOnInit(): void {
-    this.getUserData()
+    // this.getUserData()
+    this.cd.detectChanges()
   }
 
   getUserData() {
-    this.userData = this.dataService.getUserData()
+    // this.userData = this.dataService.getUserData()
     console.log('User data:', this.userData, 'userData no navabar')
     return
   }
@@ -36,10 +47,7 @@ export class NavbarComponent implements OnInit {
   }
 
   logout() {
-    sessionStorage.removeItem('userData')
+    this.dataService.logout()
     this.router.navigate([this.loginPath])
   }
-
-  AlternateLogoPath: string = 'assets/logo-alternate.png'
-  CarIconPath: string = 'assets/car-icon.png'
 }

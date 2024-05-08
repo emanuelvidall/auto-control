@@ -62,7 +62,7 @@ export class ExpenseDialogComponent {
 
   handleAddExpense() {
     if (this.addExpenseForm.valid) {
-      this.dataService.addExpense(this.addExpenseForm.value as Expense)
+      // this.dataService.addExpense(this.addExpenseForm.value as Expense)
       console.log('Expense Data:', this.addExpenseForm.value)
     } else {
       console.log('Form is not valid')

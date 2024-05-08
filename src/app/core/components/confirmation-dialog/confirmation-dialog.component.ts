@@ -33,17 +33,26 @@ export class ConfirmationDialogComponent {
   ) {}
 
   deleteVehicle() {
-    const userData = JSON.parse(sessionStorage.getItem('userData') || '{}')
-    this.dataService
-      .deleteVehicle(this.data.vehicleId, userData.token)
-      .subscribe(
-        (response) => {
-          this.vehicleDeleted.emit()
-          console.log('vehicle deleted successfully', response)
-        },
-        (error) => {
-          console.error('Error deleting vehicle: ', error)
-        }
-      )
+    const userData = this.dataService.getUserData()
+    if (!userData || userData.token === undefined) {
+      console.error('No user data available or user is not logged in')
+      return
+    }
+
+    const vehicleId = this.data.vehicleId
+    if (typeof vehicleId !== 'number') {
+      console.error('Vehicle ID must be a number')
+      return
+    }
+
+    this.dataService.deleteVehicle(vehicleId, userData.token).subscribe(
+      (response) => {
+        this.vehicleDeleted.emit()
+        console.log('Vehicle deleted successfully', response)
+      },
+      (error) => {
+        console.error('Error deleting vehicle: ', error)
+      }
+    )
   }
 }

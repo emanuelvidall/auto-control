@@ -52,7 +52,7 @@ export class DialogComponent implements OnInit {
   @Input() token!: string
   addVehicleForm = new FormGroup({
     type: new FormControl('', Validators.required),
-    brand: new FormControl({ id: '', name: '' }, Validators.required),
+    brand: new FormControl('', Validators.required),
     name: new FormControl('', Validators.required),
     description: new FormControl(''),
   })
@@ -89,9 +89,14 @@ export class DialogComponent implements OnInit {
   handleAddVehicle(): void {
     if (this.addVehicleForm.valid) {
       const selectedBrand = this.addVehicleForm.value.brand
+      const brand = this.options.find((option) => option.name === selectedBrand)
+      if (!brand) {
+        console.error('Selected brand not found')
+        return
+      }
       const vehicleData = {
         type: parseInt(this.addVehicleForm.value.type ?? '', 10),
-        brand: parseInt(selectedBrand?.id ?? '', 10),
+        brand: brand.id,
         name: this.addVehicleForm.value.name,
         description: this.addVehicleForm.value.description,
         owner: this.data.id,
