@@ -3,11 +3,10 @@ import {
   HttpClient,
   HttpErrorResponse,
   HttpHeaders,
-  HttpResponseBase,
 } from '@angular/common/http'
 import { Observable, throwError, catchError, tap } from 'rxjs'
 import { environment } from '../../../environments/environment' // Adjust path as necessary
-
+import { StorageService } from './session.service'
 export interface UserLoginData {
   username: string
   password: string
@@ -29,6 +28,7 @@ export interface userDataSessionStorage {
 }
 
 export interface VehicleBrand {
+  id: number
   name: string
 }
 
@@ -62,34 +62,45 @@ export interface Expense {
 export class DataService {
   private apiUrl = environment.apiUrl
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private storageService: StorageService
+  ) {}
 
   login(data: UserLoginData): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}login/`, data).pipe(
       tap((response) => {
         if (response && response.token) {
-          sessionStorage.setItem('userData', JSON.stringify(response))
+          this.storageService.setItem('userData', response)
         }
       }),
       catchError(this.handleError)
     )
   }
 
+  logout() {
+    this.storageService.removeItem('userData')
+  }
+
+  getUserData(): userDataSessionStorage | null {
+    return this.storageService.getItem('userData')
+  }
+
   createAccount(data: UserData): Observable<any> {
     return this.http
-      .post<any>(`${this.apiUrl + 'api/v1/app-users/register-user/'}`, data)
+      .post<any>(`${this.apiUrl}api/v1/app-users/register-user/`, data)
       .pipe(catchError(this.handleError))
   }
 
   forgetPassword(data: UserData): Observable<any> {
     return this.http
-      .post<any>(`${this.apiUrl + 'request-reset-password/'}`, data)
+      .post<any>(`${this.apiUrl}request-reset-password/`, data)
       .pipe(catchError(this.handleError))
   }
 
   resetPassword(data: UserData): Observable<any> {
     return this.http
-      .post<any>(`${this.apiUrl + 'reset-password/'}`, data)
+      .post<any>(`${this.apiUrl}reset-password/`, data)
       .pipe(catchError(this.handleError))
   }
 
@@ -98,8 +109,8 @@ export class DataService {
       Authorization: `Token ${token}`,
     })
     return this.http.get<string[]>(
-      `${this.apiUrl + 'api/v1/app-vehicles/brands/'}`,
-      { headers: headers }
+      `${this.apiUrl}api/v1/app-vehicles/brands/`,
+      { headers }
     )
   }
 
@@ -107,10 +118,9 @@ export class DataService {
     const headers = new HttpHeaders({
       Authorization: `Token ${token}`,
     })
-
     return this.http.get<Vehicle[]>(
       `${this.apiUrl}api/v1/app-vehicles/vehicles/?owner=${userId}`,
-      { headers: headers }
+      { headers }
     )
   }
 
@@ -125,7 +135,7 @@ export class DataService {
     )
   }
 
-  deleteVehicle(vehicleId: any, token: string) {
+  deleteVehicle(vehicleId: number, token: string) {
     const headers = new HttpHeaders({
       Authorization: `Token ${token}`,
     })
@@ -135,21 +145,15 @@ export class DataService {
     )
   }
 
-  addExpense(expenseData: Expense): Observable<any> {
+  addExpense(expenseData: Expense, token: string): Observable<any> {
     const headers = new HttpHeaders({
-      Authorization: `Token ${sessionStorage.getItem('userData')}`,
+      Authorization: `Token ${token}`,
     })
     return this.http.post(
       `${this.apiUrl}api/v1/app-expenses/expenses/`,
       expenseData,
       { headers }
     )
-  }
-
-  getUserData() {
-    const userData = sessionStorage.getItem('userData')
-    const parsedUserData = userData ? JSON.parse(userData) : null
-    return parsedUserData
   }
 
   private handleError(error: HttpErrorResponse) {
