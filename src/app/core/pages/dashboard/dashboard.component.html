@@ -1,13 +1,22 @@
-<app-navbar />
+<app-navbar></app-navbar>
 <div class="middle-section">
   <ng-container *ngIf="vehicles.length > 0">
-    <div *ngFor="let car of vehicles">
-      <app-car-component
-        [car]="car"
-        (vehicleDeleted)="onVehicleDeleted()"
-      ></app-car-component>
+    <div *ngIf="selectedVehicle">
+      <div class="top-part">
+        <mat-icon class="icon">arrow_back_ios</mat-icon>
+        <app-car-component
+          [car]="selectedVehicle"
+          (vehicleDeleted)="onVehicleDeleted()"
+        ></app-car-component>
+        <mat-icon class="icon">arrow_forward_ios</mat-icon>
+      </div>
+      <app-expense-component
+        [expenses]="selectedVehicle.expenses"
+      ></app-expense-component>
     </div>
-    <app-expense-component />
+    <div *ngIf="!selectedVehicle">
+      <p>Select a vehicle to see the details.</p>
+    </div>
   </ng-container>
   <ng-container *ngIf="vehicles.length <= 0">
     <div class="register-vehicle-container">
@@ -19,7 +28,7 @@
         class="dashboard-register-vehicle"
         buttonText="Adicionar Veículo"
         (click)="openDialog()"
-      />
+      ></app-submit-button>
     </div>
   </ng-container>
 </div>

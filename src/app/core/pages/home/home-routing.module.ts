@@ -25,6 +25,7 @@ const routes: Routes = [
     path: 'dashboard',
     component: DashboardComponent,
   },
+  { path: 'dashboard/:vehicleId', component: DashboardComponent },
   {
     path: 'forget-password',
     component: ForgetPasswordComponent,

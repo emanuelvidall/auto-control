@@ -44,6 +44,7 @@ export interface Vehicle {
   brand_name: string
   images: string[]
   created_at: string
+  expenses: any[]
 }
 
 export interface Expense {

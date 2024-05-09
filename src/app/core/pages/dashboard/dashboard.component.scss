@@ -47,3 +47,19 @@ app-submit-button {
   padding: 1rem;
   border-radius: 100px;
 }
+
+.top-part {
+  width: 100%;
+  margin: 2rem;
+  border: solid red 2px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  .mat-icon {
+    height: 80px;
+    width: 80px;
+    font-size: 80px;
+    border: solid green 2px;
+  }
+}

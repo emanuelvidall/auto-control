@@ -3,7 +3,7 @@ import { NgFor, NgIf } from '@angular/common'
 import { MatDialog } from '@angular/material/dialog'
 import { MatIconModule } from '@angular/material/icon'
 import { MatMenuModule } from '@angular/material/menu'
-import { Router } from '@angular/router'
+import { ActivatedRoute, ParamMap, Router } from '@angular/router'
 
 import { CarComponentComponent } from '../../components/car-component/car-component.component'
 import { SubmitButtonComponent } from '../../components/submit-button/submit-button.component'
@@ -15,7 +15,6 @@ import {
   userDataSessionStorage,
 } from '../../services/data.service'
 import { DataService } from '../../services/data.service'
-import { Observable } from 'rxjs'
 import { ExpenseComponentComponent } from '../../components/expense-component/expense-component.component'
 import { Component, OnInit } from '@angular/core'
 
@@ -36,19 +35,27 @@ import { Component, OnInit } from '@angular/core'
   styleUrl: './dashboard.component.scss',
 })
 export class DashboardComponent implements OnInit {
-  userData: userDataSessionStorage | null = null
   vehicles: Vehicle[] = []
+  selectedVehicleId: number | null = null
+  selectedVehicleExpenses: any[] = []
   myToken = ''
   myId = 0
 
   constructor(
-    public dialog: MatDialog,
     private dataService: DataService,
+    public dialog: MatDialog,
+    private route: ActivatedRoute,
     private router: Router
   ) {}
 
   ngOnInit(): void {
-    this.loadVehicles()
+    this.route.paramMap.subscribe((params: ParamMap) => {
+      const vehicleId = params.get('vehicleId')
+      if (vehicleId) {
+        this.selectedVehicleId = parseInt(vehicleId, 10)
+      }
+      this.loadVehicles()
+    })
   }
 
   AlternateLogoPath: string = 'assets/logo-alternate.png'
@@ -81,6 +88,17 @@ export class DashboardComponent implements OnInit {
     })
   }
 
+  selectVehicle(vehicleId: number): void {
+    this.selectedVehicleId = vehicleId
+    this.router.navigate(['/dashboard', vehicleId])
+  }
+
+  get selectedVehicle(): Vehicle | undefined {
+    return this.vehicles.find(
+      (vehicle) => vehicle.id === this.selectedVehicleId
+    )
+  }
+
   loadVehicles() {
     const userData = this.dataService.getUserData()
     const id = userData?.user_id ?? 0
@@ -94,6 +112,13 @@ export class DashboardComponent implements OnInit {
         next: (vehicles) => {
           this.vehicles = vehicles
           console.log(vehicles, 'Loaded vehicles')
+          if (!this.selectedVehicleId && vehicles.length > 0) {
+            this.selectVehicle(vehicles[0].id)
+          } else if (this.selectedVehicleId) {
+            if (!vehicles.some((v) => v.id === this.selectedVehicleId)) {
+              this.selectVehicle(vehicles[0].id)
+            }
+          }
         },
         error: (error) => console.error('Error fetching vehicles:', error),
       })
