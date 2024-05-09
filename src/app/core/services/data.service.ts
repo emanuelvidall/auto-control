@@ -1,12 +1,12 @@
-import { Injectable } from '@angular/core'
 import {
   HttpClient,
   HttpErrorResponse,
   HttpHeaders,
-} from '@angular/common/http'
-import { Observable, throwError, catchError, tap } from 'rxjs'
-import { environment } from '../../../environments/environment' // Adjust path as necessary
-import { StorageService } from './session.service'
+} from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { catchError, Observable, tap, throwError } from 'rxjs';
+import { environment } from '../../../environments/environment'; // Adjust path as necessary
+import { StorageService } from './session.service';
 export interface UserLoginData {
   username: string
   password: string
@@ -104,6 +104,12 @@ export class DataService {
       .pipe(catchError(this.handleError))
   }
 
+  updateUserData(data: any, id: any): Observable<any> {
+    return this.http
+      .patch(`${this.apiUrl}api/v1/app-users/register-user/${id}/`, data)
+      .pipe(catchError(this.handleError));
+  }
+  
   getVehicleBrands(token: string): Observable<string[]> {
     const headers = new HttpHeaders({
       Authorization: `Token ${token}`,
