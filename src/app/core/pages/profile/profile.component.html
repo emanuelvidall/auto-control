@@ -1,54 +1,36 @@
-<app-navbar />
+<app-navbar></app-navbar>
 <div class="profile-container">
   <div class="profile-head">
     <div class="profile-picture">
-      <img src="https://via.placeholder.com/200" alt="Profile Picture" />
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTChvCkDANakbMV2MUFA38qZJS2AcGKK3TfEw&s" alt="Profile Picture" />
     </div>
+    <h3 class="profile-title">Edição de Perfil</h3>
     <div class="profile-head-text">
-      <h3>Edição de Perfil</h3>
-      <div class="profile-head-buttons">
+      <!-- <div class="profile-head-buttons">
         <button mat-flat-button color="primary">Mudar Imagem</button>
         <button mat-flat-button disabled>Remover Imagem</button>
-      </div>
+      </div> -->
     </div>
   </div>
-  <div class="profile-edit-inputs">
-    <h3>Nome</h3>
-    <input
-      title="name"
-      type="text"
-      name="name"
-      required
-      name
-      placeholder="Digite seu nome"
-    />
-    <h3>Email</h3>
-    <input
-      class="input-Email"
-      title="Email"
-      type="text"
-      name="Email"
-      Email
-      required
-      placeholder="Digite seu email"
-    />
-    <h3>CNH</h3>
-    <input
-      title="CNH"
-      type="text"
-      name="CNH"
-      required
-      CNH
-      placeholder="Digite sua CNH"
-    />
-    <h3>Senha</h3>
-    <input
-      class="input-Senha"
-      title="Senha"
-      type="password"
-      name="Senha"
-      Senha
-      placeholder="Digite sua senha"
-    />
-  </div>
+  <form [formGroup]="profileForm" (ngSubmit)="updateProfile()" >
+    <div class="profile-edit-inputs">
+      <h3>Nome</h3>
+      <input 
+      formControlName="name" 
+      type="text" 
+      placeholder="Digite seu nome">
+      <h3>Email</h3>
+      <input 
+      formControlName="email" 
+      class="input-Email" 
+      type="text" 
+      placeholder="Digite seu email">
+      <h3>CNH</h3>
+      <input 
+      formControlName="cnh" 
+      type="text" 
+      placeholder="Digite sua CNH">
+      <button mat-flat-button color="primary" type="submit">Salvar Alterações</button>
+    </div>
+  </form>
 </div>
