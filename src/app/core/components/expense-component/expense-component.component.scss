@@ -1,38 +1,37 @@
-.expense-container{
-  background-color: rgb(226, 231, 246);
-    border-radius: 25px;
-    height: 500px;
-    padding: 2rem;
-    display: flex;
-    flex-direction: column;
-    margin-right: 2rem;
-    justify-content: flex-start;
+.expense-container {
+  // background-color: rgb(226, 231, 246);
+  border-radius: 25px;
+  height: 500px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
-.expense-title{
+.expense-title {
   display: flex;
   width: 100%;
   justify-content: flex-start;
-  h3{
+  h3 {
     font-weight: 800;
     font-size: 24px;
     opacity: 0.6;
   }
 }
 
-.expense-list-header{
+.expense-list-header {
   display: flex;
   flex-direction: row;
   width: 100%;
   justify-content: space-between;
   padding: 0rem 3rem;
   margin-top: 1rem;
-  h3{
+  h3 {
     font-size: 21px;
   }
 }
 
-.expense-list{
+.expense-list {
   width: 100%;
   height: 100%;
   overflow-y: scroll;
@@ -49,12 +48,29 @@
   padding: 0rem 4rem;
   align-items: center;
   transition: 0.1s ease-in-out;
-  h3{
+  h3 {
     margin: 0;
   }
-  &:hover{
+  &:hover {
     border: solid rgb(225, 225, 225) 2px;
     background-color: rgba($color: #000000, $alpha: 0.1);
     cursor: pointer;
   }
+}
+
+table {
+  border-radius: 8px;
+}
+
+table th {
+  background-color: rgb(226, 231, 246);
+  font-weight: bold;
+}
+
+table th:first-child {
+  border-top-left-radius: 8px;
+}
+
+table th:last-child {
+  border-top-right-radius: 8px;
 }

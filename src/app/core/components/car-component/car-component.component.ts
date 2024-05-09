@@ -5,11 +5,12 @@ import { MatIcon } from '@angular/material/icon'
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component'
 import { MatDialog } from '@angular/material/dialog'
 import { ExpenseDialogComponent } from '../expense-dialog/expense-dialog.component'
+import { BarChartComponent } from '../bar-chart/bar-chart.component'
 
 @Component({
   selector: 'app-car-component',
   standalone: true,
-  imports: [MatIcon],
+  imports: [MatIcon, BarChartComponent],
   templateUrl: './car-component.component.html',
   styleUrl: './car-component.component.scss',
 })
