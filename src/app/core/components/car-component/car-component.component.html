@@ -1,21 +1,21 @@
 <div class="car-selector-container">
   <div class="car-selector-inner-container">
     <div class="upper-section">
-      <div class="picture-and-title">
-        <div class="car-image-container">
-          <img [src]="defaultCar" alt="car picture" />
-        </div>
-        <div class="car-info-container">
+      <div class="car-image-container">
+        <img [src]="defaultCar" alt="car picture" />
+      </div>
+      <!-- <div class="car-info-container">
           <div class="car-info-inner">
             <h3>{{ car.brand_name }}</h3>
             <h3>{{ car.name }}</h3>
           </div>
-        </div>
-      </div>
+        </div> -->
       <div class="year-chart">
         <app-bar-chart [expenses]="car.expenses"></app-bar-chart>
       </div>
-      <div class="category-chart">category chart</div>
+      <div class="category-chart">
+        <app-doughnut-chart [expenses]="car.expenses"></app-doughnut-chart>
+      </div>
       <button class="delete-button" (click)="openDialog()">
         <mat-icon>delete</mat-icon>
       </button>

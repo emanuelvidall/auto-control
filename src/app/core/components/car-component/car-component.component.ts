@@ -6,11 +6,12 @@ import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation
 import { MatDialog } from '@angular/material/dialog'
 import { ExpenseDialogComponent } from '../expense-dialog/expense-dialog.component'
 import { BarChartComponent } from '../bar-chart/bar-chart.component'
+import { DoughnutChartComponent } from '../doughnut-chart/doughnut-chart.component'
 
 @Component({
   selector: 'app-car-component',
   standalone: true,
-  imports: [MatIcon, BarChartComponent],
+  imports: [MatIcon, BarChartComponent, DoughnutChartComponent],
   templateUrl: './car-component.component.html',
   styleUrl: './car-component.component.scss',
 })

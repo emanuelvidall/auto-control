@@ -48,16 +48,54 @@ export class BarChartComponent implements OnInit, OnChanges {
           {
             label: 'Total Monthly Expense (R$)',
             data: Object.values(monthlyTotals),
-            backgroundColor: 'rgba(54, 162, 235, 0.2)',
-            borderColor: 'rgba(54, 162, 235, 1)',
-            borderWidth: 1,
+            backgroundColor: '#FC6736',
+            borderRadius: 5,
+            barThickness: 40,
           },
         ],
       },
       options: {
+        plugins: {
+          legend: {
+            display: false,
+          },
+        },
+        maintainAspectRatio: false,
         scales: {
           y: {
+            ticks: {
+              maxRotation: 0,
+              minRotation: 0,
+              stepSize: 800,
+              color: 'rgba(128, 128, 128, 0.69)',
+              font: {
+                size: 12,
+                weight: 'bold',
+              },
+            },
+            border: {
+              display: false,
+            },
+            grid: {
+              display: false,
+            },
+            max: Math.max(...Object.values(monthlyTotals)) + 100,
             beginAtZero: true,
+          },
+          x: {
+            ticks: {
+              maxRotation: 0,
+              minRotation: 0,
+              stepSize: 800,
+              color: 'rgba(128, 128, 128, 0.69)',
+              font: {
+                size: 12,
+                weight: 'bold',
+              },
+            },
+            grid: {
+              display: false,
+            },
           },
         },
       },
@@ -68,18 +106,22 @@ export class BarChartComponent implements OnInit, OnChanges {
     const monthlyTotals: { [key: string]: number } = {}
     const monthNames = [
       'Jan',
-      'Feb',
+      'Fev',
       'Mar',
-      'Apr',
-      'May',
+      'Abr',
+      'Mai',
       'Jun',
       'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
+      'Ago',
+      'Set',
+      'Out',
       'Nov',
-      'Dec',
+      'Dez',
     ]
+
+    monthNames.forEach((month) => {
+      monthlyTotals[month] = 0
+    })
 
     this.expenses.forEach((expense) => {
       const date = new Date(expense.created_at) // Parse the date string into a Date object
