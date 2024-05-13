@@ -53,7 +53,8 @@ form {
   }
 }
 
-.password-error, .email-error{
+.password-error,
+.email-error {
   color: red;
 }
 
@@ -97,7 +98,7 @@ form {
   display: flex;
   flex-direction: row;
   font-size: 14px;
-  justify-content: space-between;
+  justify-content: flex-end;
   font-weight: 600;
   margin-bottom: 2rem;
   align-items: center;
@@ -113,16 +114,16 @@ form {
   input {
     width: 20px;
     height: 20px;
-  cursor: pointer;
+    cursor: pointer;
   }
 
   label {
     opacity: 50%;
-  cursor: pointer;
+    cursor: pointer;
   }
 }
 
-.forgot-password{
+.forgot-password {
   cursor: pointer;
   color: var(--tertiary-color);
   font-weight: 400;
@@ -169,8 +170,8 @@ form {
     padding-right: 1rem;
     cursor: pointer;
   }
-    svg {
-      width: .82353rem;
-      height: .82353rem;
-    }
+  svg {
+    width: 0.82353rem;
+    height: 0.82353rem;
+  }
 }

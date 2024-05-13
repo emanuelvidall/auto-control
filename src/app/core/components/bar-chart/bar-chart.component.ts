@@ -46,7 +46,7 @@ export class BarChartComponent implements OnInit, OnChanges {
         labels: Object.keys(monthlyTotals), // Months as labels
         datasets: [
           {
-            label: 'Total Monthly Expense (R$)',
+            label: 'Despesa no mês (R$)',
             data: Object.values(monthlyTotals),
             backgroundColor: '#FC6736',
             borderRadius: 5,
