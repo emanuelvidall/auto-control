@@ -49,7 +49,7 @@ app-submit-button {
 
 .top-part {
   width: 100%;
-  border: solid red 2px;
+  // border: solid red 2px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -58,6 +58,6 @@ app-submit-button {
     height: 80px;
     width: 80px;
     font-size: 80px;
-    border: solid green 2px;
+    // border: solid green 2px;
   }
 }
