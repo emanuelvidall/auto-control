@@ -75,3 +75,14 @@
 .car-selector-inner-container {
   width: 100%;
 }
+
+.car-selector {
+  display: flex;
+  padding: 1rem;
+  flex-direction: row;
+  gap: 1rem;
+  h3 {
+    font-weight: 300;
+    font-size: 30px;
+  }
+}

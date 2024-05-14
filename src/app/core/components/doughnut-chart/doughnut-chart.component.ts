@@ -42,7 +42,7 @@ export class DoughnutChartComponent implements OnInit {
         labels: labels,
         datasets: [
           {
-            label: 'Expenses by Type',
+            label: 'R$ Total',
             data: data,
             backgroundColor: [
               'rgba(255, 99, 132, 0.2)',
@@ -72,13 +72,14 @@ export class DoughnutChartComponent implements OnInit {
 
     this.expenses.forEach((expense) => {
       const value = parseFloat(expense.value)
-      if (expenseTotals.has(expense.type)) {
+      const typeLabel = expense.type_name
+      if (expenseTotals.has(typeLabel)) {
         expenseTotals.set(
-          expense.type,
-          (expenseTotals.get(expense.type) ?? 0) + value
+          typeLabel,
+          (expenseTotals.get(typeLabel) ?? 0) + value
         )
       } else {
-        expenseTotals.set(expense.type, value)
+        expenseTotals.set(typeLabel, value)
       }
     })
 
