@@ -1,24 +1,99 @@
-<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-  <ng-container matColumnDef="name">
-    <th mat-header-cell *matHeaderCellDef>Nome</th>
-    <td mat-cell *matCellDef="let element">{{element.name}}</td>
+<table
+  mat-table
+  [dataSource]="dataSource"
+  multiTemplateDataRows
+  class="mat-elevation-z8"
+>
+  @for (column of displayedColumns; track column) {
+  <ng-container matColumnDef="{{ column }}">
+    <th mat-header-cell *matHeaderCellDef>{{ column }}</th>
+    <td mat-cell *matCellDef="let element">{{ element[column] }}</td>
   </ng-container>
+  }
+  <ng-container matColumnDef="expand">
+    <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
+    <td mat-cell *matCellDef="let element">
+      <button
+        mat-icon-button
+        aria-label="expand row"
+        (click)="
+          expandedVehicle = expandedVehicle === element ? null : element;
+          $event.stopPropagation()
+        "
+      >
+        @if (expandedVehicle === element) {
+        <mat-icon>keyboard_arrow_up</mat-icon>
+        } @else {
+        <mat-icon>keyboard_arrow_down</mat-icon>
+        }
+      </button>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="expandedDetail">
+    <td
+      mat-cell
+      *matCellDef="let element"
+      [attr.colspan]="displayedColumnsWithExpand.length"
+    >
+      <div
+        class="element-detail"
+        [@detailExpand]="element == expandedVehicle ? 'expanded' : 'collapsed'"
+      >
+        <div class="diagram-container">
+          <div class="element-diagram">
+            <div class="element-name">{{ element.name }}</div>
+            <!-- <div class="element-symbol">{{ element.name }}</div> -->
+            <div class="element-brand-name">{{ element.brand_name }}</div>
+            <mat-icon class="directions-car">directions_car</mat-icon>
+          </div>
+        </div>
+        <div class="element-description">
+          {{ element.description }}
+        </div>
+        <div class="test">
+          <button class="test-button">
+            <mat-icon class="visibility-icon">visibility</mat-icon>
+          </button>
+          <button class="test-button">
+            <mat-icon class="visibility-icon">attach_money</mat-icon>
+          </button>
+          <button class="test-button">
+            <mat-icon class="visibility-icon">edit</mat-icon>
+          </button>
+        </div>
+      </div>
+    </td>
+  </ng-container>
+  <tr mat-header-row *matHeaderRowDef="displayedColumnsWithExpand"></tr>
+  <tr
+    mat-row
+    *matRowDef="let element; columns: displayedColumnsWithExpand"
+    class="element-row"
+    [class.expanded-row]="expandedVehicle === element"
+    (click)="expandedVehicle = expandedVehicle === element ? null : element"
+  ></tr>
+  <tr
+    mat-row
+    *matRowDef="let row; columns: ['expandedDetail']"
+    class="detail-row"
+  ></tr>
 
+  <!-- <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef>Nome</th>
+    <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+  </ng-container>
   <ng-container matColumnDef="type_name">
     <th mat-header-cell *matHeaderCellDef>Tipo</th>
-    <td mat-cell *matCellDef="let element">{{element.type_name}}</td>
+    <td mat-cell *matCellDef="let element">{{ element.type_name }}</td>
   </ng-container>
-
   <ng-container matColumnDef="brand_name">
     <th mat-header-cell *matHeaderCellDef>Marca</th>
-    <td mat-cell *matCellDef="let element">{{element.brand_name}}</td>
+    <td mat-cell *matCellDef="let element">{{ element.brand_name }}</td>
   </ng-container>
-
   <ng-container matColumnDef="owner_name">
     <th mat-header-cell *matHeaderCellDef>Dono</th>
-    <td mat-cell *matCellDef="let element">{{element.owner_name}}</td>
-  </ng-container>
-
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    <td mat-cell *matCellDef="let element">{{ element.owner_name }}</td>
+  </ng-container> -->
+  <!-- <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr> -->
 </table>
