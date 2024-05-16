@@ -1,38 +1,47 @@
 <div class="dialog-container">
   <h2 mat-dialog-title>Registrar Despesa</h2>
-  <mat-form-field>
-    <mat-label>Nome</mat-label>
-    <input matInput />
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>Valor</mat-label>
-    <input matInput />
-    <mat-icon matSuffix>attach_money</mat-icon>
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>Data</mat-label>
-    <input matInput [matDatepicker]="picker" />
-
-    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-datepicker #picker></mat-datepicker>
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>Descrição</mat-label>
-    <textarea matInput></textarea>
-  </mat-form-field>
-  <div>
-    <mat-label>Comprovante</mat-label>
-    <input type="file" />
-  </div>
-  <mat-dialog-actions align="end">
-    <button mat-flat-button color="warn" mat-dialog-close>Cancelar</button>
-    <button
-      mat-flat-button
-      color="primary"
-      [mat-dialog-close]="true"
-      type="submit"
-    >
-      Registrar
-    </button>
-  </mat-dialog-actions>
+  <form [formGroup]="addExpenseForm" (ngSubmit)="handleAddExpense()">
+    <mat-form-field>
+      <mat-label>Nome</mat-label>
+      <input matInput formControlName="name" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Valor</mat-label>
+      <input matInput formControlName="value" type="number" />
+      <mat-icon matSuffix>attach_money</mat-icon>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Data</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="date" />
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Tipo</mat-label>
+      <mat-select formControlName="type">
+        <mat-option *ngFor="let type of expenseTypes" [value]="type.id">
+          {{ type.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Descrição</mat-label>
+      <textarea matInput formControlName="description"></textarea>
+    </mat-form-field>
+    <div>
+      <mat-label>Comprovante</mat-label>
+      <input type="file" formControlName="file" />
+    </div>
+    <mat-dialog-actions align="end">
+      <button mat-flat-button color="warn" mat-dialog-close>Cancelar</button>
+      <button
+        mat-flat-button
+        color="primary"
+        type="submit"
+        [disabled]="addExpenseForm.invalid"
+      >
+        Registrar
+      </button>
+    </mat-dialog-actions>
+  </form>
 </div>

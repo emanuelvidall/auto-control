@@ -2,11 +2,11 @@ import {
   HttpClient,
   HttpErrorResponse,
   HttpHeaders,
-} from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { catchError, Observable, tap, throwError } from 'rxjs';
-import { environment } from '../../../environments/environment'; // Adjust path as necessary
-import { StorageService } from './session.service';
+} from '@angular/common/http'
+import { Injectable } from '@angular/core'
+import { catchError, Observable, of, tap, throwError } from 'rxjs'
+import { environment } from '../../../environments/environment' // Adjust path as necessary
+import { StorageService } from './session.service'
 export interface UserLoginData {
   username: string
   password: string
@@ -108,9 +108,9 @@ export class DataService {
   updateUserData(data: any, id: any): Observable<any> {
     return this.http
       .patch(`${this.apiUrl}api/v1/app-users/register-user/${id}/`, data)
-      .pipe(catchError(this.handleError));
+      .pipe(catchError(this.handleError))
   }
-  
+
   getVehicleBrands(token: string): Observable<string[]> {
     const headers = new HttpHeaders({
       Authorization: `Token ${token}`,
@@ -161,6 +161,16 @@ export class DataService {
       expenseData,
       { headers }
     )
+  }
+
+  getExpensesType(): Observable<
+    { id: number; name: string; description: string }[]
+  > {
+    return of([
+      { id: 1, name: 'Maintenance', description: 'Regular maintenance' },
+      { id: 2, name: 'Repair', description: 'Vehicle repair' },
+      { id: 3, name: 'Fuel', description: 'Fuel expenses' },
+    ])
   }
 
   private handleError(error: HttpErrorResponse) {
