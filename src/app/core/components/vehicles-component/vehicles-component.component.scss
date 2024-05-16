@@ -108,13 +108,13 @@ tr.element-row:not(.expanded-row):active {
   margin: 8px;
 }
 
-.test-button {
+.button {
   all: unset;
   border-radius: 100px;
   cursor: pointer;
   margin: 2px;
 
-  .visibility-icon {
+  .icon {
     border-width: 1px;
     border-color: brown;
     border-style: solid;

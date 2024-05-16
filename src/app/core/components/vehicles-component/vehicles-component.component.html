@@ -42,7 +42,6 @@
         <div class="diagram-container">
           <div class="element-diagram">
             <div class="element-name">{{ element.name }}</div>
-            <!-- <div class="element-symbol">{{ element.name }}</div> -->
             <div class="element-brand-name">{{ element.brand_name }}</div>
             <mat-icon class="directions-car">directions_car</mat-icon>
           </div>
@@ -51,14 +50,14 @@
           {{ element.description }}
         </div>
         <div class="test">
-          <button class="test-button">
-            <mat-icon class="visibility-icon">visibility</mat-icon>
+          <button class="button">
+            <mat-icon class="icon">visibility</mat-icon>
           </button>
-          <button class="test-button">
-            <mat-icon class="visibility-icon">attach_money</mat-icon>
+          <button class="button" (click)="openExpenseDialog()">
+            <mat-icon class="icon">attach_money</mat-icon>
           </button>
-          <button class="test-button">
-            <mat-icon class="visibility-icon">edit</mat-icon>
+          <button class="button">
+            <mat-icon class="icon">edit</mat-icon>
           </button>
         </div>
       </div>
@@ -77,23 +76,4 @@
     *matRowDef="let row; columns: ['expandedDetail']"
     class="detail-row"
   ></tr>
-
-  <!-- <ng-container matColumnDef="name">
-    <th mat-header-cell *matHeaderCellDef>Nome</th>
-    <td mat-cell *matCellDef="let element">{{ element.name }}</td>
-  </ng-container>
-  <ng-container matColumnDef="type_name">
-    <th mat-header-cell *matHeaderCellDef>Tipo</th>
-    <td mat-cell *matCellDef="let element">{{ element.type_name }}</td>
-  </ng-container>
-  <ng-container matColumnDef="brand_name">
-    <th mat-header-cell *matHeaderCellDef>Marca</th>
-    <td mat-cell *matCellDef="let element">{{ element.brand_name }}</td>
-  </ng-container>
-  <ng-container matColumnDef="owner_name">
-    <th mat-header-cell *matHeaderCellDef>Dono</th>
-    <td mat-cell *matCellDef="let element">{{ element.owner_name }}</td>
-  </ng-container> -->
-  <!-- <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr> -->
 </table>

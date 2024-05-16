@@ -5,6 +5,8 @@ import { MatTableModule } from '@angular/material/table'
 import { MatIconModule } from '@angular/material/icon'
 import { MatButtonModule } from '@angular/material/button'
 import { DataService, Vehicle } from '../../services/data.service'
+import { MatDialog } from '@angular/material/dialog'
+import { ExpenseDialogComponent } from '../expense-dialog/expense-dialog.component'
 
 @Component({
   selector: 'app-vehicles-component',
@@ -27,7 +29,7 @@ export class VehiclesComponentComponent implements OnInit {
   @Input() vehicles: Vehicle[] = [] // Initialize with an empty array
   userName: string = ''
 
-  constructor(private dataService: DataService) {}
+  constructor(private dataService: DataService, private dialog: MatDialog) {}
 
   displayedColumns: string[] = ['name', 'type_name', 'brand_name', 'owner_name']
   displayedColumnsWithExpand = [...this.displayedColumns, 'expand']
@@ -50,5 +52,15 @@ export class VehiclesComponentComponent implements OnInit {
           }
         )
     }
+  }
+
+  openExpenseDialog(): void {
+    const dialogRef = this.dialog.open(ExpenseDialogComponent, {
+      width: '500px',
+    })
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log('The dialog was closed. Result:', result)
+    })
   }
 }
