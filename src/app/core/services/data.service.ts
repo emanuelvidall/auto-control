@@ -54,9 +54,9 @@ export interface Vehicle {
 
 export interface Expense {
   name: string
-  vehicleId: number
+  vehicle: number
   description: string
-  typeId?: number
+  type?: number
   file?: File
   value: number
   date: Date | string

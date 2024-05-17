@@ -1,6 +1,6 @@
 <div class="dialog-container">
   <h2 mat-dialog-title>Registrar Despesa</h2>
-  <form [formGroup]="addExpenseForm" (ngSubmit)="handleAddExpense(data.vehicleId)">
+  <form [formGroup]="addExpenseForm" (ngSubmit)="handleAddExpense()">
     <mat-form-field>
       <mat-label>Nome</mat-label>
       <input matInput formControlName="name" />
