@@ -32,6 +32,11 @@ export interface VehicleBrand {
   name: string
 }
 
+export interface ExpenseType {
+  id: number,
+  name: string
+}
+
 export interface Vehicle {
   id: number
   name: string
@@ -163,14 +168,24 @@ export class DataService {
     )
   }
 
-  getExpensesType(): Observable<
-    { id: number; name: string; description: string }[]
-  > {
-    return of([
-      { id: 1, name: 'Maintenance', description: 'Regular maintenance' },
-      { id: 2, name: 'Repair', description: 'Vehicle repair' },
-      { id: 3, name: 'Fuel', description: 'Fuel expenses' },
-    ])
+  // getExpensesType(): Observable<
+  //   { id: number; name: string; description: string }[]
+  // > {
+  //   return of([
+  //     { id: 1, name: 'Maintenance', description: 'Regular maintenance' },
+  //     { id: 2, name: 'Repair', description: 'Vehicle repair' },
+  //     { id: 3, name: 'Fuel', description: 'Fuel expenses' },
+  //   ])
+  // }
+
+  getExpensesType(token: string): Observable<ExpenseType[]> {
+    const headers = new HttpHeaders({
+      Authorization: `Token ${token}`,
+    })
+    return this.http.get<ExpenseType[]>(
+      `${this.apiUrl}api/v1/app-expenses/type-expenses/`,
+      { headers }
+    )
   }
 
   private handleError(error: HttpErrorResponse) {
