@@ -26,7 +26,7 @@ import {
 import { MatButtonModule } from '@angular/material/button'
 import { MatDatepickerModule } from '@angular/material/datepicker'
 import { MatIconModule } from '@angular/material/icon'
-import { DataService, Expense } from '../../services/data.service'
+import { DataService, Expense, ExpenseType } from '../../services/data.service'
 import {
   MAT_DATE_LOCALE,
   provideNativeDateAdapter,
@@ -59,7 +59,11 @@ import { NgFor } from '@angular/common'
 })
 export class ExpenseDialogComponent implements OnInit {
   @Output() expenseAdded = new EventEmitter<any>()
-  @Input() token!: string
+
+  testId: number;
+  myToken = ''
+  myId = 0
+  expenseTypes: ExpenseType[] = []
 
   addExpenseForm = new FormGroup({
     name: new FormControl('', Validators.required),
@@ -73,36 +77,53 @@ export class ExpenseDialogComponent implements OnInit {
     vehicleId: new FormControl(0, Validators.required),
     typeId: new FormControl(null, Validators.required),
   })
-  expenseTypes: { id: number; name: string; description: string }[] = []
 
   constructor(
     private dataService: DataService,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ) {}
+  ) {
+    this.testId = data.testId; // Acessar o testId passado
+    console.log('Received testId:', this.testId);
+  }
 
   ngOnInit(): void {
-    this.addExpenseForm.patchValue({
-      vehicleId: this.data.vehicleId // Defina o vehicleId ao inicializar o formulário
-    });
+    this.loadExpenseTypes()
+    // this.addExpenseForm.patchValue({
+    //   vehicleId: this.data.vehicleId
+    // });
 
-    this.dataService.getExpensesType().subscribe(types => {
+    // this.dataService.getExpensesType(this.data.token).subscribe(types => {
+    //   this.expenseTypes = types;
+    //   console.log(this.expenseTypes)
+    // });
+
+    // this.addExpenseForm.get('type')?.valueChanges.subscribe(typeId => {
+    //   if (typeId) {
+    //     const selectedType = this.expenseTypes.find(type => type.id === typeId);
+    //     if (selectedType) {
+    //       this.addExpenseForm.patchValue({ description: selectedType.description });
+    //     }
+    //   }
+    // });
+  }
+
+  loadExpenseTypes(): void {
+    const userData = this.dataService.getUserData()
+    const id = userData?.user_id ?? 0
+    const token = userData?.token ?? ''
+
+    this.myId = id
+    this.myToken = token
+
+    this.dataService.getExpensesType(token).subscribe((types) => {
       this.expenseTypes = types;
-    });
-
-    this.addExpenseForm.get('type')?.valueChanges.subscribe(typeId => {
-      if (typeId) {
-        const selectedType = this.expenseTypes.find(type => type.id === typeId);
-        if (selectedType) {
-          this.addExpenseForm.patchValue({ description: selectedType.description });
-        }
-      }
     });
   }
 
   handleAddExpense() {
     if (this.addExpenseForm.valid) {
       const expenseData: Expense = this.addExpenseForm.value as Expense;
-      this.dataService.addExpense(expenseData, this.token).subscribe(
+      this.dataService.addExpense(expenseData, this.data.token).subscribe(
         response => {
           this.expenseAdded.emit(response);
           console.log('Expense added successfully', response);

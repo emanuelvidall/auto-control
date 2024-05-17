@@ -54,9 +54,14 @@ export class VehiclesComponentComponent implements OnInit {
     }
   }
 
-  openExpenseDialog(): void {
+  openExpenseDialog(vehicleId: number): void {
+    const testId = vehicleId
+    console.log(testId)
     const dialogRef = this.dialog.open(ExpenseDialogComponent, {
       width: '500px',
+      data: {
+        testId: testId
+      }
     })
 
     dialogRef.afterClosed().subscribe((result) => {
