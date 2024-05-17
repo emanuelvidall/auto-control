@@ -7,6 +7,7 @@ import { ForgetPasswordComponent } from '../forget-password/forget-password.comp
 import { CreateNewPasswordComponent } from '../create-new-password/create-new-password.component'
 import { AccountCreatedSuccessfullyComponent } from '../account-created-successfully/account-created-successfully.component'
 import { ProfileComponent } from '../profile/profile.component'
+import { ExpensesComponent } from '../expenses/expenses.component'
 import { VehiclesComponent } from '../vehicles/vehicles.component'
 
 const routes: Routes = [
@@ -40,9 +41,13 @@ const routes: Routes = [
     component: ProfileComponent,
   },
   {
+    path: 'despesas',
+    component: ExpensesComponent,
+  },
+  {
     path: 'vehicles',
-    component: VehiclesComponent
-  }
+    component: VehiclesComponent,
+  },
 ]
 
 @NgModule({
