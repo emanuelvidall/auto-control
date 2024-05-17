@@ -23,7 +23,7 @@ export class NavbarComponent implements OnInit {
     private dataService: DataService,
     private cd: ChangeDetectorRef
   ) {
-    this.AlternateLogoPath = '/assets/logo-alternate.png'
+    this.AlternateLogoPath = '/assets/logo-alternate2.png'
     this.CarIconPath = '/assets/car-icon.png'
   }
 
