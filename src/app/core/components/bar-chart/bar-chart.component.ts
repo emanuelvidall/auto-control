@@ -35,7 +35,7 @@ export class BarChartComponent implements OnInit, OnChanges {
 
   buildChart(): void {
     if (this.chart) {
-      this.chart.destroy() // Destroy the existing chart before creating a new one
+      this.chart.destroy()
     }
 
     const monthlyTotals = this.aggregateMonthlyExpenses()
@@ -43,7 +43,7 @@ export class BarChartComponent implements OnInit, OnChanges {
     this.chart = new Chart('canvasId', {
       type: 'bar',
       data: {
-        labels: Object.keys(monthlyTotals), // Months as labels
+        labels: Object.keys(monthlyTotals),
         datasets: [
           {
             label: 'Despesa no mês (R$)',
