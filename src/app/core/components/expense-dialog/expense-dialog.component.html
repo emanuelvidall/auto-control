@@ -1,6 +1,6 @@
 <div class="dialog-container">
   <h2 mat-dialog-title>Registrar Despesa</h2>
-  <form [formGroup]="addExpenseForm" (ngSubmit)="handleAddExpense()">
+  <form [formGroup]="addExpenseForm" (ngSubmit)="handleAddExpense(data.vehicleId)">
     <mat-form-field>
       <mat-label>Nome</mat-label>
       <input matInput formControlName="name" />
@@ -18,7 +18,7 @@
     </mat-form-field>
     <mat-form-field>
       <mat-label>Tipo</mat-label>
-      <mat-select>
+      <mat-select formControlName="typeId">
         <mat-option *ngFor="let type of expenseTypes" [value]="type.id">
           {{ type.name }}
         </mat-option>

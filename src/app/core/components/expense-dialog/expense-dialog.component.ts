@@ -83,7 +83,6 @@ export class ExpenseDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.testId = data.testId; // Acessar o testId passado
-    console.log('Received testId:', this.testId);
   }
 
   ngOnInit(): void {
@@ -120,10 +119,35 @@ export class ExpenseDialogComponent implements OnInit {
     });
   }
 
-  handleAddExpense() {
+  handleAddExpense(vehicleId: number): void {
+    const userData = this.dataService.getUserData()
+    const id = userData?.user_id ?? 0
+    const token = userData?.token ?? ''
+
+    this.myId = id
+    this.myToken = token
+
     if (this.addExpenseForm.valid) {
-      const expenseData: Expense = this.addExpenseForm.value as Expense;
-      this.dataService.addExpense(expenseData, this.data.token).subscribe(
+      if (this.addExpenseForm.valid) {
+        let file: File | undefined = undefined;
+    
+        // Verifica se o valor do campo file é uma string (nome do arquivo)
+        if (typeof this.addExpenseForm.value.file === 'string') {
+          // Cria um novo objeto File com base no nome do arquivo
+          file = new File([], this.addExpenseForm.value.file);
+        }
+
+      const expenseData: Expense = {
+        name: this.addExpenseForm.value.name || "",
+        value: this.addExpenseForm.value.value || 0,
+        date: this.addExpenseForm.value.date || new Date(),
+        typeId: this.addExpenseForm.value.typeId || 0,
+        description: this.addExpenseForm.value.description || '',
+        file: file,
+        vehicleId:vehicleId
+      };
+      console.log(expenseData, ' dados a serem enviados')
+      this.dataService.addExpense(expenseData, token).subscribe(
         response => {
           this.expenseAdded.emit(response);
           console.log('Expense added successfully', response);
@@ -136,4 +160,5 @@ export class ExpenseDialogComponent implements OnInit {
       console.log('Form is not valid');
     }
   }
+}
 }
