@@ -99,6 +99,31 @@ export class DashboardComponent implements OnInit {
     )
   }
 
+  vehicleForward() {
+    console.log(this.vehicles.length, 'vehicles')
+    const index = this.vehicles.findIndex(
+      (vehicle) => vehicle.id === this.selectedVehicleId
+    )
+    if (index < this.vehicles.length - 1) {
+      this.selectVehicle(this.vehicles[index + 1].id)
+    } else {
+      this.selectVehicle(this.vehicles[0].id)
+    }
+  }
+
+  vehicleBackward() {
+    console.log(this.vehicles.length, 'vehicles')
+
+    const index = this.vehicles.findIndex(
+      (vehicle) => vehicle.id === this.selectedVehicleId
+    )
+    if (index > 0) {
+      this.selectVehicle(this.vehicles[index - 1].id)
+    } else {
+      this.selectVehicle(this.vehicles[this.vehicles.length - 1].id)
+    }
+  }
+
   loadVehicles() {
     const userData = this.dataService.getUserData()
     const id = userData?.user_id ?? 0

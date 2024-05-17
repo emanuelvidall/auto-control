@@ -1,18 +1,24 @@
 <app-navbar></app-navbar>
 <div class="middle-section">
   <ng-container *ngIf="vehicles.length > 0">
-    <div *ngIf="selectedVehicle">
+    <div *ngIf="selectedVehicle" class="top-part-container">
       <div class="top-part">
-        <mat-icon class="icon">arrow_back_ios</mat-icon>
+        <button (click)="vehicleBackward()">
+          <mat-icon class="icon">arrow_back_ios</mat-icon>
+        </button>
         <app-car-component
           [car]="selectedVehicle"
           (vehicleDeleted)="onVehicleDeleted()"
         ></app-car-component>
-        <mat-icon class="icon">arrow_forward_ios</mat-icon>
+        <button (click)="vehicleForward()">
+          <mat-icon class="icon">arrow_forward_ios</mat-icon>
+        </button>
       </div>
-      <app-expense-component
-        [expenses]="selectedVehicle.expenses"
-      ></app-expense-component>
+      <div class="expense-component">
+        <app-expense-component
+          [expenses]="selectedVehicle.expenses"
+        ></app-expense-component>
+      </div>
     </div>
     <div *ngIf="!selectedVehicle">
       <p>Select a vehicle to see the details.</p>

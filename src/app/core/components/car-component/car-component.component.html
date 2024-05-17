@@ -1,8 +1,18 @@
 <div class="car-selector-container">
   <div class="car-selector-inner-container">
     <div class="car-selector">
-      <h3>{{ car.brand_name }}</h3>
-      <h3>{{ car.name }}</h3>
+      <div class="car-selector-header">
+        <h3>{{ car.brand_name }}</h3>
+        <h3>{{ car.name }}</h3>
+      </div>
+      <div class="buttons-selector">
+        <button class="action-button delete" (click)="openDialog()">
+          Excluir
+        </button>
+        <button class="action-button add" (click)="openExpenseDialog()">
+          Adicionar Despesa
+        </button>
+      </div>
     </div>
     <div class="upper-section">
       <div class="car-image-container">
@@ -14,12 +24,6 @@
       <div class="category-chart">
         <app-doughnut-chart [expenses]="car.expenses"></app-doughnut-chart>
       </div>
-      <button class="delete-button" (click)="openDialog()">
-        <mat-icon>delete</mat-icon>
-      </button>
-      <button class="delete-button" (click)="openExpenseDialog()">
-        <mat-icon>pending</mat-icon>
-      </button>
     </div>
   </div>
 </div>
