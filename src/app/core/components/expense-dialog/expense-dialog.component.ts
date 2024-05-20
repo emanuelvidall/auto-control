@@ -1,14 +1,6 @@
+import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core'
+import { MAT_DIALOG_DATA } from '@angular/material/dialog'
 import {
-  Component,
-  EventEmitter,
-  Inject,
-  Input,
-  OnInit,
-  Output,
-} from '@angular/core'
-import {
-  MAT_DIALOG_DATA,
-  MatDialog,
   MatDialogActions,
   MatDialogClose,
   MatDialogContent,
@@ -58,99 +50,73 @@ import { NgFor } from '@angular/common'
   styleUrls: ['./expense-dialog.component.scss'],
 })
 export class ExpenseDialogComponent implements OnInit {
-  @Output() expenseAdded = new EventEmitter<any>()
+  @Output() expenseAdded = new EventEmitter<Expense>()
 
-  testId: number
-  myToken = ''
-  myId = 0
+  vehicleId: number
+  userToken: string = ''
+  userId: number = 0
   expenseTypes: ExpenseType[] = []
-
-  addExpenseForm = new FormGroup({
-    name: new FormControl('', Validators.required),
-    value: new FormControl(0, [
-      Validators.required,
-      Validators.pattern(/^[0-9]+(\.[0-9]{1,2})?$/),
-    ]),
-    date: new FormControl(new Date(), Validators.required),
-    description: new FormControl(''),
-    file: new FormControl(''),
-    // vehicleId: new FormControl(0, Validators.required),
-    typeId: new FormControl(null, Validators.required),
-  })
+  addExpenseForm!: FormGroup
 
   constructor(
     private dataService: DataService,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: { vehicleId: number }
   ) {
-    this.testId = data.testId // Acessar o testId passado
+    this.vehicleId = data.vehicleId
   }
 
   ngOnInit(): void {
+    this.initializeForm()
+    this.loadUserData()
     this.loadExpenseTypes()
-    // this.addExpenseForm.patchValue({
-    //   vehicleId: this.data.vehicleId
-    // });
-
-    // this.dataService.getExpensesType(this.data.token).subscribe(types => {
-    //   this.expenseTypes = types;
-    //   console.log(this.expenseTypes)
-    // });
-
-    // this.addExpenseForm.get('type')?.valueChanges.subscribe(typeId => {
-    //   if (typeId) {
-    //     const selectedType = this.expenseTypes.find(type => type.id === typeId);
-    //     if (selectedType) {
-    //       this.addExpenseForm.patchValue({ description: selectedType.description });
-    //     }
-    //   }
-    // });
   }
 
-  loadExpenseTypes(): void {
+  private initializeForm(): void {
+    this.addExpenseForm = new FormGroup({
+      name: new FormControl('', Validators.required),
+      value: new FormControl(0, [
+        Validators.required,
+        Validators.pattern(/^[0-9]+(\.[0-9]{1,2})?$/),
+      ]),
+      date: new FormControl(new Date(), Validators.required),
+      description: new FormControl(''),
+      typeId: new FormControl(null, Validators.required),
+    })
+  }
+
+  private loadUserData(): void {
     const userData = this.dataService.getUserData()
-    const id = userData?.user_id ?? 0
-    const token = userData?.token ?? ''
+    this.userId = userData?.user_id ?? 0
+    this.userToken = userData?.token ?? ''
+  }
 
-    this.myId = id
-    this.myToken = token
-
-    this.dataService.getExpensesType(token).subscribe((types) => {
+  private loadExpenseTypes(): void {
+    this.dataService.getExpensesType(this.userToken).subscribe((types) => {
       this.expenseTypes = types
     })
   }
 
-  handleAddExpense(): void {
-    const userData = this.dataService.getUserData()
-    const id = userData?.user_id ?? 0
-    const token = userData?.token ?? ''
-
-    this.myId = id
-    this.myToken = token
-
-    if (this.addExpenseForm.valid) {
-      const expenseData: Expense = {
-        name: this.addExpenseForm.value.name || '',
-        value: this.addExpenseForm.value.value || 0,
-        date: this.formatDate(this.addExpenseForm.value.date || new Date()),
-        type: this.addExpenseForm.value.typeId || 0,
-        description: this.addExpenseForm.value.description || '',
-        vehicle: this.testId,
-      }
-
-      console.log(expenseData, ' dados a serem enviados')
-
-      this.dataService.addExpense(expenseData, token).subscribe(
-        (response) => {
-          this.expenseAdded.emit(response)
-          console.log('Expense added successfully', response)
-        },
-        (error) => {
-          console.error('Error adding expense:', error)
-        }
-      )
-    } else {
-      console.log('Form is not valid')
+  private createExpenseData(): Expense {
+    return {
+      name: this.addExpenseForm.value.name || '',
+      value: this.addExpenseForm.value.value || 0,
+      date: this.formatDate(this.addExpenseForm.value.date || new Date()),
+      type: this.addExpenseForm.value.typeId || 0,
+      description: this.addExpenseForm.value.description || '',
+      vehicle: this.vehicleId,
     }
+  }
+
+  private addExpense(expenseData: Expense): void {
+    this.dataService.addExpense(expenseData, this.userToken).subscribe(
+      (response) => {
+        this.expenseAdded.emit(response)
+        console.log('Despesa adicionada com sucesso.', response)
+      },
+      (error) => {
+        console.error('Erro ao adicionar despesa: ', error)
+      }
+    )
   }
 
   private formatDate(date: Date | string): string {
@@ -161,5 +127,14 @@ export class ExpenseDialogComponent implements OnInit {
     const month = ('0' + (date.getMonth() + 1)).slice(-2)
     const day = ('0' + date.getDate()).slice(-2)
     return `${year}-${month}-${day}`
+  }
+
+  handleAddExpense(): void {
+    if (this.addExpenseForm.valid) {
+      const expenseData: Expense = this.createExpenseData()
+      this.addExpense(expenseData)
+    } else {
+      console.log('Formulário não válido.')
+    }
   }
 }
