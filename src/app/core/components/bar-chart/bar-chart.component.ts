@@ -124,7 +124,7 @@ export class BarChartComponent implements OnInit, OnChanges {
     })
 
     this.expenses.forEach((expense) => {
-      const date = new Date(expense.created_at) // Parse the date string into a Date object
+      const date = new Date(expense.date) // Parse the date string into a Date object
       const monthIndex = date.getMonth() // Get the month index from the date (0 = January, 11 = December)
       const monthName = monthNames[monthIndex] // Convert month index to month name
 

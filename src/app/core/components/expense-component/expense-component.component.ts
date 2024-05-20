@@ -12,7 +12,7 @@ import { CommonModule } from '@angular/common' // For date pipe and common direc
 export class ExpenseComponentComponent implements OnInit {
   @Input() expenses: any[] = []
 
-  displayedColumns: string[] = ['despesa', 'description', 'createdAt', 'value']
+  displayedColumns: string[] = ['despesa', 'description', 'date', 'value']
   dataSource: any[] = []
 
   ngOnInit(): void {
