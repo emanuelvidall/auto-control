@@ -33,7 +33,7 @@ export interface VehicleBrand {
 }
 
 export interface ExpenseType {
-  id: number,
+  id: number
   name: string
 }
 

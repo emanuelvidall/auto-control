@@ -1,0 +1,41 @@
+<div class="sidebar-container">
+  <div class="datepicker-main">
+    <h3>Data</h3>
+    <mat-form-field>
+      <mat-label>Escolha uma data</mat-label>
+      <mat-date-range-input [rangePicker]="picker">
+        <input matStartDate placeholder="Data Inicial" />
+        <input matEndDate placeholder="Data Final" />
+      </mat-date-range-input>
+      <mat-datepicker-toggle
+        matIconSuffix
+        [for]="picker"
+      ></mat-datepicker-toggle>
+      <mat-date-range-picker #picker></mat-date-range-picker>
+    </mat-form-field>
+  </div>
+  <h3>Valor</h3>
+  <mat-slider
+    min="50"
+    max="5000"
+    showTickMarks
+    discrete
+    [displayWith]="formatLabel"
+  >
+    <input value="50" matSliderStartThumb />
+    <input value="5000" matSliderEndThumb />
+  </mat-slider>
+  <div class="side-types">
+    <h3>Tipos</h3>
+    <section class="checkbox-expense-section">
+      <mat-checkbox
+        class="expense-margin"
+        *ngFor="let type of expensesTypes"
+        [(ngModel)]="type.selected"
+        (ngModelChange)="onTypeChange(type)"
+      >
+        {{ type.name }}
+      </mat-checkbox>
+    </section>
+  </div>
+</div>
