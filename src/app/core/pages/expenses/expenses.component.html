@@ -2,6 +2,52 @@
 <div class="main-container-expense">
   <app-expense-sidebar />
   <div class="expense-right">
-    <p>Tela Expenses works!</p>
+    <div class="expense-head">
+      <h3>Minhas Despesas</h3>
+      <button class="adicionar-despesa-btn" (click)="openModal()">
+        Adicionar Despesa
+      </button>
+    </div>
+    <div class="expense-section">
+      <div class="expense-details">
+        <div class="expense-resume">
+          <div class="total-expenses">
+            <div>
+              <h3>R$9853,02</h3>
+              <h4>Despesas Totais</h4>
+            </div>
+            <div>
+              <h3>R$9853,02</h3>
+              <h4>Próxima Despesa</h4>
+            </div>
+            <div>
+              <h3>R$9853,02</h3>
+              <h4>Despesas Futuras</h4>
+            </div>
+          </div>
+        </div>
+        <div class="expense-history"><app-expense-table /></div>
+      </div>
+      <div class="expense-graph">
+        <app-expense-chart />
+        <div class="monthly-average">
+          <div class="averages">
+            <h3>R$450,08</h3>
+            <h4>Valor médio Mensal</h4>
+          </div>
+          <div class="averages">
+            <h3>R$2700,48</h3>
+            <h4>Total últimos 6 meses</h4>
+          </div>
+          <div class="averages">
+            <h3>R$9853,02</h3>
+            <h4>Total último ano</h4>
+          </div>
+        </div>
+        <div class="expense-categories">
+          <h3>Despesa por Categoria</h3>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
