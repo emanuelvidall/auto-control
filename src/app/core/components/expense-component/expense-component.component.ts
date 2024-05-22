@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core'
 import { MatTableModule } from '@angular/material/table'
-import { CommonModule } from '@angular/common' // For date pipe and common directives
+import { CommonModule } from '@angular/common'
 
 @Component({
   selector: 'app-expense-component',

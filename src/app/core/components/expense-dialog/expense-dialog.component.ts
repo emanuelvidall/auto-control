@@ -54,7 +54,6 @@ export class ExpenseDialogComponent implements OnInit {
 
   vehicleId: number
   userToken: string = ''
-  userId: number = 0
   expenseTypes: ExpenseType[] = []
   addExpenseForm!: FormGroup
 
@@ -86,7 +85,6 @@ export class ExpenseDialogComponent implements OnInit {
 
   private loadUserData(): void {
     const userData = this.dataService.getUserData()
-    this.userId = userData?.user_id ?? 0
     this.userToken = userData?.token ?? ''
   }
 
@@ -133,6 +131,7 @@ export class ExpenseDialogComponent implements OnInit {
     if (this.addExpenseForm.valid) {
       const expenseData: Expense = this.createExpenseData()
       this.addExpense(expenseData)
+      console.log('teste aqui ', expenseData)
     } else {
       console.log('Formulário não válido.')
     }

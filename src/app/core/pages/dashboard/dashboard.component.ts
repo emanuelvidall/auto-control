@@ -1,4 +1,3 @@
-import { Car } from '../../components/car-component/car-interface'
 import { NgFor, NgIf } from '@angular/common'
 import { MatDialog } from '@angular/material/dialog'
 import { MatIconModule } from '@angular/material/icon'
@@ -10,9 +9,7 @@ import { SubmitButtonComponent } from '../../components/submit-button/submit-but
 import { NavbarComponent } from '../../components/navbar/navbar.component'
 import { DialogComponent } from '../../components/dialog/dialog.component'
 import {
-  UserData,
   Vehicle,
-  userDataSessionStorage,
 } from '../../services/data.service'
 import { DataService } from '../../services/data.service'
 import { ExpenseComponentComponent } from '../../components/expense-component/expense-component.component'
@@ -37,9 +34,12 @@ import { Component, OnInit } from '@angular/core'
 export class DashboardComponent implements OnInit {
   vehicles: Vehicle[] = []
   selectedVehicleId: number | null = null
-  selectedVehicleExpenses: any[] = []
-  myToken = ''
-  myId = 0
+  // selectedVehicleExpenses: Expense[] = []
+  myToken: string = ''
+  myId: number = 0
+
+  // readonly AlternateLogoPath: string = 'assets/logo-alternate.png'
+  readonly CarIconPath: string = 'assets/car-icon.png'
 
   constructor(
     private dataService: DataService,
@@ -57,9 +57,6 @@ export class DashboardComponent implements OnInit {
       this.loadVehicles()
     })
   }
-
-  AlternateLogoPath: string = 'assets/logo-alternate.png'
-  CarIconPath: string = 'assets/car-icon.png'
 
   onVehicleDeleted() {
     this.loadVehicles()
