@@ -8,9 +8,7 @@ import { CarComponentComponent } from '../../components/car-component/car-compon
 import { SubmitButtonComponent } from '../../components/submit-button/submit-button.component'
 import { NavbarComponent } from '../../components/navbar/navbar.component'
 import { DialogComponent } from '../../components/dialog/dialog.component'
-import {
-  Vehicle,
-} from '../../services/data.service'
+import { Vehicle } from '../../services/data.service'
 import { DataService } from '../../services/data.service'
 import { ExpenseComponentComponent } from '../../components/expense-component/expense-component.component'
 import { Component, OnInit } from '@angular/core'
@@ -35,8 +33,8 @@ export class DashboardComponent implements OnInit {
   vehicles: Vehicle[] = []
   selectedVehicleId: number | null = null
   // selectedVehicleExpenses: Expense[] = []
-  myToken: string = ''
-  myId: number = 0
+  userToken: string = ''
+  userId: number = 0
 
   // readonly AlternateLogoPath: string = 'assets/logo-alternate.png'
   readonly CarIconPath: string = 'assets/car-icon.png'
@@ -49,12 +47,22 @@ export class DashboardComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.initializeRouteListener()
+    this.loadVehicles()
+  }
+
+  private loadUserData(): void {
+    const userData = this.dataService.getUserData()
+    this.userId = userData?.user_id ?? 0
+    this.userToken = userData?.token ?? ''
+  }
+
+  private initializeRouteListener(): void {
     this.route.paramMap.subscribe((params: ParamMap) => {
       const vehicleId = params.get('vehicleId')
       if (vehicleId) {
         this.selectedVehicleId = parseInt(vehicleId, 10)
       }
-      this.loadVehicles()
     })
   }
 
@@ -65,13 +73,12 @@ export class DashboardComponent implements OnInit {
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogComponent, {
       width: '350px',
-      data: { token: this.myToken, id: this.myId },
+      data: { token: this.userToken, id: this.userId },
     })
 
     const sub = dialogRef.componentInstance.vehicleAdded.subscribe({
       next: (newVehicle: Vehicle) => {
-        this.vehicles.push(newVehicle)
-        console.log('New vehicle added:', newVehicle)
+        this.addVehicle(newVehicle)
       },
       error: (error: any) => console.error('Error when adding vehicle:', error),
     })
@@ -85,6 +92,11 @@ export class DashboardComponent implements OnInit {
     })
   }
 
+  addVehicle(newVehicle: Vehicle): void {
+    this.vehicles.push(newVehicle)
+    console.log('New vehicle added:', newVehicle)
+  }
+
   selectVehicle(vehicleId: number): void {
     this.selectedVehicleId = vehicleId
     this.router.navigate(['/dashboard', vehicleId])
@@ -96,56 +108,58 @@ export class DashboardComponent implements OnInit {
     )
   }
 
-  vehicleForward() {
-    console.log(this.vehicles.length, 'vehicles')
+  vehicleForward(): void {
+    this.navigateVehicle(1)
+  }
+
+  vehicleBackward(): void {
+    this.navigateVehicle(-1)
+  }
+
+  private navigateVehicle(direction: number): void {
     const index = this.vehicles.findIndex(
       (vehicle) => vehicle.id === this.selectedVehicleId
     )
-    if (index < this.vehicles.length - 1) {
-      this.selectVehicle(this.vehicles[index + 1].id)
-    } else {
-      this.selectVehicle(this.vehicles[0].id)
+    if (index !== -1) {
+      const newIndex =
+        (index + direction + this.vehicles.length) % this.vehicles.length
+      this.selectVehicle(this.vehicles[newIndex].id)
     }
   }
 
-  vehicleBackward() {
-    console.log(this.vehicles.length, 'vehicles')
+  private loadVehicles(): void {
+    this.loadUserData()
+    const userId = this.userId
+    const userToken = this.userToken
 
-    const index = this.vehicles.findIndex(
-      (vehicle) => vehicle.id === this.selectedVehicleId
-    )
-    if (index > 0) {
-      this.selectVehicle(this.vehicles[index - 1].id)
+    if (userId && userToken) {
+      this.fetchVehicles(userId, userToken)
     } else {
-      this.selectVehicle(this.vehicles[this.vehicles.length - 1].id)
+      console.error('User ID or token not found:', userId, userToken)
     }
   }
 
-  loadVehicles() {
-    const userData = this.dataService.getUserData()
-    const id = userData?.user_id ?? 0
-    const token = userData?.token ?? ''
+  private fetchVehicles(userId: number, token: string): void {
+    this.dataService.getVehiclesById(userId, token).subscribe({
+      next: (vehicles) => this.handleVehicleLoadSuccess(vehicles),
+      error: (error) => console.error('Error fetching vehicles:', error),
+    })
+  }
 
-    this.myId = id
-    this.myToken = token
+  private handleVehicleLoadSuccess(vehicles: Vehicle[]): void {
+    this.vehicles = vehicles
+    console.log('Loaded vehicles:', vehicles)
+    this.ensureSelectedVehicle()
+  }
 
-    if (id && token) {
-      this.dataService.getVehiclesById(id, token).subscribe({
-        next: (vehicles) => {
-          this.vehicles = vehicles
-          console.log(vehicles, 'Loaded vehicles')
-          if (!this.selectedVehicleId && vehicles.length > 0) {
-            this.selectVehicle(vehicles[0].id)
-          } else if (this.selectedVehicleId) {
-            if (!vehicles.some((v) => v.id === this.selectedVehicleId)) {
-              this.selectVehicle(vehicles[0].id)
-            }
-          }
-        },
-        error: (error) => console.error('Error fetching vehicles:', error),
-      })
-    } else {
-      console.error('Invalid or missing user ID and token')
+  private ensureSelectedVehicle(): void {
+    if (this.vehicles.length > 0) {
+      if (
+        !this.selectedVehicleId ||
+        !this.vehicles.some((v) => v.id === this.selectedVehicleId)
+      ) {
+        this.selectVehicle(this.vehicles[0].id)
+      }
     }
   }
 }
