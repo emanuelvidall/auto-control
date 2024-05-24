@@ -3,13 +3,11 @@ import { MatDialog } from '@angular/material/dialog'
 import { MatIconModule } from '@angular/material/icon'
 import { MatMenuModule } from '@angular/material/menu'
 import { ActivatedRoute, ParamMap, Router } from '@angular/router'
-
 import { CarComponentComponent } from '../../components/car-component/car-component.component'
 import { SubmitButtonComponent } from '../../components/submit-button/submit-button.component'
 import { NavbarComponent } from '../../components/navbar/navbar.component'
 import { DialogComponent } from '../../components/dialog/dialog.component'
-import { Vehicle } from '../../services/data.service'
-import { DataService } from '../../services/data.service'
+import { DataService, Vehicle } from '../../services/data.service'
 import { ExpenseComponentComponent } from '../../components/expense-component/expense-component.component'
 import { Component, OnInit } from '@angular/core'
 
@@ -51,12 +49,6 @@ export class DashboardComponent implements OnInit {
     this.loadVehicles()
   }
 
-  private loadUserData(): void {
-    const userData = this.dataService.getUserData()
-    this.userId = userData?.user_id ?? 0
-    this.userToken = userData?.token ?? ''
-  }
-
   private initializeRouteListener(): void {
     this.route.paramMap.subscribe((params: ParamMap) => {
       const vehicleId = params.get('vehicleId')
@@ -66,11 +58,17 @@ export class DashboardComponent implements OnInit {
     })
   }
 
-  onVehicleDeleted() {
+  private loadUserData(): void {
+    const userData = this.dataService.getUserData()
+    this.userId = userData?.user_id ?? 0
+    this.userToken = userData?.token ?? ''
+  }
+
+  public onVehicleDeleted() {
     this.loadVehicles()
   }
 
-  openDialog(): void {
+  public openDialog(): void {
     const dialogRef = this.dialog.open(DialogComponent, {
       width: '350px',
       data: { token: this.userToken, id: this.userId },
@@ -92,12 +90,12 @@ export class DashboardComponent implements OnInit {
     })
   }
 
-  addVehicle(newVehicle: Vehicle): void {
+  private addVehicle(newVehicle: Vehicle): void {
     this.vehicles.push(newVehicle)
     console.log('New vehicle added:', newVehicle)
   }
 
-  selectVehicle(vehicleId: number): void {
+  private selectVehicle(vehicleId: number): void {
     this.selectedVehicleId = vehicleId
     this.router.navigate(['/dashboard', vehicleId])
   }
@@ -108,11 +106,11 @@ export class DashboardComponent implements OnInit {
     )
   }
 
-  vehicleForward(): void {
+  public vehicleForward(): void {
     this.navigateVehicle(1)
   }
 
-  vehicleBackward(): void {
+  public vehicleBackward(): void {
     this.navigateVehicle(-1)
   }
 
