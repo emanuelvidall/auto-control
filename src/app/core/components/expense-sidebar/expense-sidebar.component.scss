@@ -6,6 +6,9 @@
   h3 {
     font-size: 32px;
   }
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
 
 mat-slider {

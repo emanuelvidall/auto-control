@@ -14,17 +14,19 @@
       <mat-date-range-picker #picker></mat-date-range-picker>
     </mat-form-field>
   </div>
-  <h3>Valor</h3>
-  <mat-slider
-    min="50"
-    max="5000"
-    showTickMarks
-    discrete
-    [displayWith]="formatLabel"
-  >
-    <input value="50" matSliderStartThumb />
-    <input value="5000" matSliderEndThumb />
-  </mat-slider>
+  <div class="valor-slider">
+    <h3>Valor</h3>
+    <mat-slider
+      min="50"
+      max="5000"
+      showTickMarks
+      discrete
+      [displayWith]="formatLabel"
+    >
+      <input value="50" matSliderStartThumb />
+      <input value="5000" matSliderEndThumb />
+    </mat-slider>
+  </div>
   <div class="side-types">
     <h3>Tipos</h3>
     <section class="checkbox-expense-section">
