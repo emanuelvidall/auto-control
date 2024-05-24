@@ -39,13 +39,14 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     private dataService: DataService,
-    public dialog: MatDialog,
+    private dialog: MatDialog,
     private route: ActivatedRoute,
     private router: Router
   ) {}
 
   ngOnInit(): void {
     this.initializeRouteListener()
+    this.loadUserData()
     this.loadVehicles()
   }
 
@@ -71,7 +72,7 @@ export class DashboardComponent implements OnInit {
   public openDialog(): void {
     const dialogRef = this.dialog.open(DialogComponent, {
       width: '350px',
-      data: { token: this.userToken, id: this.userId },
+      data: { userToken: this.userToken, userId: this.userId },
     })
 
     const sub = dialogRef.componentInstance.vehicleAdded.subscribe({
@@ -115,25 +116,23 @@ export class DashboardComponent implements OnInit {
   }
 
   private navigateVehicle(direction: number): void {
-    const index = this.vehicles.findIndex(
+    const vehiclesWithId = this.vehicles.filter((vehicle): vehicle is Vehicle & { id: number } => vehicle.id !== undefined)
+    
+    const index = vehiclesWithId.findIndex(
       (vehicle) => vehicle.id === this.selectedVehicleId
     )
     if (index !== -1) {
       const newIndex =
-        (index + direction + this.vehicles.length) % this.vehicles.length
-      this.selectVehicle(this.vehicles[newIndex].id)
+        (index + direction + vehiclesWithId.length) % vehiclesWithId.length
+      this.selectVehicle(vehiclesWithId[newIndex].id)
     }
   }
 
   private loadVehicles(): void {
-    this.loadUserData()
-    const userId = this.userId
-    const userToken = this.userToken
-
-    if (userId && userToken) {
-      this.fetchVehicles(userId, userToken)
+    if (this.userId && this.userToken) {
+      this.fetchVehicles(this.userId, this.userToken)
     } else {
-      console.error('User ID or token not found:', userId, userToken)
+      console.error('User ID or token not found:', this.userId, this.userToken)
     }
   }
 
@@ -151,13 +150,19 @@ export class DashboardComponent implements OnInit {
   }
 
   private ensureSelectedVehicle(): void {
-    if (this.vehicles.length > 0) {
+    const vehiclesWithId = this.vehicles.filter((vehicle): vehicle is Vehicle & { id: number } => vehicle.id !== undefined)
+    
+    if (vehiclesWithId.length > 0) {
       if (
         !this.selectedVehicleId ||
-        !this.vehicles.some((v) => v.id === this.selectedVehicleId)
+        !vehiclesWithId.some((v) => v.id === this.selectedVehicleId)
       ) {
-        this.selectVehicle(this.vehicles[0].id)
+        this.selectVehicle(vehiclesWithId[0].id)
       }
     }
+  }
+
+  public hasVehicles(): boolean {
+    return this.vehicles.length > 0
   }
 }

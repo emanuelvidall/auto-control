@@ -33,8 +33,7 @@ import { ExpenseDialogComponent } from '../expense-dialog/expense-dialog.compone
   ],
 })
 export class VehiclesComponentComponent implements OnInit {
-  @Input() vehicles: Vehicle[] = []
-
+  vehicles: Vehicle[] = []
   userName: string = ''
   displayedColumns: string[] = ['name', 'type_name', 'brand_name', 'owner_name']
   displayedColumnsWithExpand = [...this.displayedColumns, 'expand']

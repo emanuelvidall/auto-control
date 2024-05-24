@@ -1,7 +1,7 @@
 <app-navbar></app-navbar>
 <div class="middle-section">
-  <ng-container *ngIf="vehicles.length > 0">
-    <div *ngIf="selectedVehicle" class="top-part-container">
+  <ng-container *ngIf="hasVehicles(); else noVehicles">
+    <div *ngIf="selectedVehicle; else selectVehicleMessage" class="top-part-container">
       <div class="top-part">
         <button (click)="vehicleBackward()">
           <mat-icon class="icon">arrow_back_ios</mat-icon>
@@ -16,15 +16,12 @@
       </div>
       <div class="expense-component">
         <app-expense-component
-          [expenses]="selectedVehicle.expenses"
+          [expenses]="selectedVehicle.expenses ?? []"
         ></app-expense-component>
       </div>
     </div>
-    <div *ngIf="!selectedVehicle">
-      <p>Select a vehicle to see the details.</p>
-    </div>
   </ng-container>
-  <ng-container *ngIf="vehicles.length <= 0">
+  <ng-template #noVehicles>
     <div class="register-vehicle-container">
       <h1>Não há veículos registrados</h1>
       <div class="car-icon-container">
@@ -36,5 +33,8 @@
         (click)="openDialog()"
       ></app-submit-button>
     </div>
-  </ng-container>
+  </ng-template>
+  <ng-template #selectVehicleMessage>
+    <p>Selecione um veículo para ver as informações.</p>
+  </ng-template>
 </div>

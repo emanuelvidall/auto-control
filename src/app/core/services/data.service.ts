@@ -28,38 +28,42 @@ export interface userDataSessionStorage {
 }
 
 export interface VehicleBrand {
-  id: number
+  id?: number
   name: string
 }
 
 export interface ExpenseType {
-  id: number
+  id?: number
   name: string
 }
 
 export interface Vehicle {
-  id: number
+  id?: number
   name: string
-  owner: number
-  owner_name: string
-  description: string
+  description?: string
   type: number
-  type_name: string
+  type_name?: string
   brand: number
-  brand_name: string
-  images: string[]
-  created_at: string
-  expenses: any[]
+  brand_name?: string
+  year: number
+  license_plate: string
+  owner: number
+  owner_name?: string
+  images?: string[]
+  expenses?: Expense[]
 }
 
 export interface Expense {
+  id?: number
   name: string
-  vehicle: number
-  description: string
-  type?: number
-  file?: File
   value: number
   date: Date | string
+  vehicle: number
+  vehicle_name?: string
+  description: string
+  type: number
+  type_name?: string
+  file?: File | string
 }
 
 @Injectable({
@@ -116,11 +120,11 @@ export class DataService {
       .pipe(catchError(this.handleError))
   }
 
-  getVehicleBrands(token: string): Observable<string[]> {
+  getVehicleBrands(token: string): Observable<VehicleBrand[]> {
     const headers = new HttpHeaders({
       Authorization: `Token ${token}`,
     })
-    return this.http.get<string[]>(
+    return this.http.get<VehicleBrand[]>(
       `${this.apiUrl}api/v1/app-vehicles/brands/`,
       { headers }
     )

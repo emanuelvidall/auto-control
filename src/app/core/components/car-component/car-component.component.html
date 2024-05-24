@@ -19,10 +19,10 @@
         <img [src]="defaultCar" alt="car picture" />
       </div>
       <div class="year-chart">
-        <app-bar-chart [expenses]="car.expenses"></app-bar-chart>
+        <app-bar-chart [expenses]="car.expenses ?? []"></app-bar-chart>
       </div>
       <div class="category-chart">
-        <app-doughnut-chart [expenses]="car.expenses"></app-doughnut-chart>
+        <app-doughnut-chart [expenses]="car.expenses ?? []"></app-doughnut-chart>
       </div>
     </div>
   </div>

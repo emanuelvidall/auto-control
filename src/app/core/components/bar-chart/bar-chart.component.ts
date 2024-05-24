@@ -7,6 +7,7 @@ import {
 } from '@angular/core'
 import { Chart, registerables } from 'chart.js'
 import { CommonModule } from '@angular/common'
+import { Expense } from '../../services/data.service'
 Chart.register(...registerables)
 
 @Component({
@@ -17,7 +18,7 @@ Chart.register(...registerables)
   styleUrls: ['./bar-chart.component.scss'],
 })
 export class BarChartComponent implements OnInit, OnChanges {
-  @Input() expenses: any[] = []
+  @Input() expenses: Expense[] = []
   chart: Chart | undefined
 
   ngOnInit(): void {
@@ -29,6 +30,7 @@ export class BarChartComponent implements OnInit, OnChanges {
       changes['expenses'] &&
       changes['expenses'].currentValue !== changes['expenses'].previousValue
     ) {
+      console.log('Expenses: ', this.expenses)
       this.buildChart()
     }
   }
@@ -39,6 +41,7 @@ export class BarChartComponent implements OnInit, OnChanges {
     }
 
     const monthlyTotals = this.aggregateMonthlyExpenses()
+    console.log('Monthly Totals for Chart:', monthlyTotals)
 
     this.chart = new Chart('canvasId', {
       type: 'bar',
@@ -134,6 +137,8 @@ export class BarChartComponent implements OnInit, OnChanges {
         monthlyTotals[monthName] = parseFloat(expense.value) // Initialize month total
       }
     })
+
+    console.log('Aggregated Monthly Totals:', monthlyTotals)
 
     return monthlyTotals
   }

@@ -72,14 +72,14 @@ export class ExpenseDialogComponent implements OnInit {
 
   private initializeForm(): void {
     this.addExpenseForm = new FormGroup({
-      name: new FormControl('', Validators.required),
-      value: new FormControl(0, [
+      name: new FormControl<string>('', Validators.required),
+      value: new FormControl<number>(0, [
         Validators.required,
         Validators.pattern(/^[0-9]+(\.[0-9]{1,2})?$/),
       ]),
-      date: new FormControl(new Date(), Validators.required),
-      description: new FormControl(''),
-      typeId: new FormControl(null, Validators.required),
+      date: new FormControl<Date | string>(new Date(), Validators.required),
+      description: new FormControl<string>(''),
+      typeId: new FormControl<number | null>(null, Validators.required),
     })
   }
 
@@ -127,7 +127,7 @@ export class ExpenseDialogComponent implements OnInit {
     return `${year}-${month}-${day}`
   }
 
-  handleAddExpense(): void {
+  public handleAddExpense(): void {
     if (this.addExpenseForm.valid) {
       const expenseData: Expense = this.createExpenseData()
       this.addExpense(expenseData)
