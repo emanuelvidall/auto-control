@@ -51,9 +51,11 @@ export class BarChartComponent implements OnInit, OnChanges {
           {
             label: 'Despesa no mês (R$)',
             data: Object.values(monthlyTotals),
-            backgroundColor: '#FC6736',
+            backgroundColor: [
+              '#DCCA27',
+            ],
             borderRadius: 5,
-            barThickness: 40,
+            barThickness: 20,
           },
         ],
       },
@@ -130,12 +132,15 @@ export class BarChartComponent implements OnInit, OnChanges {
       const date = new Date(expense.date) // Parse the date string into a Date object
       const monthIndex = date.getMonth() // Get the month index from the date (0 = January, 11 = December)
       const monthName = monthNames[monthIndex] // Convert month index to month name
+      const value = typeof expense.value === 'number' ? expense.value : parseFloat(expense.value);
+      
+      monthlyTotals[monthName] += value;
 
-      if (monthlyTotals[monthName]) {
-        monthlyTotals[monthName] += parseFloat(expense.value) // Add to existing month total
-      } else {
-        monthlyTotals[monthName] = parseFloat(expense.value) // Initialize month total
-      }
+      // if (monthlyTotals[monthName]) {
+      //   monthlyTotals[monthName] += parseFloat(expense.value) // Add to existing month total
+      // } else {
+      //   monthlyTotals[monthName] = parseFloat(expense.value) // Initialize month total
+      // }
     })
 
     console.log('Aggregated Monthly Totals:', monthlyTotals)
