@@ -7,6 +7,7 @@ import { Injectable } from '@angular/core'
 import { catchError, Observable, of, tap, throwError } from 'rxjs'
 import { environment } from '../../../environments/environment' // Adjust path as necessary
 import { StorageService } from './session.service'
+
 export interface UserLoginData {
   username: string
   password: string
@@ -20,11 +21,11 @@ export interface UserData {
 }
 
 export interface userDataSessionStorage {
-  email: string
   token: string
-  user_cnh: string
   user_id: number
+  email: string
   user_name: string
+  user_cnh: string
 }
 
 export interface VehicleBrand {
