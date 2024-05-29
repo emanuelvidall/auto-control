@@ -1,61 +1,59 @@
-<form [formGroup]="addVehicleForm" (ngSubmit)="handleAddVehicle()">
-  <div class="dialog-container">
-    <h2 mat-dialog-title>Registrar Veículo</h2>
-    <mat-dialog-content>
-      <mat-form-field>
-        <mat-label>Escolha um tipo:</mat-label>
-        <mat-select formControlName="type" type>
-          <mat-option value="1">Carro</mat-option>
-          <mat-option value="2">Moto</mat-option>
-        </mat-select>
-      </mat-form-field>
-      <mat-form-field class="example-full-width">
-        <mat-label>Marca</mat-label>
-        <input
-          type="text"
-          placeholder="Escolha uma marca"
-          aria-label="brand"
-          brand
-          required
-          matInput
-          formControlName="brand"
-          [matAutocomplete]="auto"
-        />
-        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-          @for (option of filteredOptions | async; track brand) {
-          <mat-option [value]="option.name">{{ option.name }}</mat-option>
-          }
-        </mat-autocomplete>
-      </mat-form-field>
-      <h3>Modelo</h3>
-      <input
-        title="name"
-        type="text"
-        formControlName="name"
-        name="name"
-        required
-        name
-      />
-      <h3>Descrição</h3>
-      <input
-        class="input-description"
-        title="description"
-        type="text"
-        formControlName="description"
-        name="description"
-        description
-      />
-    </mat-dialog-content>
+<div class="dialog-container">
+  <h2 mat-dialog-title>Registrar Veículo</h2>
+  <form [formGroup]="addVehicleForm" (ngSubmit)="handleAddVehicle()">
+    <mat-form-field>
+      <!-- <mat-label>Escolha um tipo de Veículo</mat-label> -->
+      <h3>Tipo de veículo</h3>
+      <mat-select formControlName="type" aria-label="Tipo de veículo">
+        <mat-option *ngFor="let type of vehicleTypes" [value]="type.id">
+          {{ type.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <!-- <mat-label>Escolha a Marca do Veículo</mat-label> -->
+      <h3>Marca do veículo</h3>
+      <mat-select formControlName="brand" aria-label="Marca do veículo">
+        <mat-option *ngFor="let brand of vehicleBrands" [value]="brand.id">
+          {{ brand.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <h3>Modelo do veículo</h3>
+    <input matInput formControlName="name" aria-label="Nome do veículo" />
+    <h3>Ano do veículo</h3>
+    <input matInput formControlName="year" aria-label="Ano do veículo" />
+    <h3>Placa do veículo</h3>
+    <input
+      matInput
+      formControlName="license_plate"
+      aria-label="Placa do veículo"
+    />
+    <h3>Descrição</h3>
+    <input
+      matInput
+      formControlName="description"
+      aria-label="Descrição do veículo"
+    />
     <mat-dialog-actions align="end">
-      <button mat-flat-button color="warn" mat-dialog-close>Cancelar</button>
+      <button
+        mat-flat-button
+        color="warn"
+        mat-dialog-close
+        aria-label="Cancelar"
+      >
+        Cancelar
+      </button>
       <button
         mat-flat-button
         color="primary"
-        [mat-dialog-close]="true"
         type="submit"
+        [disabled]="addVehicleForm.invalid"
+        [mat-dialog-close]="true"
+        aria-label="Registrar"
       >
         Registrar
       </button>
     </mat-dialog-actions>
-  </div>
-</form>
+  </form>
+</div>

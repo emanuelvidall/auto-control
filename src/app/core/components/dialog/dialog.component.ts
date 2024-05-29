@@ -1,13 +1,5 @@
-import {
-  Component,
-  EventEmitter,
-  Inject,
-  Input,
-  OnInit,
-  Output,
-} from '@angular/core'
-import { map, startWith } from 'rxjs/operators'
-import { AsyncPipe } from '@angular/common'
+import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core'
+import { AsyncPipe, NgFor } from '@angular/common'
 import { FormControl, FormGroup, Validators } from '@angular/forms'
 import {
   MatDialogContent,
@@ -20,8 +12,12 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete'
 import { MatRadioModule } from '@angular/material/radio'
 import { MatFormFieldModule } from '@angular/material/form-field'
 import { ReactiveFormsModule } from '@angular/forms'
-import { Observable, catchError, of } from 'rxjs'
-import { DataService, VehicleBrand } from '../../services/data.service'
+import {
+  DataService,
+  Vehicle,
+  VehicleBrand,
+  VehicleType,
+} from '../../services/data.service'
 import { InputTextComponent } from '../input-text/input-text.component'
 import { MatInputModule } from '@angular/material/input'
 import { MAT_DIALOG_DATA } from '@angular/material/dialog'
@@ -42,81 +38,88 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog'
     ReactiveFormsModule,
     AsyncPipe,
     MatInputModule,
+    NgFor,
   ],
   templateUrl: './dialog.component.html',
   styleUrls: ['./dialog.component.scss'],
 })
 export class DialogComponent implements OnInit {
-  @Output() vehicleAdded = new EventEmitter<any>()
-  @Input() token!: string
-  addVehicleForm = new FormGroup({
-    type: new FormControl('', Validators.required),
-    brand: new FormControl('', Validators.required),
-    name: new FormControl('', Validators.required),
-    description: new FormControl(''),
-  })
-  myControl = new FormControl('')
+  @Output() vehicleAdded = new EventEmitter<Vehicle>()
+
+  userToken: string
+  userId: number
+  addVehicleForm!: FormGroup
   vehicleBrands: VehicleBrand[] = []
-  brand: any
+  vehicleTypes: VehicleType[] = []
 
   constructor(
     private dataService: DataService,
-    @Inject(MAT_DIALOG_DATA) public data: any
-  ) {}
-  options: VehicleBrand[] = []
-  filteredOptions: Observable<VehicleBrand[]> = of([])
-
-  ngOnInit() {
-    this.dataService
-      .getVehicleBrands(this.data.token)
-      .pipe(
-        catchError((err) => {
-          console.error('Erro ao pegar marcas', err)
-          return of([])
-        })
-      )
-      .subscribe((brands) => {
-        this.options = brands as VehicleBrand[]
-        console.log(this.options)
-      })
-    this.filteredOptions = this.addVehicleForm.controls.brand.valueChanges.pipe(
-      startWith(''),
-      map((value: any) => this._filter(value || ''))
-    )
+    @Inject(MAT_DIALOG_DATA) public data: { userToken: string; userId: number }
+  ) {
+    this.userToken = data.userToken
+    this.userId = data.userId
   }
 
-  handleAddVehicle(): void {
-    if (this.addVehicleForm.valid) {
-      const selectedBrand = this.addVehicleForm.value.brand
-      const brand = this.options.find((option) => option.name === selectedBrand)
-      if (!brand) {
-        console.error('Selected brand not found')
-        return
-      }
-      const vehicleData = {
-        type: parseInt(this.addVehicleForm.value.type ?? '', 10),
-        brand: brand.id,
-        name: this.addVehicleForm.value.name,
-        description: this.addVehicleForm.value.description,
-        owner: this.data.id,
-      }
-      console.log(vehicleData, 'dados a serem enviados')
-      this.dataService.addVehicle(vehicleData, this.data.token).subscribe({
-        next: (response) => {
-          console.log('Vehicle added successfully', response)
-          this.vehicleAdded.emit(response)
-        },
-        error: (error) => console.error('Error adding vehicle:', error),
-      })
-    } else {
-      console.error('Form is not valid:', this.addVehicleForm.value)
+  ngOnInit(): void {
+    this.initializeForm()
+    this.loadVehicleTypes()
+    this.loadVehiclesBrand()
+  }
+
+  private loadVehiclesBrand(): void {
+    this.dataService.getVehicleBrands(this.userToken).subscribe((brands) => {
+      this.vehicleBrands = brands
+    })
+  }
+
+  private loadVehicleTypes(): void {
+    this.dataService.getVehicleTypes(this.userToken).subscribe((types) => {
+      this.vehicleTypes = types
+    })
+  }
+
+  private initializeForm(): void {
+    this.addVehicleForm = new FormGroup({
+      name: new FormControl<string>('', Validators.required),
+      description: new FormControl<string>(''),
+      type: new FormControl<number | null>(0, Validators.required),
+      brand: new FormControl<number | null>(0, Validators.required),
+      year: new FormControl<number | null>(0, Validators.required),
+      license_plate: new FormControl<string>('', Validators.required),
+      owner: new FormControl<number | null>(0, Validators.required),
+    })
+  }
+
+  private createVehicleData(): Vehicle {
+    return {
+      name: this.addVehicleForm.value.name || '',
+      description: this.addVehicleForm.value.description || '',
+      type: this.addVehicleForm.value.type || 0,
+      brand: this.addVehicleForm.value.brand || 0,
+      year: this.addVehicleForm.value.year || 0,
+      license_plate: this.addVehicleForm.value.license_plate || '',
+      owner: this.userId,
     }
   }
 
-  private _filter(value: string): VehicleBrand[] {
-    const filterValue = value.toLowerCase()
-    return this.options.filter((option) =>
-      option.name.toLowerCase().includes(filterValue)
-    )
+  private addVehicle(vehicleData: Vehicle): void {
+    this.dataService.addVehicle(vehicleData, this.userToken).subscribe({
+      next: (response: Vehicle) => {
+        this.vehicleAdded.emit(response)
+        console.log('Veículo adicionado com sucesso.', response)
+      },
+      error: (error) => {
+        console.error('Erro ao adicionar veículo: ', error)
+      },
+    })
+  }
+
+  public handleAddVehicle(): void {
+    if (this.addVehicleForm.valid) {
+      const vehicleData: Vehicle = this.createVehicleData()
+      this.addVehicle(vehicleData)
+    } else {
+      console.log('Formulário inválido.')
+    }
   }
 }
