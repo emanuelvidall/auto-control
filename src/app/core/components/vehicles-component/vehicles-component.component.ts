@@ -71,15 +71,15 @@ export class VehiclesComponentComponent implements OnInit {
   }
 
   private loadVehicles(userId: number, token: string): void {
-    this.dataService.getVehiclesById(userId, token).subscribe(
-      (vehicles: Vehicle[]) => {
+    this.dataService.getVehiclesById(userId, token).subscribe({
+      next: (vehicles: Vehicle[]) => {
         this.vehicles = vehicles
         this.dataSource = vehicles
       },
-      (error) => {
+      error: (error) => {
         console.error('Erro ao tentar encontrar veículos: ', error)
       }
-    )
+    })
   }
 
   public openExpenseDialog(vehicleId: number): void {
