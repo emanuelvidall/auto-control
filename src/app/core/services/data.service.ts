@@ -28,12 +28,12 @@ export interface userDataSessionStorage {
   user_cnh: string
 }
 
-export interface VehicleBrand {
+export interface VehicleType {
   id?: number
   name: string
 }
 
-export interface ExpenseType {
+export interface VehicleBrand {
   id?: number
   name: string
 }
@@ -52,6 +52,11 @@ export interface Vehicle {
   owner_name?: string
   images?: string[]
   expenses?: Expense[]
+}
+
+export interface ExpenseType {
+  id?: number
+  name: string
 }
 
 export interface Expense {
@@ -121,6 +126,16 @@ export class DataService {
       .pipe(catchError(this.handleError))
   }
 
+  getVehicleTypes(token: string): Observable<VehicleType[]> {
+    const headers = new HttpHeaders({
+      Authorization: `Token ${token}`,
+    })
+    return this.http.get<VehicleType[]>(
+      `${this.apiUrl}api/v1/app-vehicles/types/`,
+      { headers }
+    )
+  }
+
   getVehicleBrands(token: string): Observable<VehicleBrand[]> {
     const headers = new HttpHeaders({
       Authorization: `Token ${token}`,
@@ -141,11 +156,11 @@ export class DataService {
     )
   }
 
-  addVehicle(vehicleData: any, token: string): Observable<any> {
+  addVehicle(vehicleData: Vehicle, token: string): Observable<Vehicle> {
     const headers = new HttpHeaders({
       Authorization: `Token ${token}`,
     })
-    return this.http.post(
+    return this.http.post<Vehicle>(
       `${this.apiUrl}api/v1/app-vehicles/vehicles/`,
       vehicleData,
       { headers }
