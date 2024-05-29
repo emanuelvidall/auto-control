@@ -10,6 +10,7 @@ import { DialogComponent } from '../../components/dialog/dialog.component'
 import { DataService, Vehicle } from '../../services/data.service'
 import { ExpenseComponentComponent } from '../../components/expense-component/expense-component.component'
 import { Component, OnInit } from '@angular/core'
+import { Subscription } from 'rxjs'
 
 @Component({
   selector: 'app-dashboard',
@@ -75,17 +76,19 @@ export class DashboardComponent implements OnInit {
       data: { userToken: this.userToken, userId: this.userId },
     })
 
-    const sub = dialogRef.componentInstance.vehicleAdded.subscribe({
-      next: (newVehicle: Vehicle) => {
-        this.addVehicle(newVehicle)
-      },
-      error: (error: any) => console.error('Error when adding vehicle:', error),
-    })
+    const subscription: Subscription =
+      dialogRef.componentInstance.vehicleAdded.subscribe({
+        next: (newVehicle: Vehicle) => {
+          this.addVehicle(newVehicle)
+        },
+        error: (error: any) =>
+          console.error('Error when adding vehicle:', error),
+      })
 
     dialogRef.afterClosed().subscribe({
       next: (result) => {
         console.log('The dialog was closed. Result:', result)
-        sub.unsubscribe()
+        subscription.unsubscribe()
       },
       error: (error) => console.error('Error on dialog close:', error),
     })
@@ -116,8 +119,10 @@ export class DashboardComponent implements OnInit {
   }
 
   private navigateVehicle(direction: number): void {
-    const vehiclesWithId = this.vehicles.filter((vehicle): vehicle is Vehicle & { id: number } => vehicle.id !== undefined)
-    
+    const vehiclesWithId = this.vehicles.filter(
+      (vehicle): vehicle is Vehicle & { id: number } => vehicle.id !== undefined
+    )
+
     const index = vehiclesWithId.findIndex(
       (vehicle) => vehicle.id === this.selectedVehicleId
     )
@@ -136,8 +141,8 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  private fetchVehicles(userId: number, token: string): void {
-    this.dataService.getVehiclesById(userId, token).subscribe({
+  private fetchVehicles(userId: number, userToken: string): void {
+    this.dataService.getVehiclesById(userId, userToken).subscribe({
       next: (vehicles) => this.handleVehicleLoadSuccess(vehicles),
       error: (error) => console.error('Error fetching vehicles:', error),
     })
@@ -150,8 +155,10 @@ export class DashboardComponent implements OnInit {
   }
 
   private ensureSelectedVehicle(): void {
-    const vehiclesWithId = this.vehicles.filter((vehicle): vehicle is Vehicle & { id: number } => vehicle.id !== undefined)
-    
+    const vehiclesWithId = this.vehicles.filter(
+      (vehicle): vehicle is Vehicle & { id: number } => vehicle.id !== undefined
+    )
+
     if (vehiclesWithId.length > 0) {
       if (
         !this.selectedVehicleId ||

@@ -2,39 +2,69 @@
   <h2 mat-dialog-title>Registrar Despesa</h2>
   <form [formGroup]="addExpenseForm" (ngSubmit)="handleAddExpense()">
     <mat-form-field>
-      <mat-label>Nome</mat-label>
+      <!-- <mat-label>Nome</mat-label> -->
+      <h3>Nome da despesa</h3>
       <input matInput formControlName="name" aria-label="Nome da despesa" />
     </mat-form-field>
     <mat-form-field>
-      <mat-label>Valor</mat-label>
-      <input matInput formControlName="value" type="number" aria-label="Valor da despesa" />
+      <!-- <mat-label>Valor</mat-label> -->
+      <h3>Valor</h3>
+      <input
+        matInput
+        formControlName="value"
+        type="number"
+        aria-label="Valor da despesa"
+      />
       <mat-icon matSuffix>attach_money</mat-icon>
     </mat-form-field>
     <mat-form-field>
-      <mat-label>Data</mat-label>
-      <input matInput [matDatepicker]="picker" formControlName="date" aria-label="Data da despesa" />
-      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <!-- <mat-label>Data</mat-label> -->
+      <h3>Data</h3>
+      <input
+        matInput
+        [matDatepicker]="picker"
+        formControlName="date"
+        aria-label="Data da despesa"
+      />
+      <mat-datepicker-toggle
+        matIconSuffix
+        [for]="picker"
+      ></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
     <mat-form-field>
-      <mat-label>Tipo</mat-label>
-      <mat-select formControlName="typeId" aria-label="Tipo de despesa">
+      <!-- <mat-label>Tipo</mat-label> -->
+      <h3>Tipo de despesa</h3>
+      <mat-select formControlName="type" aria-label="Tipo de despesa">
         <mat-option *ngFor="let type of expenseTypes" [value]="type.id">
           {{ type.name }}
         </mat-option>
       </mat-select>
     </mat-form-field>
     <mat-form-field>
-      <mat-label>Descrição</mat-label>
-      <textarea matInput formControlName="description" aria-label="Descrição da despesa"></textarea>
+      <!-- <mat-label>Descrição</mat-label> -->
+      <h3>Descrição</h3>
+      <textarea
+        matInput
+        formControlName="description"
+        aria-label="Descrição da despesa"
+      ></textarea>
     </mat-form-field>
     <mat-dialog-actions align="end">
-      <button mat-flat-button color="warn" mat-dialog-close aria-label="Cancelar">Cancelar</button>
+      <button
+        mat-flat-button
+        color="warn"
+        mat-dialog-close
+        aria-label="Cancelar"
+      >
+        Cancelar
+      </button>
       <button
         mat-flat-button
         color="primary"
         type="submit"
         [disabled]="addExpenseForm.invalid"
+        [mat-dialog-close]="true"
         aria-label="Registrar"
       >
         Registrar

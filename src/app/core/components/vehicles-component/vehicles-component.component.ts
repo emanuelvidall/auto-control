@@ -45,12 +45,12 @@ export class VehiclesComponentComponent implements OnInit {
   dataSource: Vehicle[] = []
   expandedVehicle: Vehicle | null = null
 
-  columnHeaders: {[key: string]: string} = {
+  columnHeaders: { [key: string]: string } = {
     name: 'Nome',
     type_name: 'Tipo',
     brand_name: 'Marca',
     owner_name: 'Proprietário',
-    expand: 'Expandir'
+    expand: 'Expandir',
   }
 
   constructor(private dataService: DataService, private dialog: MatDialog) {}
@@ -84,7 +84,7 @@ export class VehiclesComponentComponent implements OnInit {
 
   public openExpenseDialog(vehicleId: number): void {
     const dialogRef = this.dialog.open(ExpenseDialogComponent, {
-      width: '500px',
+      width: '400px',
       data: {
         vehicleId: vehicleId,
       },
@@ -105,7 +105,7 @@ export class VehiclesComponentComponent implements OnInit {
       next: (newVehicle: Vehicle) => {
         this.addVehicle(newVehicle)
       },
-      error: (error: any) => console.error('Error when adding vehicle:', error)
+      error: (error: any) => console.error('Error when adding vehicle:', error),
     })
 
     dialogRef.afterClosed().subscribe({
@@ -113,7 +113,7 @@ export class VehiclesComponentComponent implements OnInit {
         console.log('The dialog was closed. Result:', result)
         sub.unsubscribe()
       },
-      error: (error) => console.error('Error on dialog close:', error)
+      error: (error) => console.error('Error on dialog close:', error),
     })
   }
 

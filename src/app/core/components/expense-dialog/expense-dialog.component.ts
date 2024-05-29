@@ -70,19 +70,6 @@ export class ExpenseDialogComponent implements OnInit {
     this.loadExpenseTypes()
   }
 
-  private initializeForm(): void {
-    this.addExpenseForm = new FormGroup({
-      name: new FormControl<string>('', Validators.required),
-      value: new FormControl<number>(0, [
-        Validators.required,
-        Validators.pattern(/^[0-9]+(\.[0-9]{1,2})?$/),
-      ]),
-      date: new FormControl<Date | string>(new Date(), Validators.required),
-      description: new FormControl<string>(''),
-      typeId: new FormControl<number | null>(null, Validators.required),
-    })
-  }
-
   private loadUserData(): void {
     const userData = this.dataService.getUserData()
     this.userToken = userData?.token ?? ''
@@ -94,27 +81,40 @@ export class ExpenseDialogComponent implements OnInit {
     })
   }
 
+  private initializeForm(): void {
+    this.addExpenseForm = new FormGroup({
+      name: new FormControl<string>('', Validators.required),
+      value: new FormControl<number>(0, [
+        Validators.required,
+        Validators.pattern(/^[0-9]+(\.[0-9]{1,2})?$/),
+      ]),
+      date: new FormControl<Date | string>(new Date(), Validators.required),
+      description: new FormControl<string>(''),
+      type: new FormControl<number | null>(null, Validators.required),
+    })
+  }
+
   private createExpenseData(): Expense {
     return {
       name: this.addExpenseForm.value.name || '',
       value: this.addExpenseForm.value.value || 0,
       date: this.formatDate(this.addExpenseForm.value.date || new Date()),
-      type: this.addExpenseForm.value.typeId || 0,
       description: this.addExpenseForm.value.description || '',
+      type: this.addExpenseForm.value.type || 0,
       vehicle: this.vehicleId,
     }
   }
 
   private addExpense(expenseData: Expense): void {
-    this.dataService.addExpense(expenseData, this.userToken).subscribe(
-      (response) => {
+    this.dataService.addExpense(expenseData, this.userToken).subscribe({
+      next: (response: Expense) => {
         this.expenseAdded.emit(response)
         console.log('Despesa adicionada com sucesso.', response)
       },
-      (error) => {
+      error: (error) => {
         console.error('Erro ao adicionar despesa: ', error)
-      }
-    )
+      },
+    })
   }
 
   private formatDate(date: Date | string): string {
@@ -131,9 +131,8 @@ export class ExpenseDialogComponent implements OnInit {
     if (this.addExpenseForm.valid) {
       const expenseData: Expense = this.createExpenseData()
       this.addExpense(expenseData)
-      console.log('teste aqui ', expenseData)
     } else {
-      console.log('Formulário não válido.')
+      console.log('Formulário inválido.')
     }
   }
 }
