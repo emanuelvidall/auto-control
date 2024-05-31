@@ -52,9 +52,15 @@ export class DashboardComponent implements OnInit {
   }
 
   private loadUserData(): void {
-    const userData = this.dataService.getUserData()
-    this.userId = userData?.user_id ?? 0
-    this.userToken = userData?.token ?? ''
+    this.dataService.getUserData().subscribe({
+      next: (userData) => {
+        this.userId = userData?.user_id ?? 0
+        this.userToken = userData?.token ?? ''
+      },
+      error: (error) => {
+        console.error('Error getting user data:', error)
+      },
+    })
   }
 
   private initializeRouteListener(): void {
@@ -143,26 +149,26 @@ export class DashboardComponent implements OnInit {
   public vehicleForward(): void {
     this.navigateVehicle(1)
   }
-  
+
   public vehicleBackward(): void {
     this.navigateVehicle(-1)
   }
-  
+
   private navigateVehicle(direction: number): void {
     const vehiclesWithId = this.vehicles.filter(
       (vehicle): vehicle is Vehicle & { id: number } => vehicle.id !== undefined
     )
-    
+
     const index = vehiclesWithId.findIndex(
       (vehicle) => vehicle.id === this.selectedVehicleId
     )
     if (index !== -1) {
       const newIndex =
-      (index + direction + vehiclesWithId.length) % vehiclesWithId.length
+        (index + direction + vehiclesWithId.length) % vehiclesWithId.length
       this.selectVehicle(vehiclesWithId[newIndex].id)
     }
   }
-  
+
   get selectedVehicle(): Vehicle | undefined {
     return this.vehicles.find(
       (vehicle) => vehicle.id === this.selectedVehicleId

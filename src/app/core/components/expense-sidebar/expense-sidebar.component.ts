@@ -34,17 +34,42 @@ export class ExpenseSidebarComponent implements OnInit {
   selectedTypes: any[] = []
 
   token: string | null = null
+  expenseTypes: any[] = []
 
   constructor(private dataService: DataService) {}
 
   ngOnInit(): void {
-    const userData = this.dataService.getUserData()
-    if (userData) {
-      this.token = userData.token
-      this.dataService.getExpensesType(this.token).subscribe((response) => {
-        this.expensesTypes = response
-      })
-    }
+    this.loadUserData()
+    this.loadExpenseTypes()
+    // const userData = this.dataService.getUserData()
+    // if (userData) {
+    //   this.token = userData.token
+    //   this.dataService.getExpensesType(this.token).subscribe((response) => {
+    //     this.expensesTypes = response
+    //   })
+    // }
+  }
+
+  private loadUserData(): void {
+    this.dataService.getUserData().subscribe({
+      next: (userData) => {
+        this.token = userData?.token ?? ''
+      },
+      error: (error) => {
+        console.error('Error getting user data: ', error)
+      },
+    })
+  }
+
+  private loadExpenseTypes(): void {
+    this.dataService.getExpensesType(this.token).subscribe({
+      next: (expenseTypes: any[]) => {
+        this.expenseTypes = expenseTypes
+      },
+      error: (error) => {
+        console.error('Error getting expense types: ', error)
+      },
+    })
   }
 
   onTypeChange(type: any): void {

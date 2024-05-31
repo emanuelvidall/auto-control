@@ -3,10 +3,11 @@ import {
   HttpErrorResponse,
   HttpHeaders,
 } from '@angular/common/http'
-import { Injectable } from '@angular/core'
-import { catchError, Observable, of, tap, throwError } from 'rxjs'
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core'
+import { catchError, from, map, Observable, of, tap, throwError } from 'rxjs'
 import { environment } from '../../../environments/environment' // Adjust path as necessary
 import { StorageService } from './session.service'
+import { isPlatformBrowser } from '@angular/common'
 
 export interface UserLoginData {
   username: string
@@ -80,7 +81,8 @@ export class DataService {
 
   constructor(
     private http: HttpClient,
-    private storageService: StorageService
+    private storageService: StorageService,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
   login(data: UserLoginData): Observable<any> {
@@ -98,8 +100,9 @@ export class DataService {
     this.storageService.removeItem('userData')
   }
 
-  getUserData(): userDataSessionStorage | null {
-    return this.storageService.getItem('userData')
+  getUserData(): Observable<userDataSessionStorage | null> {
+    const userData = this.storageService.getItem('userData');
+    return userData ? of(userData) : of(null);
   }
 
   createAccount(data: UserData): Observable<any> {
@@ -147,6 +150,7 @@ export class DataService {
   }
 
   getVehiclesById(userId: number, token: string): Observable<Vehicle[]> {
+    if (!isPlatformBrowser(this.platformId)) return of([])
     const headers = new HttpHeaders({
       Authorization: `Token ${token}`,
     })
@@ -198,7 +202,7 @@ export class DataService {
   //   ])
   // }
 
-  getExpensesType(token: string): Observable<ExpenseType[]> {
+  getExpensesType(token: string | null): Observable<ExpenseType[]> {
     const headers = new HttpHeaders({
       Authorization: `Token ${token}`,
     })

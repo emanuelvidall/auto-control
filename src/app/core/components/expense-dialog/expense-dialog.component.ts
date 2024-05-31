@@ -71,8 +71,14 @@ export class ExpenseDialogComponent implements OnInit {
   }
 
   private loadUserData(): void {
-    const userData = this.dataService.getUserData()
-    this.userToken = userData?.token ?? ''
+    this.dataService.getUserData().subscribe({
+      next: (userData) => {
+        this.userToken = userData?.token ?? ''
+      },
+      error: (error) => {
+        console.error('Erro ao tentar carregar dados do usuário: ', error)
+      },
+    })
   }
 
   private loadExpenseTypes(): void {
