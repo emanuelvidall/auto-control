@@ -1,6 +1,15 @@
 <app-navbar />
 <div class="vehicles-page">
   <div class="table-container">
-    <app-vehicles-component />
+    <app-vehicles-component
+      [incomingData]="{userId, userToken, userName, vehicles}"
+    />
+    <button
+      class="button"
+      aria-label="add vehicle"
+      (click)="openAddVehicleDialog()"
+    >
+      testando
+    </button>
   </div>
 </div>
