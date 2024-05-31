@@ -1,4 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core'
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core'
 import { animate, state, style, transition, trigger } from '@angular/animations'
 import { CommonModule, NgFor, NgIf } from '@angular/common'
 import { MatTableModule } from '@angular/material/table'
@@ -35,16 +41,23 @@ import { SubmitButtonComponent } from '../submit-button/submit-button.component'
     ]),
   ],
 })
-export class VehiclesComponentComponent implements OnInit {
+export class VehiclesComponentComponent implements OnInit, OnChanges {
+  @Input() incomingData: {
+    userId: number
+    userToken: string
+    userName: string
+    vehicles: Vehicle[]
+  } = {
+    userId: 0,
+    userToken: '',
+    userName: '',
+    vehicles: [],
+  }
+
   vehicles: Vehicle[] = []
-  userName: string = ''
-  userToken: string = ''
-  userId: number = 0
+  expandedVehicle: Vehicle | null = null
   displayedColumns: string[] = ['name', 'type_name', 'brand_name', 'owner_name']
   displayedColumnsWithExpand = [...this.displayedColumns, 'expand']
-  dataSource: Vehicle[] = []
-  expandedVehicle: Vehicle | null = null
-
   columnHeaders: { [key: string]: string } = {
     name: 'Nome',
     type_name: 'Tipo',
@@ -55,31 +68,12 @@ export class VehiclesComponentComponent implements OnInit {
 
   constructor(private dataService: DataService, private dialog: MatDialog) {}
 
-  ngOnInit() {
-    this.loadUserData()
-  }
+  ngOnInit() {}
 
-  private loadUserData(): void {
-    const userData = this.dataService.getUserData()
-    this.userToken = userData?.token ?? ''
-    this.userName = userData?.user_name ?? ''
-    this.userId = userData?.user_id ?? 0
-    if (userData) {
-      this.userName = userData.user_name
-      this.loadVehicles(userData.user_id, userData.token)
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['incomingData']) {
+      this.vehicles = this.incomingData.vehicles
     }
-  }
-
-  private loadVehicles(userId: number, token: string): void {
-    this.dataService.getVehiclesById(userId, token).subscribe({
-      next: (vehicles: Vehicle[]) => {
-        this.vehicles = vehicles
-        this.dataSource = vehicles
-      },
-      error: (error) => {
-        console.error('Erro ao tentar encontrar veículos: ', error)
-      }
-    })
   }
 
   public openExpenseDialog(vehicleId: number): void {
@@ -95,30 +89,33 @@ export class VehiclesComponentComponent implements OnInit {
     })
   }
 
-  public openAddVehicleDialog(): void {
-    const dialogRef = this.dialog.open(DialogComponent, {
-      width: '350px',
-      data: { userToken: this.userToken, userId: this.userId },
-    })
+  // public openAddVehicleDialog(): void {
+  //   const dialogRef = this.dialog.open(DialogComponent, {
+  //     width: '350px',
+  //     data: {
+  //       userToken: this.incomingData.userToken,
+  //       userId: this.incomingData.userId,
+  //     },
+  //   })
 
-    const sub = dialogRef.componentInstance.vehicleAdded.subscribe({
-      next: (newVehicle: Vehicle) => {
-        this.addVehicle(newVehicle)
-      },
-      error: (error: any) => console.error('Error when adding vehicle:', error),
-    })
+  //   const sub = dialogRef.componentInstance.vehicleAdded.subscribe({
+  //     next: (newVehicle: Vehicle) => {
+  //       this.addVehicle(newVehicle)
+  //     },
+  //     error: (error: any) => console.error('Error when adding vehicle:', error),
+  //   })
 
-    dialogRef.afterClosed().subscribe({
-      next: (result) => {
-        console.log('The dialog was closed. Result:', result)
-        sub.unsubscribe()
-      },
-      error: (error) => console.error('Error on dialog close:', error),
-    })
-  }
+  //   dialogRef.afterClosed().subscribe({
+  //     next: (result) => {
+  //       console.log('The dialog was closed. Result:', result)
+  //       sub.unsubscribe()
+  //     },
+  //     error: (error) => console.error('Error on dialog close:', error),
+  //   })
+  // }
 
-  private addVehicle(newVehicle: Vehicle): void {
-    this.vehicles.push(newVehicle)
-    console.log('New vehicle added:', newVehicle)
-  }
+  // private addVehicle(newVehicle: Vehicle): void {
+  //   this.incomingData.vehicles.push(newVehicle)
+  //   console.log('New vehicle added:', newVehicle)
+  // }
 }
