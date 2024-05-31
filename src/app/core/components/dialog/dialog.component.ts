@@ -102,18 +102,6 @@ export class DialogComponent implements OnInit {
     }
   }
 
-  private addVehicle(vehicleData: Vehicle): void {
-    this.dataService.addVehicle(vehicleData, this.userToken).subscribe({
-      next: (response: Vehicle) => {
-        this.vehicleAdded.emit(response)
-        console.log('Veículo adicionado com sucesso.', response)
-      },
-      error: (error) => {
-        console.error('Erro ao adicionar veículo: ', error)
-      },
-    })
-  }
-
   public handleAddVehicle(): void {
     if (this.addVehicleForm.valid) {
       const vehicleData: Vehicle = this.createVehicleData()
@@ -121,5 +109,17 @@ export class DialogComponent implements OnInit {
     } else {
       console.log('Formulário inválido.')
     }
+  }
+
+  private addVehicle(vehicleData: Vehicle): void {
+    this.dataService.addVehicle(vehicleData, this.userToken).subscribe({
+      next: (vehicle: Vehicle) => {
+        this.vehicleAdded.emit(vehicle)
+        console.log('Veículo adicionado com sucesso. ', vehicle)
+      },
+      error: (error) => {
+        console.error('Erro ao adicionar veículo: ', error)
+      },
+    })
   }
 }
