@@ -1,4 +1,4 @@
-import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core'
+import { Component, OnInit } from '@angular/core'
 import { CommonModule } from '@angular/common'
 import { VehiclesComponentComponent } from '../../components/vehicles-component/vehicles-component.component'
 import { NavbarComponent } from '../../components/navbar/navbar.component'
@@ -6,7 +6,8 @@ import { DataService, Vehicle } from '../../services/data.service'
 import { MatDialog } from '@angular/material/dialog'
 import { DialogComponent } from '../../components/dialog/dialog.component'
 // import { Subscription } from 'rxjs'
-import { forkJoin, of, switchMap } from 'rxjs'
+import { firstValueFrom } from 'rxjs'
+import { EnvironmentService } from '../../services/environmentService/environment-service.service'
 
 @Component({
   selector: 'app-vehicles',
@@ -21,78 +22,39 @@ export class VehiclesComponent implements OnInit {
   userName: string = ''
   vehicles: Vehicle[] = []
 
-  constructor(private dataService: DataService, private dialog: MatDialog) {}
+  constructor(
+    private dataService: DataService,
+    private dialog: MatDialog,
+    private envService: EnvironmentService
+  ) {}
 
   ngOnInit(): void {
-    // this.loadData()
-    this.loadUserData()
+    this.envService.runInBrowser(() => {
+      this.loadUserData()
+    })
   }
-
-  // private loadData() {
-  //   this.dataService.getUserData().pipe(
-  //     switchMap(userData => {
-  //       if (userData) {
-  //         this.userId = userData.user_id ?? 0;
-  //         this.userToken = userData.token ?? '';
-  //         this.userName = userData.user_name ?? '';
-  //         return this.dataService.getVehiclesById(this.userId, this.userToken);
-  //       } else {
-  //         // Retorna um observable vazio ou lança um erro se os dados do usuário não estiverem disponíveis
-  //         return of([]);
-  //       }
-  //     })
-  //   ).subscribe({
-  //     next: (vehicles) => {
-  //       this.vehicles = vehicles;
-  //       console.log('Dados do usuário e veículos carregados com sucesso.');
-  //     },
-  //     error: (error) => {
-  //       console.error('Erro ao tentar carregar dados: ', error);
-  //     },
-  //   });
-  // }
 
   private async loadUserData() {
-    this.dataService
-      .getUserData()
-      .toPromise()
-      .then((userData) => {
-        this.userId = userData?.user_id ?? 0
-        this.userToken = userData?.token ?? ''
-        this.userName = userData?.user_name ?? ''
-        console.log('token ', this.userToken)
-        console.log('userdata ', userData)
-        this.loadVehicles()
-      })
-      .catch((error) => {
-        console.error('Erro ao tentar carregar dados do usuário: ', error)
-      })
+    try {
+      const userData = await firstValueFrom(this.dataService.getUserData())
+      this.userId = userData?.user_id ?? 0
+      this.userToken = userData?.token ?? ''
+      this.userName = userData?.user_name ?? ''
+      this.loadVehicles()
+    } catch (error) {
+      console.error('Erro ao tentar carregar dados do usuário: ', error)
+    }
   }
 
-  // private async loadUserData() {
-  //   try {
-  //     const userData = await this.dataService.getUserData().toPromise()
-  //     this.userId = userData?.user_id ?? 0
-  //     this.userToken = userData?.token ?? ''
-  //     this.userName = userData?.user_name ?? ''
-  //   } catch (error) {
-  //     console.error('Erro ao tentar carregar dados do usuário: ', error)
-  //   }
-  // }
-
   private async loadVehicles() {
-    console.log('token: ', this.userToken)
-    this.dataService.getVehiclesById(this.userId, this.userToken).subscribe({
-      next: (vehicles: Vehicle[]) => {
-        this.vehicles = vehicles
-        console.log('Veículos encontrados com sucesso: ', vehicles)
-      },
-      error: (error) => {
-        console.error('Erro ao tentar encontrar veículos: ', error)
-        console.log('userId: ', this.userId)
-        console.log('userToken: ', this.userToken)
-      },
-    })
+    try {
+      const vehiclesData = await firstValueFrom(
+        this.dataService.getVehiclesById(this.userId, this.userToken)
+      )
+      this.vehicles = vehiclesData
+    } catch (error) {
+      console.error('Erro ao tentar carregar veículos: ', error)
+    }
   }
 
   public openAddVehicleDialog(): void {

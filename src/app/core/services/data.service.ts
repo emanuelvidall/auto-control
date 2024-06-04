@@ -150,14 +150,13 @@ export class DataService {
   }
 
   getVehiclesById(userId: number, token: string): Observable<Vehicle[]> {
-    if (!isPlatformBrowser(this.platformId)) return of([])
     const headers = new HttpHeaders({
       Authorization: `Token ${token}`,
-    })
+    });
     return this.http.get<Vehicle[]>(
       `${this.apiUrl}api/v1/app-vehicles/vehicles/?owner=${userId}`,
       { headers }
-    )
+    );
   }
 
   addVehicle(vehicleData: Vehicle, token: string): Observable<Vehicle> {

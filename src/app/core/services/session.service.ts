@@ -9,10 +9,10 @@ export class StorageService {
 
   getItem(key: string): any {
     if (isPlatformBrowser(this.platformId)) {
-      const item = sessionStorage.getItem(key)
-      return item ? JSON.parse(item) : null
+      const item = sessionStorage.getItem(key);
+      return item ? JSON.parse(item) : null;
     }
-    return null
+    return null;
   }
 
   setItem(key: string, value: any): void {
