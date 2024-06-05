@@ -84,35 +84,10 @@ export class VehiclesComponentComponent implements OnInit, OnChanges {
       },
     })
 
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log('The dialog was closed. Result:', result)
+    dialogRef.afterClosed().subscribe(() => {
+      console.log('The dialog was closed.')
     })
   }
-
-  // public openAddVehicleDialog(): void {
-  //   const dialogRef = this.dialog.open(DialogComponent, {
-  //     width: '350px',
-  //     data: {
-  //       userToken: this.incomingData.userToken,
-  //       userId: this.incomingData.userId,
-  //     },
-  //   })
-
-  //   const sub = dialogRef.componentInstance.vehicleAdded.subscribe({
-  //     next: (newVehicle: Vehicle) => {
-  //       this.addVehicle(newVehicle)
-  //     },
-  //     error: (error: any) => console.error('Error when adding vehicle:', error),
-  //   })
-
-  //   dialogRef.afterClosed().subscribe({
-  //     next: (result) => {
-  //       console.log('The dialog was closed. Result:', result)
-  //       sub.unsubscribe()
-  //     },
-  //     error: (error) => console.error('Error on dialog close:', error),
-  //   })
-  // }
 
   // private addVehicle(newVehicle: Vehicle): void {
   //   this.incomingData.vehicles.push(newVehicle)

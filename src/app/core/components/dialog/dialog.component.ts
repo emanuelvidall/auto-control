@@ -5,6 +5,7 @@ import {
   MatDialogContent,
   MatDialogActions,
   MatDialogClose,
+  MatDialogRef,
 } from '@angular/material/dialog'
 import { MatButtonModule } from '@angular/material/button'
 import { MatSelectModule } from '@angular/material/select'
@@ -21,6 +22,7 @@ import {
 import { InputTextComponent } from '../input-text/input-text.component'
 import { MatInputModule } from '@angular/material/input'
 import { MAT_DIALOG_DATA } from '@angular/material/dialog'
+import { firstValueFrom } from 'rxjs'
 
 @Component({
   selector: 'app-dialog',
@@ -54,7 +56,8 @@ export class DialogComponent implements OnInit {
 
   constructor(
     private dataService: DataService,
-    @Inject(MAT_DIALOG_DATA) public data: { userToken: string; userId: number }
+    @Inject(MAT_DIALOG_DATA) public data: { userToken: string; userId: number },
+    public dialogRef: MatDialogRef<DialogComponent>
   ) {
     this.userToken = data.userToken
     this.userId = data.userId
@@ -102,24 +105,20 @@ export class DialogComponent implements OnInit {
     }
   }
 
-  public handleAddVehicle(): void {
-    if (this.addVehicleForm.valid) {
-      const vehicleData: Vehicle = this.createVehicleData()
-      this.addVehicle(vehicleData)
-    } else {
-      console.log('Formulário inválido.')
+  public async handleAddVehicle(): Promise<void> {
+    if (!this.addVehicleForm.valid) {
+      console.error('Formulário inválido.')
+      return
     }
-  }
-
-  private addVehicle(vehicleData: Vehicle): void {
-    this.dataService.addVehicle(vehicleData, this.userToken).subscribe({
-      next: (vehicle: Vehicle) => {
-        this.vehicleAdded.emit(vehicle)
-        console.log('Veículo adicionado com sucesso. ', vehicle)
-      },
-      error: (error) => {
-        console.error('Erro ao adicionar veículo: ', error)
-      },
-    })
+    try {
+      const vehicle = await firstValueFrom(
+        this.dataService.addVehicle(this.createVehicleData(), this.userToken)
+      )
+      this.vehicleAdded.emit(vehicle)
+      console.log('Veículo adicionado com sucesso.', vehicle)
+      this.dialogRef.close()
+    } catch (error) {
+      console.error('Erro ao adicionar veículo:', error)
+    }
   }
 }
