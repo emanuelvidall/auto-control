@@ -101,8 +101,8 @@ export class DataService {
   }
 
   getUserData(): Observable<userDataSessionStorage | null> {
-    const userData = this.storageService.getItem('userData');
-    return userData ? of(userData) : of(null);
+    const userData = this.storageService.getItem('userData')
+    return userData ? of(userData) : of(null)
   }
 
   createAccount(data: UserData): Observable<any> {
@@ -149,14 +149,24 @@ export class DataService {
     )
   }
 
-  getVehiclesById(userId: number, token: string): Observable<Vehicle[]> {
+  getVehicleByOwner(userId: number, token: string): Observable<Vehicle[]> {
     const headers = new HttpHeaders({
       Authorization: `Token ${token}`,
-    });
+    })
     return this.http.get<Vehicle[]>(
       `${this.apiUrl}api/v1/app-vehicles/vehicles/?owner=${userId}`,
       { headers }
-    );
+    )
+  }
+
+  getVehicleById(vehicleId: number, token: string): Observable<Vehicle> {
+    const headers = new HttpHeaders({
+      Authorization: `Token ${token}`,
+    })
+    return this.http.get<Vehicle>(
+      `${this.apiUrl}api/v1/app-vehicles/vehicles/${vehicleId}`,
+      { headers }
+    )
   }
 
   addVehicle(vehicleData: Vehicle, token: string): Observable<Vehicle> {
@@ -180,26 +190,16 @@ export class DataService {
     )
   }
 
-  addExpense(expenseData: Expense, token: string): Observable<any> {
+  addExpense(expenseData: Expense, token: string): Observable<Expense> {
     const headers = new HttpHeaders({
       Authorization: `Token ${token}`,
     })
-    return this.http.post(
+    return this.http.post<Expense>(
       `${this.apiUrl}api/v1/app-expenses/expenses/`,
       expenseData,
       { headers }
     )
   }
-
-  // getExpensesType(): Observable<
-  //   { id: number; name: string; description: string }[]
-  // > {
-  //   return of([
-  //     { id: 1, name: 'Maintenance', description: 'Regular maintenance' },
-  //     { id: 2, name: 'Repair', description: 'Vehicle repair' },
-  //     { id: 3, name: 'Fuel', description: 'Fuel expenses' },
-  //   ])
-  // }
 
   getExpensesType(token: string | null): Observable<ExpenseType[]> {
     const headers = new HttpHeaders({
