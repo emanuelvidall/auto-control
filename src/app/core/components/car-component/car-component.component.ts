@@ -18,13 +18,13 @@ import { DoughnutChartComponent } from '../doughnut-chart/doughnut-chart.compone
 export class CarComponentComponent {
   defaultCar: string = '/assets/defaultcar.jpg'
   constructor(private dataService: DataService, private dialog: MatDialog) {}
-  @Input() car!: Vehicle
+  @Input() vehicle!: Vehicle
   @Output() vehicleDeleted = new EventEmitter<void>()
 
   openDialog(): void {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '350px',
-      data: { vehicleId: this.car.id },
+      data: { vehicleId: this.vehicle.id },
     })
 
     dialogRef.afterClosed().subscribe((result) => {

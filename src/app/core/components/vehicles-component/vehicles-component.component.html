@@ -51,7 +51,9 @@
           {{ element.description }}
         </div>
         <div class="actions">
-          <button class="button" aria-label="view details">
+          <button class="button"
+          (click)="goToSelectedVehicle(element.id)"
+          aria-label="view details">
             <mat-icon class="icon">visibility</mat-icon>
           </button>
           <button

@@ -23,6 +23,7 @@ import { InputTextComponent } from '../input-text/input-text.component'
 import { MatInputModule } from '@angular/material/input'
 import { MAT_DIALOG_DATA } from '@angular/material/dialog'
 import { firstValueFrom } from 'rxjs'
+import { EnvironmentService } from '../../services/environmentService/environment-service.service'
 
 @Component({
   selector: 'app-dialog',
@@ -51,12 +52,14 @@ export class DialogComponent implements OnInit {
   userToken: string
   userId: number
   addVehicleForm!: FormGroup
-  vehicleBrands: VehicleBrand[] = []
-  vehicleTypes: VehicleType[] = []
+  vehiclesBrands: VehicleBrand[] = []
+  vehiclesTypes: VehicleType[] = []
+  loading: boolean = false
 
   constructor(
-    private dataService: DataService,
     @Inject(MAT_DIALOG_DATA) public data: { userToken: string; userId: number },
+    private dataService: DataService,
+    private envService: EnvironmentService,
     public dialogRef: MatDialogRef<DialogComponent>
   ) {
     this.userToken = data.userToken
@@ -65,20 +68,43 @@ export class DialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.initializeForm()
-    this.loadVehicleTypes()
-    this.loadVehiclesBrand()
-  }
-
-  private loadVehiclesBrand(): void {
-    this.dataService.getVehicleBrands(this.userToken).subscribe((brands) => {
-      this.vehicleBrands = brands
+    this.envService.runInBrowser(() => {
+      this.initializeData()
     })
   }
 
-  private loadVehicleTypes(): void {
-    this.dataService.getVehicleTypes(this.userToken).subscribe((types) => {
-      this.vehicleTypes = types
-    })
+  private async initializeData(): Promise<void> {
+    this.loading = true
+    try {
+      await this.loadVehiclesTypes()
+      await this.loadVehiclesBrands()
+      this.loading = false
+    } catch (error) {
+      console.error('Erro ao tentar inicializar dados: ', error)
+      this.loading = false
+    }
+  }
+
+  private async loadVehiclesBrands(): Promise<void> {
+    try {
+      const vehiclesBrands = await firstValueFrom(
+        this.dataService.getVehicleBrands(this.userToken)
+      )
+      this.vehiclesBrands = vehiclesBrands
+    } catch (error) {
+      console.error('Erro ao tentar carregar marcas de veículos:', error)
+    }
+  }
+
+  private async loadVehiclesTypes(): Promise<void> {
+    try {
+      const vehiclesTypes = await firstValueFrom(
+        this.dataService.getVehicleTypes(this.userToken)
+      )
+      this.vehiclesTypes = vehiclesTypes
+    } catch (error) {
+      console.error('Erro ao tentar carregar tipos de veículos:', error)
+    }
   }
 
   private initializeForm(): void {
@@ -106,19 +132,20 @@ export class DialogComponent implements OnInit {
   }
 
   public async handleAddVehicle(): Promise<void> {
-    if (!this.addVehicleForm.valid) {
+    if (this.addVehicleForm.valid) {
+      try {
+        const vehicle = await firstValueFrom(
+          this.dataService.addVehicle(this.createVehicleData(), this.userToken)
+        )
+        this.vehicleAdded.emit(vehicle)
+        console.log('Veículo adicionado com sucesso.', vehicle)
+        this.dialogRef.close()
+      } catch (error) {
+        console.error('Erro ao adicionar veículo:', error)
+      }
+    } else {
       console.error('Formulário inválido.')
       return
-    }
-    try {
-      const vehicle = await firstValueFrom(
-        this.dataService.addVehicle(this.createVehicleData(), this.userToken)
-      )
-      this.vehicleAdded.emit(vehicle)
-      console.log('Veículo adicionado com sucesso.', vehicle)
-      this.dialogRef.close()
-    } catch (error) {
-      console.error('Erro ao adicionar veículo:', error)
     }
   }
 }

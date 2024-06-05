@@ -7,7 +7,7 @@
           <mat-icon class="icon">arrow_back_ios</mat-icon>
         </button>
         <app-car-component
-          [car]="selectedVehicle"
+          [vehicle]="selectedVehicle"
           (vehicleDeleted)="onVehicleDeleted()"
         ></app-car-component>
         <button (click)="vehicleForward()">

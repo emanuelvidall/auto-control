@@ -5,7 +5,7 @@
       <!-- <mat-label>Escolha um tipo de Veículo</mat-label> -->
       <h3>Tipo de veículo</h3>
       <mat-select formControlName="type" aria-label="Tipo de veículo">
-        <mat-option *ngFor="let type of vehicleTypes" [value]="type.id">
+        <mat-option *ngFor="let type of vehiclesTypes" [value]="type.id">
           {{ type.name }}
         </mat-option>
       </mat-select>
@@ -14,7 +14,7 @@
       <!-- <mat-label>Escolha a Marca do Veículo</mat-label> -->
       <h3>Marca do veículo</h3>
       <mat-select formControlName="brand" aria-label="Marca do veículo">
-        <mat-option *ngFor="let brand of vehicleBrands" [value]="brand.id">
+        <mat-option *ngFor="let brand of vehiclesBrands" [value]="brand.id">
           {{ brand.name }}
         </mat-option>
       </mat-select>

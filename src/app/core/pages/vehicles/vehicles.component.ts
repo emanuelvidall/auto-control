@@ -21,7 +21,6 @@ export class VehiclesComponent implements OnInit, OnDestroy {
   userName: string = ''
   vehicles: Vehicle[] = []
   loading: boolean = false
-  error: string = ''
 
   private dialogSubscription: Subscription | null = null
 
@@ -49,31 +48,40 @@ export class VehiclesComponent implements OnInit, OnDestroy {
       this.loading = false
     } catch (error) {
       console.error('Erro ao tentar inicializar dados: ', error)
-      this.error = 'Erro ao tentar carregar dados'
       this.loading = false
     }
   }
 
   private async loadUserData(): Promise<void> {
-    const userData = await firstValueFrom(this.dataService.getUserData())
-    this.userId = userData?.user_id ?? 0
-    this.userToken = userData?.token ?? ''
-    this.userName = userData?.user_name ?? ''
-    console.log('Dados do usuário carregados com sucesso: ', userData)
+    try {
+      const userData = await firstValueFrom(this.dataService.getUserData())
+      this.userId = userData?.user_id ?? 0
+      this.userToken = userData?.token ?? ''
+      this.userName = userData?.user_name ?? ''
+      console.log('Dados do usuário carregados com sucesso: ', userData)
+    } catch (error) {
+      console.error('Erro ao tentar carregar dados do usuário: ', error)
+      throw error
+    }
   }
 
   private async loadVehicles(): Promise<void> {
-    const vehiclesData = await firstValueFrom(
-      this.dataService.getVehiclesById(this.userId, this.userToken)
-    )
-    this.vehicles = vehiclesData
-    console.log('Veículos carregados com sucesso: ', this.vehicles)
+    try {
+      const vehiclesData = await firstValueFrom(
+        this.dataService.getVehicleByOwner(this.userId, this.userToken)
+      )
+      this.vehicles = vehiclesData
+      console.log('Veículos carregados com sucesso: ', this.vehicles)
+    } catch (error) {
+      console.error('Erro ao tentar carregar veículos: ', error)
+      throw error
+    }
   }
 
   public openAddVehicleDialog(): void {
     const dialogRef = this.dialog.open(DialogComponent, {
-      width: '350px',
-      height: '500px',
+      width: '500px',
+      height: '600px',
       data: {
         userToken: this.userToken,
         userId: this.userId,

@@ -13,8 +13,9 @@ import { MatButtonModule } from '@angular/material/button'
 import { MatDialog } from '@angular/material/dialog'
 import { DataService, Vehicle } from '../../services/data.service'
 import { ExpenseDialogComponent } from '../expense-dialog/expense-dialog.component'
-import { DialogComponent } from '../dialog/dialog.component'
+// import { DialogComponent } from '../dialog/dialog.component'
 import { SubmitButtonComponent } from '../submit-button/submit-button.component'
+import { Router } from '@angular/router'
 
 @Component({
   selector: 'app-vehicles-component',
@@ -58,6 +59,7 @@ export class VehiclesComponentComponent implements OnInit, OnChanges {
   expandedVehicle: Vehicle | null = null
   displayedColumns: string[] = ['name', 'type_name', 'brand_name', 'owner_name']
   displayedColumnsWithExpand = [...this.displayedColumns, 'expand']
+
   columnHeaders: { [key: string]: string } = {
     name: 'Nome',
     type_name: 'Tipo',
@@ -66,7 +68,11 @@ export class VehiclesComponentComponent implements OnInit, OnChanges {
     expand: 'Expandir',
   }
 
-  constructor(private dataService: DataService, private dialog: MatDialog) {}
+  constructor(
+    private dataService: DataService,
+    private dialog: MatDialog,
+    private router: Router
+  ) {}
 
   ngOnInit() {}
 
@@ -77,20 +83,26 @@ export class VehiclesComponentComponent implements OnInit, OnChanges {
   }
 
   public openExpenseDialog(vehicleId: number): void {
-    const dialogRef = this.dialog.open(ExpenseDialogComponent, {
-      width: '400px',
+    this.dialog.open(ExpenseDialogComponent, {
+      width: '500px',
+      height: '600px',
       data: {
+        userToken: this.incomingData.userToken,
         vehicleId: vehicleId,
       },
     })
-
-    dialogRef.afterClosed().subscribe(() => {
-      console.log('The dialog was closed.')
-    })
   }
 
-  // private addVehicle(newVehicle: Vehicle): void {
-  //   this.incomingData.vehicles.push(newVehicle)
-  //   console.log('New vehicle added:', newVehicle)
-  // }
+  public goToSelectedVehicle(vehicleId: number): void {
+    const vehicle = this.dataService.getVehicleById(vehicleId, this.incomingData.userToken)
+    this.router.navigate(['selected-vehicles', vehicleId], {
+      state: {
+        userToken: this.incomingData.userToken,
+        vehicle: vehicle,
+      }
+    })
+    console.log('Navigating to selected vehicle:', vehicleId)
+    console.log('User token:', this.incomingData.userToken)
+    console.log('Vehicle:', vehicle)
+  }
 }

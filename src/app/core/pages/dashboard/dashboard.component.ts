@@ -81,7 +81,7 @@ export class DashboardComponent implements OnInit {
   }
 
   private fetchVehicles(userId: number, userToken: string): void {
-    this.dataService.getVehiclesById(userId, userToken).subscribe({
+    this.dataService.getVehicleByOwner(userId, userToken).subscribe({
       next: (vehicles) => this.handleVehicleLoadSuccess(vehicles),
       error: (error) => console.error('Error fetching vehicles:', error),
     })

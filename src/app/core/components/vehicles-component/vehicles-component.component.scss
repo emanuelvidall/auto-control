@@ -29,9 +29,7 @@ tr.element-row:not(.expanded-row):active {
 }
 
 .directions-car {
-  border-width: 1px;
-  border-color: brown;
-  border-style: solid;
+  // border: 1px solid brown;
   font-size: 50px;
   height: auto;
   width: auto;
@@ -45,9 +43,7 @@ tr.element-row:not(.expanded-row):active {
 }
 
 .element-detail {
-  border-width: 1px;
-  border-color: brown;
-  border-style: solid;
+  // border: 1px solid brown;
   overflow: hidden;
   display: flex;
 }
@@ -62,9 +58,7 @@ tr.element-row:not(.expanded-row):active {
 }
 
 .diagram-container {
-  border-width: 1px;
-  border-color: brown;
-  border-style: solid;
+  // border: 1px solid brown;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -85,9 +79,7 @@ tr.element-row:not(.expanded-row):active {
 }
 
 .element-description {
-  border-width: 1px;
-  border-color: brown;
-  border-style: solid;
+  // border: 1px solid brown;
   display: flex;
   flex: 3;
   flex-direction: column;
@@ -96,10 +88,8 @@ tr.element-row:not(.expanded-row):active {
   margin: 8px;
 }
 
-.test {
-  border-width: 1px;
-  border-color: brown;
-  border-style: solid;
+.actions {
+  // border: 1px solid brown;
   display: flex;
   flex: 1;
   flex-direction: row;
@@ -115,9 +105,7 @@ tr.element-row:not(.expanded-row):active {
   margin: 2px;
 
   .icon {
-    border-width: 1px;
-    border-color: brown;
-    border-style: solid;
+    // border: 1px solid brown;
     font-size: 30px;
     height: auto;
     width: auto;

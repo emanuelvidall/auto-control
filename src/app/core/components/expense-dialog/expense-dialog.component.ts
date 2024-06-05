@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core'
-import { MAT_DIALOG_DATA } from '@angular/material/dialog'
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog'
 import {
   MatDialogActions,
   MatDialogClose,
@@ -24,6 +24,9 @@ import {
   provideNativeDateAdapter,
 } from '@angular/material/core'
 import { NgFor } from '@angular/common'
+import { DialogComponent } from '../dialog/dialog.component'
+import { firstValueFrom } from 'rxjs'
+import { EnvironmentService } from '../../services/environmentService/environment-service.service'
 
 @Component({
   selector: 'app-expense-dialog',
@@ -50,41 +53,54 @@ import { NgFor } from '@angular/common'
   styleUrls: ['./expense-dialog.component.scss'],
 })
 export class ExpenseDialogComponent implements OnInit {
-  @Output() expenseAdded = new EventEmitter<Expense>()
+  // @Output() expenseAdded = new EventEmitter<Expense>()
 
   vehicleId: number
   userToken: string = ''
   expenseTypes: ExpenseType[] = []
   addExpenseForm!: FormGroup
+  loading: boolean = false
 
   constructor(
     private dataService: DataService,
-    @Inject(MAT_DIALOG_DATA) public data: { vehicleId: number }
+    private dialogRef: MatDialogRef<DialogComponent>,
+    private envService: EnvironmentService,
+    @Inject(MAT_DIALOG_DATA)
+    public data: { userToken: string; vehicleId: number }
   ) {
+    this.userToken = data.userToken
     this.vehicleId = data.vehicleId
   }
 
   ngOnInit(): void {
     this.initializeForm()
-    this.loadUserData()
-    this.loadExpenseTypes()
-  }
-
-  private loadUserData(): void {
-    this.dataService.getUserData().subscribe({
-      next: (userData) => {
-        this.userToken = userData?.token ?? ''
-      },
-      error: (error) => {
-        console.error('Erro ao tentar carregar dados do usuário: ', error)
-      },
+    this.envService.runInBrowser(() => {
+      this.initializeData()
     })
   }
 
-  private loadExpenseTypes(): void {
-    this.dataService.getExpensesType(this.userToken).subscribe((types) => {
-      this.expenseTypes = types
-    })
+  private async initializeData(): Promise<void> {
+    this.loading = true
+    try {
+      await this.loadExpenseTypes()
+      this.loading = false
+    } catch (error) {
+      console.error('Erro ao tentar inicializar dados: ', error)
+      this.loading = false
+    }
+  }
+
+  private async loadExpenseTypes(): Promise<void> {
+    try {
+      const expenseTypes = await firstValueFrom(
+        this.dataService.getExpensesType(this.userToken)
+      )
+      this.expenseTypes = expenseTypes
+      console.log('Tipos de despesas carregados com sucesso: ', expenseTypes)
+    } catch (error) {
+      console.error('Erro ao tentar carregar tipos de despesas: ', error)
+      throw error
+    }
   }
 
   private initializeForm(): void {
@@ -111,16 +127,21 @@ export class ExpenseDialogComponent implements OnInit {
     }
   }
 
-  private addExpense(expenseData: Expense): void {
-    this.dataService.addExpense(expenseData, this.userToken).subscribe({
-      next: (response: Expense) => {
-        this.expenseAdded.emit(response)
-        console.log('Despesa adicionada com sucesso.', response)
-      },
-      error: (error) => {
-        console.error('Erro ao adicionar despesa: ', error)
-      },
-    })
+  public async handleAddExpense(): Promise<void> {
+    if (this.addExpenseForm.valid) {
+      try {
+        const expense = await firstValueFrom(
+          this.dataService.addExpense(this.createExpenseData(), this.userToken)
+        )
+        console.log('Despesa adicionada com sucesso.', expense)
+        this.dialogRef.close()
+      } catch (error) {
+        console.error('Erro ao tentar adicionar despesa: ', error)
+      }
+    } else {
+      console.log('Formulário inválido.')
+      return
+    }
   }
 
   private formatDate(date: Date | string): string {
@@ -131,14 +152,5 @@ export class ExpenseDialogComponent implements OnInit {
     const month = ('0' + (date.getMonth() + 1)).slice(-2)
     const day = ('0' + date.getDate()).slice(-2)
     return `${year}-${month}-${day}`
-  }
-
-  public handleAddExpense(): void {
-    if (this.addExpenseForm.valid) {
-      const expenseData: Expense = this.createExpenseData()
-      this.addExpense(expenseData)
-    } else {
-      console.log('Formulário inválido.')
-    }
   }
 }
