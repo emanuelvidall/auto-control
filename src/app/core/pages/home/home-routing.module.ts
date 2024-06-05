@@ -9,6 +9,7 @@ import { AccountCreatedSuccessfullyComponent } from '../account-created-successf
 import { ProfileComponent } from '../profile/profile.component'
 import { ExpensesComponent } from '../expenses/expenses.component'
 import { VehiclesComponent } from '../vehicles/vehicles.component'
+import { SelectedVehiclesComponent } from '../selected-vehicles/selected-vehicles.component'
 
 const routes: Routes = [
   {
@@ -47,6 +48,10 @@ const routes: Routes = [
   {
     path: 'vehicles',
     component: VehiclesComponent,
+  },
+  {
+    path: 'selected-vehicles/:vehicleId',
+    component: SelectedVehiclesComponent,
   },
 ]
 
