@@ -94,15 +94,12 @@ export class VehiclesComponentComponent implements OnInit, OnChanges {
   }
 
   public goToSelectedVehicle(vehicleId: number): void {
-    const vehicle = this.dataService.getVehicleById(vehicleId, this.incomingData.userToken)
+    const vehicle = this.vehicles.find((vehicle) => vehicle.id === vehicleId)
     this.router.navigate(['selected-vehicles', vehicleId], {
       state: {
         userToken: this.incomingData.userToken,
         vehicle: vehicle,
-      }
+      },
     })
-    console.log('Navigating to selected vehicle:', vehicleId)
-    console.log('User token:', this.incomingData.userToken)
-    console.log('Vehicle:', vehicle)
   }
 }
