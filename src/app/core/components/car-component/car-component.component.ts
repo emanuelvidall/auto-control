@@ -16,10 +16,12 @@ import { DoughnutChartComponent } from '../doughnut-chart/doughnut-chart.compone
   styleUrl: './car-component.component.scss',
 })
 export class CarComponentComponent {
-  defaultCar: string = '/assets/defaultcar.jpg'
-  constructor(private dataService: DataService, private dialog: MatDialog) {}
   @Input() vehicle!: Vehicle
   @Output() vehicleDeleted = new EventEmitter<void>()
+  
+  defaultCar: string = '/assets/defaultcar.jpg'
+  
+  constructor(private dataService: DataService, private dialog: MatDialog) {}
 
   openDialog(): void {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
