@@ -1,6 +1,11 @@
-<app-navbar></app-navbar>
-<p>{{vehicle}}</p>
-<p>{{userToken}}</p>
-<!-- <app-car-component
-[vehicleId]="vehicleId"
-></app-car-component> -->
+<app-navbar />
+<div class="selected-vehicles-page">
+  <div class="vehicle-container">
+    <app-car-component [vehicle]="vehicle"></app-car-component>
+  </div>
+  <div class="expense-container">
+    <app-expense-component
+      [expenses]="vehicle.expenses ?? []"
+    ></app-expense-component>
+  </div>
+</div>

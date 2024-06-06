@@ -1,0 +1,27 @@
+.selected-vehicles-page {
+  display: flex;
+  padding: 20px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.vehicle-container {
+  // border: 1px solid brown;
+  width: 80%;
+  padding: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.expense-container {
+  // border: 1px solid brown;
+  width: 80%;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
