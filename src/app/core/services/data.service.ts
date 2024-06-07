@@ -180,6 +180,23 @@ export class DataService {
     )
   }
 
+  updateVehicle(
+    vehicleData: Vehicle,
+    vehicleId: number,
+    token: string
+  ): Observable<any> {
+    const headers = new HttpHeaders({
+      Authorization: `Token ${token}`,
+    })
+    return this.http
+      .patch(
+        `${this.apiUrl}api/v1/app-vehicles/vehicles/${vehicleId}/`,
+        vehicleData,
+        { headers }
+      )
+      .pipe(catchError(this.handleError))
+  }
+
   deleteVehicle(vehicleId: number, token: string) {
     const headers = new HttpHeaders({
       Authorization: `Token ${token}`,
