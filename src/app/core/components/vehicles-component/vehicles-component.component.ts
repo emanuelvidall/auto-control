@@ -13,9 +13,10 @@ import { MatButtonModule } from '@angular/material/button'
 import { MatDialog } from '@angular/material/dialog'
 import { DataService, Vehicle } from '../../services/data.service'
 import { ExpenseDialogComponent } from '../expense-dialog/expense-dialog.component'
-// import { DialogComponent } from '../dialog/dialog.component'
 import { SubmitButtonComponent } from '../submit-button/submit-button.component'
 import { Router } from '@angular/router'
+import { EditDialogComponent } from '../edit-dialog/edit-dialog.component'
+import { Subscription, firstValueFrom } from 'rxjs'
 
 @Component({
   selector: 'app-vehicles-component',
@@ -68,6 +69,8 @@ export class VehiclesComponentComponent implements OnInit, OnChanges {
     expand: 'Expandir',
   }
 
+  private dialogSubscription: Subscription | null = null
+
   constructor(
     private dataService: DataService,
     private dialog: MatDialog,
@@ -82,6 +85,19 @@ export class VehiclesComponentComponent implements OnInit, OnChanges {
     }
   }
 
+  private async loadVehicles(): Promise<void> {
+    try {
+      const vehiclesData = await firstValueFrom(
+        this.dataService.getVehicleByOwner(this.incomingData.userId, this.incomingData.userToken)
+      )
+      this.vehicles = vehiclesData
+      console.log('Veículos carregados com sucesso: ', this.vehicles)
+    } catch (error) {
+      console.error('Erro ao tentar carregar veículos: ', error)
+      throw error
+    }
+  }
+
   public openExpenseDialog(vehicleId: number): void {
     this.dialog.open(ExpenseDialogComponent, {
       width: '500px',
@@ -93,12 +109,29 @@ export class VehiclesComponentComponent implements OnInit, OnChanges {
     })
   }
 
+  public openEditDialog(vehicleId: number): void {
+    const dialogRef = this.dialog.open(EditDialogComponent, {
+      width: '500px',
+      height: '600px',
+      data: {
+        userToken: this.incomingData.userToken,
+        userId: this.incomingData.userId,
+        vehicle: this.vehicles.find((vehicle) => vehicle.id === vehicleId),
+      }
+    })
+
+    this.dialogSubscription = dialogRef.componentInstance.vehicleEdited.subscribe(
+      () => {
+        this.loadVehicles()
+      }
+    )
+  }
+
   public goToSelectedVehicle(vehicleId: number): void {
-    const vehicle = this.vehicles.find((vehicle) => vehicle.id === vehicleId)
     this.router.navigate(['selected-vehicles', vehicleId], {
       state: {
         userToken: this.incomingData.userToken,
-        vehicle: vehicle,
+        vehicle: this.vehicles.find((vehicle) => vehicle.id === vehicleId),
       },
     })
   }
