@@ -44,16 +44,32 @@
           <div class="element-diagram">
             <div class="element-name">{{ element.name }}</div>
             <div class="element-brand-name">{{ element.brand_name }}</div>
-            <mat-icon class="directions-car">directions_car</mat-icon>
+            <!-- adicionar checagem para exibir ícone de moto -->
+            <mat-icon *ngIf="element.type === 1" class="directions-vehicle"
+              >directions_car</mat-icon
+            >
+            <mat-icon *ngIf="element.type === 2" class="directions-vehicle"
+              >two_wheeler</mat-icon
+            >
+            <mat-icon *ngIf="element.type === 3" class="directions-vehicle"
+              >local_shipping</mat-icon
+            >
           </div>
         </div>
-        <div class="element-description">
-          {{ element.description }}
+        <div class="element-details">
+          <div class="element-description">
+            {{ element.description }}
+          </div>
+          <div class="element-information">
+            {{ element.year }} | {{ element.license_plate }}
+          </div>
         </div>
         <div class="actions">
-          <button class="button"
-          (click)="goToSelectedVehicle(element.id)"
-          aria-label="view details">
+          <button
+            class="button"
+            (click)="goToSelectedVehicle(element.id)"
+            aria-label="view details"
+          >
             <mat-icon class="icon">visibility</mat-icon>
           </button>
           <button
@@ -63,7 +79,11 @@
           >
             <mat-icon class="icon">attach_money</mat-icon>
           </button>
-          <button class="button" aria-label="edit">
+          <button
+            class="button"
+            (click)="openEditDialog(element.id)"
+            aria-label="edit"
+          >
             <mat-icon class="icon">edit</mat-icon>
           </button>
         </div>

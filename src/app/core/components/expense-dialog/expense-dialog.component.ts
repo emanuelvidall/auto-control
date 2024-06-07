@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core'
+import { Component, Inject, OnInit } from '@angular/core'
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog'
 import {
   MatDialogActions,
@@ -53,8 +53,6 @@ import { EnvironmentService } from '../../services/environmentService/environmen
   styleUrls: ['./expense-dialog.component.scss'],
 })
 export class ExpenseDialogComponent implements OnInit {
-  // @Output() expenseAdded = new EventEmitter<Expense>()
-
   vehicleId: number
   userToken: string = ''
   expenseTypes: ExpenseType[] = []
@@ -63,7 +61,7 @@ export class ExpenseDialogComponent implements OnInit {
 
   constructor(
     private dataService: DataService,
-    private dialogRef: MatDialogRef<DialogComponent>,
+    private dialogRef: MatDialogRef<ExpenseDialogComponent>,
     private envService: EnvironmentService,
     @Inject(MAT_DIALOG_DATA)
     public data: { userToken: string; vehicleId: number }

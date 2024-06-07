@@ -7,11 +7,12 @@ import { MatDialog } from '@angular/material/dialog'
 import { ExpenseDialogComponent } from '../expense-dialog/expense-dialog.component'
 import { BarChartComponent } from '../bar-chart/bar-chart.component'
 import { DoughnutChartComponent } from '../doughnut-chart/doughnut-chart.component'
+import { NgIf } from '@angular/common'
 
 @Component({
   selector: 'app-car-component',
   standalone: true,
-  imports: [MatIcon, BarChartComponent, DoughnutChartComponent],
+  imports: [MatIcon, BarChartComponent, DoughnutChartComponent, NgIf],
   templateUrl: './car-component.component.html',
   styleUrl: './car-component.component.scss',
 })

@@ -16,8 +16,8 @@ import { EnvironmentService } from '../../services/environmentService/environmen
   styleUrl: './vehicles.component.scss',
 })
 export class VehiclesComponent implements OnInit, OnDestroy {
-  userToken: string = ''
   userId: number = 0
+  userToken: string = ''
   userName: string = ''
   vehicles: Vehicle[] = []
   loading: boolean = false

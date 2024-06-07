@@ -28,7 +28,16 @@ tr.element-row:not(.expanded-row):active {
   background: #efefef;
 }
 
-.directions-car {
+.element-diagram {
+  min-width: 80px;
+  border: 2px solid black;
+  padding: 8px;
+  font-weight: lighter;
+  margin: 8px 0;
+  max-height: 150px;
+}
+
+.directions-vehicle {
   // border: 1px solid brown;
   font-size: 50px;
   height: auto;
@@ -48,18 +57,10 @@ tr.element-row:not(.expanded-row):active {
   display: flex;
 }
 
-.element-diagram {
-  min-width: 80px;
-  border: 2px solid black;
-  padding: 8px;
-  font-weight: lighter;
-  margin: 8px 0;
-  max-height: 104px;
-}
-
 .diagram-container {
   // border: 1px solid brown;
   display: flex;
+  flex: 1;
   flex-direction: column;
   justify-content: center;
   align-self: center;
@@ -78,14 +79,34 @@ tr.element-row:not(.expanded-row):active {
   opacity: 0.5;
 }
 
-.element-description {
+.element-details {
   // border: 1px solid brown;
   display: flex;
-  flex: 3;
+  flex: 5;
   flex-direction: column;
   justify-content: center;
   align-self: center;
+}
+
+.element-description {
+  // border: 1px solid brown;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
   margin: 8px;
+  font-size: 16px;
+}
+
+.element-information {
+  // border: 1px solid brown;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  margin: 8px;
+  font-size: 12px;
+  font-weight: bold;
 }
 
 .actions {
