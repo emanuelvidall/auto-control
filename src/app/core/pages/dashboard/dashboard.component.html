@@ -1,23 +1,31 @@
 <app-navbar></app-navbar>
 <div class="middle-section">
   <ng-container *ngIf="hasVehicles(); else noVehicles">
-    <div *ngIf="selectedVehicle; else selectVehicleMessage" class="top-part-container">
+    <div
+      *ngIf="selectedVehicle; else selectVehicleMessage"
+      class="top-part-container"
+    >
       <div class="top-part">
         <button (click)="vehicleBackward()">
           <mat-icon class="icon">arrow_back_ios</mat-icon>
         </button>
         <app-car-component
+          [userToken]="userToken"
           [vehicle]="selectedVehicle"
           (vehicleDeleted)="onVehicleDeleted()"
+          (expenseAdded)="onExpenseAdded()"
         ></app-car-component>
         <button (click)="vehicleForward()">
           <mat-icon class="icon">arrow_forward_ios</mat-icon>
         </button>
       </div>
       <div class="expense-component">
-        <app-expense-component
+        <!-- <app-expense-component
           [expenses]="selectedVehicle.expenses ?? []"
-        ></app-expense-component>
+        ></app-expense-component> -->
+        <app-expense-table
+          [expenses]="selectedVehicle.expenses ?? []"
+        ></app-expense-table>
       </div>
     </div>
   </ng-container>

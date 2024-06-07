@@ -1,51 +1,91 @@
 <app-navbar />
 <div class="main-container-expense">
-  <app-expense-sidebar />
   <div class="expense-right">
     <div class="expense-head">
-      <h3>Minhas Despesas</h3>
-      <button class="adicionar-despesa-btn" (click)="openModal()">
-        Adicionar Despesa
-      </button>
+      <h3>Suas despesas</h3>
     </div>
     <div class="expense-section">
       <div class="expense-details">
         <div class="expense-resume">
           <div class="total-expenses">
             <div>
-              <h3>R$9853,02</h3>
+              <h3>R$ {{ expensesTotal }}</h3>
               <h4>Despesas Totais</h4>
             </div>
             <div>
-              <h3>R$9853,02</h3>
+              <h3>{{ nextExpenseDate }}</h3>
               <h4>Próxima Despesa</h4>
             </div>
             <div>
-              <h3>R$9853,02</h3>
+              <h3>R$ {{ nextExpense }}</h3>
               <h4>Despesas Futuras</h4>
             </div>
           </div>
         </div>
-        <div class="expense-history"><app-expense-table /></div>
+        <div class="expense-history">
+          <div *ngIf="!loading; else loadingTemplate">
+            <app-expense-table [expenses]="expenses"></app-expense-table>
+          </div>
+
+          <ng-template #loadingTemplate>
+            <p>Carregando despesas...</p>
+          </ng-template>
+        </div>
       </div>
       <div class="expense-graph">
-        <app-expense-chart />
+        <app-expense-chart [expenses]="expenses" />
         <div class="monthly-average">
           <div class="averages">
-            <h3>R$450,08</h3>
+            <h3>R$ {{ averageExpense }}</h3>
             <h4>Valor médio Mensal</h4>
           </div>
           <div class="averages">
-            <h3>R$2700,48</h3>
+            <h3>R$ {{ lastSixMonthsTotal }}</h3>
             <h4>Total últimos 6 meses</h4>
           </div>
-          <div class="averages">
-            <h3>R$9853,02</h3>
+          <!-- <div class="averages">
+            <h3>R$ {{averageExpense}}</h3>
             <h4>Total último ano</h4>
-          </div>
+          </div> -->
         </div>
         <div class="expense-categories">
           <h3>Despesa por Categoria</h3>
+          <div class="type-value">
+            <h4>Multa</h4>
+            <h4>R$ {{ ticketTotal }}</h4>
+          </div>
+          <mat-progress-bar
+            color="primary"
+            mode="determinate"
+            value="{{ percentageTicket }}"
+          ></mat-progress-bar>
+          <div class="type-value">
+            <h4>Imposto</h4>
+            <h4>R$ {{ taxesTotal.toFixed(2) }}</h4>
+          </div>
+          <mat-progress-bar
+            color="warn"
+            mode="determinate"
+            value="{{ percentageTaxes.toFixed(2) }}"
+          ></mat-progress-bar>
+          <div class="type-value">
+            <h4>Abastecimento</h4>
+            <h4>R$ {{ fuelTotal.toFixed(2) }}</h4>
+          </div>
+          <mat-progress-bar
+            color="accent"
+            mode="determinate"
+            value="R$ {{ percentageFuel.toFixed(2) }}"
+          ></mat-progress-bar>
+          <div class="type-value">
+            <h4>Revisão</h4>
+            <h4>R$ {{ servicesTotal.toFixed(2) }}</h4>
+          </div>
+          <mat-progress-bar
+            color="primary"
+            mode="determinate"
+            value="{{ percentageServices }}"
+          ></mat-progress-bar>
         </div>
       </div>
     </div>

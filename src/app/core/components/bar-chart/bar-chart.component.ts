@@ -25,6 +25,21 @@ export class BarChartComponent implements OnInit, OnChanges {
     this.buildChart()
   }
 
+  monthNames = [
+    'Jan',
+    'Fev',
+    'Mar',
+    'Abr',
+    'Mai',
+    'Jun',
+    'Jul',
+    'Ago',
+    'Set',
+    'Out',
+    'Nov',
+    'Dez',
+  ]
+
   ngOnChanges(changes: SimpleChanges): void {
     if (
       changes['expenses'] &&
@@ -43,17 +58,34 @@ export class BarChartComponent implements OnInit, OnChanges {
     const monthlyTotals = this.aggregateMonthlyExpenses()
     console.log('Monthly Totals for Chart:', monthlyTotals)
 
+    const monthNames = [
+      'Jan',
+      'Fev',
+      'Mar',
+      'Abr',
+      'Mai',
+      'Jun',
+      'Jul',
+      'Ago',
+      'Set',
+      'Out',
+      'Nov',
+      'Dez',
+    ]
+
+    const labels = monthNames.map((month) =>
+      month in monthlyTotals ? month : ''
+    )
+
     this.chart = new Chart('canvasId', {
       type: 'bar',
       data: {
-        labels: Object.keys(monthlyTotals),
+        labels: labels,
         datasets: [
           {
             label: 'Despesa no mês (R$)',
-            data: Object.values(monthlyTotals),
-            backgroundColor: [
-              '#DCCA27',
-            ],
+            data: monthNames.map((month) => monthlyTotals[month] || 0),
+            backgroundColor: ['#FC6736'],
             borderRadius: 5,
             barThickness: 20,
           },
@@ -129,18 +161,15 @@ export class BarChartComponent implements OnInit, OnChanges {
     })
 
     this.expenses.forEach((expense) => {
-      const date = new Date(expense.date) // Parse the date string into a Date object
-      const monthIndex = date.getMonth() // Get the month index from the date (0 = January, 11 = December)
-      const monthName = monthNames[monthIndex] // Convert month index to month name
-      const value = typeof expense.value === 'number' ? expense.value : parseFloat(expense.value);
-      
-      monthlyTotals[monthName] += value;
+      const date = new Date(expense.date)
+      const monthIndex = date.getMonth()
+      const monthName = monthNames[monthIndex]
+      const value =
+        typeof expense.value === 'number'
+          ? expense.value
+          : parseFloat(expense.value)
 
-      // if (monthlyTotals[monthName]) {
-      //   monthlyTotals[monthName] += parseFloat(expense.value) // Add to existing month total
-      // } else {
-      //   monthlyTotals[monthName] = parseFloat(expense.value) // Initialize month total
-      // }
+      monthlyTotals[monthName] += value
     })
 
     console.log('Aggregated Monthly Totals:', monthlyTotals)

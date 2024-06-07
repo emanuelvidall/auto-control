@@ -7,10 +7,11 @@ import { CarComponentComponent } from '../../components/car-component/car-compon
 import { SubmitButtonComponent } from '../../components/submit-button/submit-button.component'
 import { NavbarComponent } from '../../components/navbar/navbar.component'
 import { DialogComponent } from '../../components/dialog/dialog.component'
-import { DataService, Vehicle } from '../../services/data.service'
+import { DataService, Expense, Vehicle } from '../../services/data.service'
 import { ExpenseComponentComponent } from '../../components/expense-component/expense-component.component'
 import { Component, OnInit } from '@angular/core'
 import { Subscription } from 'rxjs'
+import { ExpenseTableComponent } from '../../components/expense-table/expense-table.component'
 
 @Component({
   selector: 'app-dashboard',
@@ -24,6 +25,7 @@ import { Subscription } from 'rxjs'
     MatIconModule,
     MatMenuModule,
     NavbarComponent,
+    ExpenseTableComponent,
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
@@ -31,7 +33,7 @@ import { Subscription } from 'rxjs'
 export class DashboardComponent implements OnInit {
   vehicles: Vehicle[] = []
   selectedVehicleId: number | null = null
-  // selectedVehicleExpenses: Expense[] = []
+  selectedVehicleExpenses: Expense[] = []
   userToken: string = ''
   userId: number = 0
 
@@ -115,6 +117,11 @@ export class DashboardComponent implements OnInit {
 
   public onVehicleDeleted() {
     this.loadVehicles()
+  }
+
+  public onExpenseAdded() {
+    this.fetchVehicles(this.userId, this.userToken)
+    console.log('Expense added no onExpenseAdded')
   }
 
   public openDialog(): void {
