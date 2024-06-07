@@ -53,13 +53,12 @@ import { EnvironmentService } from '../../services/environmentService/environmen
   styleUrls: ['./expense-dialog.component.scss'],
 })
 export class ExpenseDialogComponent implements OnInit {
-  // @Output() expenseAdded = new EventEmitter<Expense>()
-
   vehicleId: number
   userToken: string = ''
   expenseTypes: ExpenseType[] = []
   addExpenseForm!: FormGroup
   loading: boolean = false
+  @Output() expenseAdded = new EventEmitter<void>()
 
   constructor(
     private dataService: DataService,
@@ -133,6 +132,7 @@ export class ExpenseDialogComponent implements OnInit {
         const expense = await firstValueFrom(
           this.dataService.addExpense(this.createExpenseData(), this.userToken)
         )
+        this.expenseAdded.emit()
         console.log('Despesa adicionada com sucesso.', expense)
         this.dialogRef.close()
       } catch (error) {

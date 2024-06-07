@@ -17,13 +17,16 @@ import { DoughnutChartComponent } from '../doughnut-chart/doughnut-chart.compone
 })
 export class CarComponentComponent {
   @Input() vehicle!: Vehicle
+  @Input() userToken: string = ''
   @Output() vehicleDeleted = new EventEmitter<void>()
-  
+  @Output() expenseAdded = new EventEmitter<void>()
+
   defaultCar: string = '/assets/defaultcar.jpg'
-  
+  userId: number | undefined
+
   constructor(private dataService: DataService, private dialog: MatDialog) {}
 
-  openDialog(): void {
+  openDeleteDialog(): void {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '350px',
       data: { vehicleId: this.vehicle.id },
@@ -38,13 +41,31 @@ export class CarComponentComponent {
     })
   }
 
+  private loadUserData(): void {
+    this.dataService.getUserData().subscribe({
+      next: (userData) => {
+        this.userId = userData?.user_id ?? 0
+        this.userToken = userData?.token ?? ''
+      },
+      error: (error) => {
+        console.error('Error getting user data:', error)
+      },
+    })
+  }
+
   openExpenseDialog(): void {
     const dialogRef = this.dialog.open(ExpenseDialogComponent, {
       width: '350px',
+      data: { vehicleId: this.vehicle.id, userToken: this.userToken },
     })
 
     dialogRef.afterClosed().subscribe((result) => {
       console.log('The dialog was closed. Result:', result)
+    })
+
+    dialogRef.componentInstance.expenseAdded.subscribe(() => {
+      console.log('adicionado no enviar doEMITTER DO BAUGLHO')
+      this.expenseAdded.emit()
     })
   }
 }

@@ -63,7 +63,7 @@ export interface ExpenseType {
 export interface Expense {
   id?: number
   name: string
-  value: number
+  value: string
   date: Date | string
   vehicle: number
   vehicle_name?: string
@@ -207,6 +207,16 @@ export class DataService {
     })
     return this.http.get<ExpenseType[]>(
       `${this.apiUrl}api/v1/app-expenses/type-expenses/`,
+      { headers }
+    )
+  }
+
+  getExpensesByUser(userId: number, token: string): Observable<Expense[]> {
+    const headers = new HttpHeaders({
+      Authorization: `Token ${token}`,
+    })
+    return this.http.get<Expense[]>(
+      `${this.apiUrl}/api/v1/app-expenses/expenses?user=${userId}`,
       { headers }
     )
   }

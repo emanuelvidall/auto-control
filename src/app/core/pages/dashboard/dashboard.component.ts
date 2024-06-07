@@ -117,6 +117,11 @@ export class DashboardComponent implements OnInit {
     this.loadVehicles()
   }
 
+  public onExpenseAdded() {
+    this.fetchVehicles(this.userId, this.userToken)
+    console.log('Expense added no onExpenseAdded')
+  }
+
   public openDialog(): void {
     const dialogRef = this.dialog.open(DialogComponent, {
       width: '350px',

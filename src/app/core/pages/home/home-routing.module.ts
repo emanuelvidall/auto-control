@@ -14,7 +14,7 @@ import { SelectedVehiclesComponent } from '../selected-vehicles/selected-vehicle
 const routes: Routes = [
   {
     path: '',
-    component: LoginComponent,
+    component: ExpensesComponent,
   },
   {
     path: 'create-account',
@@ -26,7 +26,7 @@ const routes: Routes = [
   },
   {
     path: 'dashboard',
-    component: DashboardComponent,
+    component: ExpensesComponent,
   },
   { path: 'dashboard/:vehicleId', component: DashboardComponent },
   {
@@ -42,16 +42,12 @@ const routes: Routes = [
     component: ProfileComponent,
   },
   {
-    path: 'despesas',
-    component: ExpensesComponent,
-  },
-  {
     path: 'vehicles',
     component: VehiclesComponent,
   },
   {
     path: 'selected-vehicles/:vehicleId',
-    component: SelectedVehiclesComponent,
+    component: DashboardComponent,
   },
 ]
 

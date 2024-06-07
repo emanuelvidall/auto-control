@@ -7,6 +7,7 @@ import { MatDialog } from '@angular/material/dialog'
 import { DialogComponent } from '../../components/dialog/dialog.component'
 import { Subscription, firstValueFrom } from 'rxjs'
 import { EnvironmentService } from '../../services/environmentService/environment-service.service'
+import { ExpenseDialogComponent } from '../../components/expense-dialog/expense-dialog.component'
 
 @Component({
   selector: 'app-vehicles',

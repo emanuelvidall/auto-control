@@ -13,23 +13,31 @@
         <div class="expense-resume">
           <div class="total-expenses">
             <div>
-              <h3>R$9853,02</h3>
+              <h3>R$ {{ expensesTotal }}</h3>
               <h4>Despesas Totais</h4>
             </div>
             <div>
-              <h3>R$9853,02</h3>
+              <h3>{{ nextExpenseDate }}</h3>
               <h4>Próxima Despesa</h4>
             </div>
             <div>
-              <h3>R$9853,02</h3>
+              <h3>R$ {{ nextExpense }}</h3>
               <h4>Despesas Futuras</h4>
             </div>
           </div>
         </div>
-        <div class="expense-history"><app-expense-table /></div>
+        <div class="expense-history">
+          <div *ngIf="!loading; else loadingTemplate">
+            <app-expense-table [expenses]="expenses"></app-expense-table>
+          </div>
+
+          <ng-template #loadingTemplate>
+            <p>Carregando despesas...</p>
+          </ng-template>
+        </div>
       </div>
       <div class="expense-graph">
-        <app-expense-chart />
+        <app-expense-chart [expenses]="expenses" />
         <div class="monthly-average">
           <div class="averages">
             <h3>R$450,08</h3>

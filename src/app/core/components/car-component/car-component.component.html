@@ -6,7 +6,7 @@
         <h3>{{ vehicle.name }}</h3>
       </div>
       <div class="buttons-selector">
-        <button class="action-button delete" (click)="openDialog()">
+        <button class="action-button delete" (click)="openDeleteDialog()">
           Excluir
         </button>
         <button class="action-button add" (click)="openExpenseDialog()">
@@ -22,7 +22,9 @@
         <app-bar-chart [expenses]="vehicle.expenses ?? []"></app-bar-chart>
       </div>
       <div class="category-chart">
-        <app-doughnut-chart [expenses]="vehicle.expenses ?? []"></app-doughnut-chart>
+        <app-doughnut-chart
+          [expenses]="vehicle.expenses ?? []"
+        ></app-doughnut-chart>
       </div>
     </div>
   </div>
