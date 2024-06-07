@@ -3,6 +3,8 @@
   flex-direction: row;
   background-color: white;
   height: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
 }
 
 .expense-right {
@@ -16,6 +18,7 @@
   width: 100%;
   justify-content: space-between;
   padding-left: 1rem;
+  padding-right: 18px;
   h3 {
     font-size: 50px;
     font-weight: 400;
@@ -71,6 +74,11 @@
   .expense-graph {
     padding: 18px;
     width: 30%;
+    height: 100%;
+            max-height: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }
   .monthly-average {
     background-color: #e0dfdf;
@@ -102,4 +110,15 @@
       font-weight: 400;
     }
   }
+}
+
+.type-value{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+mat-progress-bar {
+  margin-bottom: 0.9rem;
 }

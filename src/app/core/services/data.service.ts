@@ -190,6 +190,16 @@ export class DataService {
     )
   }
 
+  getExpensesSummary(token: string, userId: number): Observable<any> {
+    const headers = new HttpHeaders({
+      Authorization: `Token ${token}`,
+    })
+    return this.http.get<any>(
+      `${this.apiUrl}/api/v1/app-expenses/summary?user=${userId}`,
+      { headers }
+    )
+  }
+
   addExpense(expenseData: Expense, token: string): Observable<Expense> {
     const headers = new HttpHeaders({
       Authorization: `Token ${token}`,

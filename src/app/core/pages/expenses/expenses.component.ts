@@ -6,6 +6,7 @@ import { ExpenseChartComponent } from '../../components/expense-chart/expense-ch
 import { DataService, Expense } from '../../services/data.service'
 import { switchMap } from 'rxjs/internal/operators/switchMap'
 import { NgIf } from '@angular/common'
+import { MatProgressBarModule } from '@angular/material/progress-bar'
 
 @Component({
   selector: 'app-expenses',
@@ -16,6 +17,7 @@ import { NgIf } from '@angular/common'
     ExpenseTableComponent,
     ExpenseChartComponent,
     NgIf,
+    MatProgressBarModule,
   ],
   templateUrl: './expenses.component.html',
   styleUrl: './expenses.component.scss',
@@ -26,22 +28,28 @@ export class ExpensesComponent implements OnInit {
   expensesTotal: number = 0
   nextExpense: number = 0
   nextExpenseDate: string = ''
+  averageExpense: number = 0
+  lastSixMonthsTotal: number = 0
+  // lastYearsTotal: number = 0
   userId: number = 0
   userToken: string = ''
   loading: boolean = true
+  percentageTicket: number = 0
+  percentageMaintance: number = 0
+  percentageTaxes: number = 0
+  percentageServices: number = 0
+  percentageFuel: number = 0
+  ticketTotal: number = 0
+  maintanceTotal: number = 0
+  taxesTotal: number = 0
+  servicesTotal: number = 0
+  fuelTotal: number = 0
   openModal() {
     // Open modal
   }
 
   ngOnInit(): void {
     this.loadUserDataAndExpenses()
-  }
-
-  totalExpenses(): number {
-    return (this.expensesTotal = this.expenses.reduce(
-      (acc, expense) => acc + parseFloat(expense.value),
-      0
-    ))
   }
 
   sortExpensesByDate(): void {
@@ -52,23 +60,77 @@ export class ExpensesComponent implements OnInit {
     })
   }
 
-  formatDate(date: string | Date): string {
-    const parsedDate = new Date(date)
-    if (isNaN(parsedDate.getTime())) {
+  formatDate(date: any): string {
+    const parsedDate = new Date(date.split('-'))
+    if (isNaN(parsedDate.getDate())) {
       console.error('Invalid date:', date)
       return ''
     }
-    return parsedDate.toLocaleDateString('en-GB')
+    return parsedDate.toLocaleDateString('pt-BR')
   }
 
-  getNextExpenseValue(): void {
-    const firstExpenseDate = new Date(this.expenses[0].date)
-    const currentDate = new Date()
-    if (firstExpenseDate > currentDate) {
-      this.nextExpense = parseFloat(this.expenses[0].value)
-      this.nextExpenseDate = firstExpenseDate.toLocaleDateString()
-      return
+  getExpensesSummary(): void {
+    this.dataService.getExpensesSummary(this.userToken, this.userId).subscribe({
+      next: (summary) => {
+        console.log('Expenses summary:', summary)
+        this.expensesTotal = summary.total_of_expenses.toFixed(2)
+        this.nextExpense = summary.future_expenses.toFixed(2)
+        this.nextExpenseDate = this.formatDate(summary.date_of_the_next_expense)
+        this.averageExpense =
+          summary.average_value_of_expenses_by_month.toFixed(2)
+        this.lastSixMonthsTotal =
+          summary.total_of_expense_last_six_months.toFixed(2)
+        // this.lastYearsTotal = summary.total_of_expenses_last_year
+      },
+      error: (error) => {
+        console.error('Error getting expenses summary:', error)
+      },
+    })
+  }
+
+  getExpensesPercentage(): void {
+    const total = this.expensesTotal
+
+    const ticket = this.expenses.filter(
+      (expense) => expense.type_name === 'Multa'
+    )
+    const maintance = this.expenses.filter(
+      (expense) => expense.type_name === 'Manutenção'
+    )
+    const taxes = this.expenses.filter(
+      (expense) => expense.type_name === 'Impostos'
+    )
+    const services = this.expenses.filter(
+      (expense) => expense.type_name === 'Revisão'
+    )
+    const fuel = this.expenses.filter(
+      (expense) => expense.type_name === 'Abastecimento'
+    )
+
+    const sumValues = (expensesArray: Expense[]) => {
+      return expensesArray.reduce(
+        (acc, expense) => acc + parseFloat(expense.value),
+        0
+      )
     }
+
+    const ticketTotal = sumValues(ticket)
+    const maintanceTotal = sumValues(maintance)
+    const taxesTotal = sumValues(taxes)
+    const servicesTotal = sumValues(services)
+    const fuelTotal = sumValues(fuel)
+
+    this.percentageTicket = (ticketTotal / total) * 100
+    this.percentageMaintance = (maintanceTotal / total) * 100
+    this.percentageTaxes = (taxesTotal / total) * 100
+    this.percentageServices = (servicesTotal / total) * 100
+    this.percentageFuel = (fuelTotal / total) * 100
+
+    this.ticketTotal = ticketTotal
+    this.maintanceTotal = maintanceTotal
+    this.taxesTotal = taxesTotal
+    this.servicesTotal = servicesTotal
+    this.fuelTotal = fuelTotal
   }
 
   private loadUserDataAndExpenses(): void {
@@ -84,10 +146,15 @@ export class ExpensesComponent implements OnInit {
       .subscribe({
         next: (expenses) => {
           this.expenses = expenses
-          this.totalExpenses()
+          this.expenses = expenses.map((expense) => {
+            return {
+              ...expense,
+              date: this.formatDate(expense.date),
+            }
+          })
+          this.getExpensesSummary()
           this.sortExpensesByDate()
-          this.getNextExpenseValue()
-          this.nextExpenseDate = this.formatDate(this.expenses[0].date)
+          this.getExpensesPercentage()
         },
         complete: () => {
           this.loading = false

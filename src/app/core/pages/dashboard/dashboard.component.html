@@ -20,9 +20,12 @@
         </button>
       </div>
       <div class="expense-component">
-        <app-expense-component
+        <!-- <app-expense-component
           [expenses]="selectedVehicle.expenses ?? []"
-        ></app-expense-component>
+        ></app-expense-component> -->
+        <app-expense-table
+          [expenses]="selectedVehicle.expenses ?? []"
+        ></app-expense-table>
       </div>
     </div>
   </ng-container>
