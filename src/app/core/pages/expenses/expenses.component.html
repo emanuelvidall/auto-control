@@ -12,14 +12,6 @@
               <h3>R$ {{ expensesTotal }}</h3>
               <h4>Despesas Totais</h4>
             </div>
-            <div>
-              <h3>{{ nextExpenseDate }}</h3>
-              <h4>Próxima Despesa</h4>
-            </div>
-            <div>
-              <h3>R$ {{ nextExpense }}</h3>
-              <h4>Despesas Futuras</h4>
-            </div>
           </div>
         </div>
         <div class="expense-history">
@@ -52,7 +44,7 @@
           <h3>Despesa por Categoria</h3>
           <div class="type-value">
             <h4>Multa</h4>
-            <h4>R$ {{ ticketTotal }}</h4>
+            <h4>R$ {{ ticketTotal.toFixed(2) }}</h4>
           </div>
           <mat-progress-bar
             color="primary"
@@ -69,13 +61,22 @@
             value="{{ percentageTaxes.toFixed(2) }}"
           ></mat-progress-bar>
           <div class="type-value">
+            <h4>Manutenção</h4>
+            <h4>R$ {{ maintanceTotal.toFixed(2) }}</h4>
+          </div>
+          <mat-progress-bar
+            color="primary"
+            mode="determinate"
+            value="{{ percentageMaintance.toFixed(2) }}"
+          ></mat-progress-bar>
+          <div class="type-value">
             <h4>Abastecimento</h4>
             <h4>R$ {{ fuelTotal.toFixed(2) }}</h4>
           </div>
           <mat-progress-bar
             color="accent"
             mode="determinate"
-            value="R$ {{ percentageFuel.toFixed(2) }}"
+            value="{{ percentageFuel.toFixed(2) }}"
           ></mat-progress-bar>
           <div class="type-value">
             <h4>Revisão</h4>

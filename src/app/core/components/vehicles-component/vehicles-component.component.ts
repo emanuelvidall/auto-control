@@ -17,6 +17,7 @@ import { SubmitButtonComponent } from '../submit-button/submit-button.component'
 import { Router } from '@angular/router'
 import { EditDialogComponent } from '../edit-dialog/edit-dialog.component'
 import { Subscription, firstValueFrom } from 'rxjs'
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-vehicles-component',
@@ -58,7 +59,7 @@ export class VehiclesComponentComponent implements OnInit, OnChanges {
 
   vehicles: Vehicle[] = []
   expandedVehicle: Vehicle | null = null
-  displayedColumns: string[] = ['name', 'type_name', 'brand_name', 'owner_name']
+  displayedColumns: string[] = ['name']
   displayedColumnsWithExpand = [...this.displayedColumns, 'expand']
 
   columnHeaders: { [key: string]: string } = {
@@ -74,21 +75,31 @@ export class VehiclesComponentComponent implements OnInit, OnChanges {
   constructor(
     private dataService: DataService,
     private dialog: MatDialog,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['incomingData']) {
-      this.vehicles = this.incomingData.vehicles
+      console.log('Dados recebidos no ngOnChanges:', changes['incomingData'].currentValue);
+      this.vehicles = changes['incomingData'].currentValue.vehicles;
+  
+      // Forçar detecção de mudanças (opcional)
+      if (this.cdr) {
+        this.cdr.detectChanges();
+      }
     }
   }
 
   private async loadVehicles(): Promise<void> {
     try {
       const vehiclesData = await firstValueFrom(
-        this.dataService.getVehicleByOwner(this.incomingData.userId, this.incomingData.userToken)
+        this.dataService.getVehicleByOwner(
+          this.incomingData.userId,
+          this.incomingData.userToken
+        )
       )
       this.vehicles = vehiclesData
       console.log('Veículos carregados com sucesso: ', this.vehicles)
@@ -117,14 +128,13 @@ export class VehiclesComponentComponent implements OnInit, OnChanges {
         userToken: this.incomingData.userToken,
         userId: this.incomingData.userId,
         vehicle: this.vehicles.find((vehicle) => vehicle.id === vehicleId),
-      }
+      },
     })
 
-    this.dialogSubscription = dialogRef.componentInstance.vehicleEdited.subscribe(
-      () => {
+    this.dialogSubscription =
+      dialogRef.componentInstance.vehicleEdited.subscribe(() => {
         this.loadVehicles()
-      }
-    )
+      })
   }
 
   public goToSelectedVehicle(vehicleId: number): void {

@@ -54,37 +54,19 @@ export class BarChartComponent implements OnInit, OnChanges {
     if (this.chart) {
       this.chart.destroy()
     }
-
+  
     const monthlyTotals = this.aggregateMonthlyExpenses()
-    console.log('Monthly Totals for Chart:', monthlyTotals)
-
-    const monthNames = [
-      'Jan',
-      'Fev',
-      'Mar',
-      'Abr',
-      'Mai',
-      'Jun',
-      'Jul',
-      'Ago',
-      'Set',
-      'Out',
-      'Nov',
-      'Dez',
-    ]
-
-    const labels = monthNames.map((month) =>
-      month in monthlyTotals ? month : ''
-    )
-
+    const monthsWithExpenses = Object.keys(monthlyTotals)
+    const expensesData = monthsWithExpenses.map((month) => monthlyTotals[month])
+  
     this.chart = new Chart('canvasId', {
       type: 'bar',
       data: {
-        labels: labels,
+        labels: monthsWithExpenses, // Apenas meses reais, ordenados corretamente
         datasets: [
           {
             label: 'Despesa no mês (R$)',
-            data: monthNames.map((month) => monthlyTotals[month] || 0),
+            data: expensesData,
             backgroundColor: ['#FC6736'],
             borderRadius: 5,
             barThickness: 20,
@@ -101,29 +83,19 @@ export class BarChartComponent implements OnInit, OnChanges {
         scales: {
           y: {
             ticks: {
-              maxRotation: 0,
-              minRotation: 0,
-              stepSize: 800,
               color: 'rgba(128, 128, 128, 0.69)',
               font: {
                 size: 12,
                 weight: 'bold',
               },
             },
-            border: {
-              display: false,
-            },
             grid: {
               display: false,
             },
-            max: Math.max(...Object.values(monthlyTotals)) + 100,
             beginAtZero: true,
           },
           x: {
             ticks: {
-              maxRotation: 0,
-              minRotation: 0,
-              stepSize: 800,
               color: 'rgba(128, 128, 128, 0.69)',
               font: {
                 size: 12,
@@ -138,42 +110,39 @@ export class BarChartComponent implements OnInit, OnChanges {
       },
     })
   }
+  
 
   private aggregateMonthlyExpenses(): { [key: string]: number } {
     const monthlyTotals: { [key: string]: number } = {}
-    const monthNames = [
-      'Jan',
-      'Fev',
-      'Mar',
-      'Abr',
-      'Mai',
-      'Jun',
-      'Jul',
-      'Ago',
-      'Set',
-      'Out',
-      'Nov',
-      'Dez',
-    ]
-
-    monthNames.forEach((month) => {
-      monthlyTotals[month] = 0
-    })
-
+  
     this.expenses.forEach((expense) => {
-      const date = new Date(expense.date)
-      const monthIndex = date.getMonth()
-      const monthName = monthNames[monthIndex]
+      const dateStr = typeof expense.date === 'string' ? expense.date : expense.date.toISOString().split('T')[0]
+      const [year, month, _] = dateStr.split('-') // Extrair ano e mês diretamente do campo date
+      const monthYearKey = dateStr // Use a data diretamente no formato "YYYY-MM-DD"
+  
       const value =
         typeof expense.value === 'number'
           ? expense.value
           : parseFloat(expense.value)
-
-      monthlyTotals[monthName] += value
+  
+      if (!monthlyTotals[monthYearKey]) {
+        monthlyTotals[monthYearKey] = 0
+      }
+      monthlyTotals[monthYearKey] += value
     })
-
-    console.log('Aggregated Monthly Totals:', monthlyTotals)
-
-    return monthlyTotals
+  
+    // Ordenar os meses pelo formato "Mês Ano"
+    const orderedTotals = Object.keys(monthlyTotals)
+    .sort((a, b) => {
+      return new Date(a).getTime() - new Date(b).getTime() // Ordena as datas do mais antigo para o mais recente
+    })
+    .reduce((acc, key) => {
+      acc[key] = monthlyTotals[key]
+      return acc
+    }, {} as { [key: string]: number })  
+  
+    console.log('Aggregated Monthly Totals:', orderedTotals)
+  
+    return orderedTotals
   }
 }

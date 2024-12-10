@@ -5,7 +5,7 @@ import { NavbarComponent } from '../../components/navbar/navbar.component'
 import { DataService, Vehicle } from '../../services/data.service'
 import { MatDialog } from '@angular/material/dialog'
 import { DialogComponent } from '../../components/dialog/dialog.component'
-import { Subscription, firstValueFrom } from 'rxjs'
+import { Subscription, firstValueFrom, BehaviorSubject } from 'rxjs'
 import { EnvironmentService } from '../../services/environmentService/environment-service.service'
 import { ExpenseDialogComponent } from '../../components/expense-dialog/expense-dialog.component'
 
@@ -33,51 +33,76 @@ export class VehiclesComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.envService.runInBrowser(() => {
-      this.initializeData()
-    })
+      this.initializeData().then(() => {
+        console.log('Dados finais após carregamento (pronto para o componente filho):', {
+          userId: this.userId,
+          userToken: this.userToken,
+          userName: this.userName,
+          vehicles: this.vehicles,
+        });
+      });
+    });
   }
+  
 
   ngOnDestroy(): void {
     this.dialogSubscription?.unsubscribe()
   }
 
-  private async initializeData(): Promise<void> {
-    this.loading = true
+  async initializeData(): Promise<void> {
+    this.loading = true;
     try {
-      await this.loadUserData()
-      await this.loadVehicles()
-      this.loading = false
+      console.log('Iniciando a carga dos dados');
+      await this.loadUserData();
+      console.log('Dados do usuário carregados:', this.userId, this.userToken, this.userName);
+      await this.loadVehicles();
+      console.log('Veículos carregados no componente pai:', this.vehicles);
+  
+      // Atualize a flag para liberar a renderização
+      this.loading = false;
     } catch (error) {
-      console.error('Erro ao tentar inicializar dados: ', error)
-      this.loading = false
+      console.error('Erro ao tentar inicializar dados: ', error);
+      this.loading = false;
     }
   }
 
   private async loadUserData(): Promise<void> {
     try {
-      const userData = await firstValueFrom(this.dataService.getUserData())
-      this.userId = userData?.user_id ?? 0
-      this.userToken = userData?.token ?? ''
-      this.userName = userData?.user_name ?? ''
-      console.log('Dados do usuário carregados com sucesso: ', userData)
+      // Garantir que o getUserData está retornando dados válidos
+      const userData = await firstValueFrom(this.dataService.getUserData());
+      
+      if (!userData) {
+        console.error('Dados do usuário não encontrados.');
+        return;
+      }
+  
+      this.userId = userData?.user_id ?? 0;
+      this.userToken = userData?.token ?? '';
+      this.userName = userData?.user_name ?? '';
+  
+      console.log('Dados do usuário carregados com sucesso: ', userData);
     } catch (error) {
-      console.error('Erro ao tentar carregar dados do usuário: ', error)
-      throw error
+      console.error('Erro ao tentar carregar dados do usuário: ', error);
+      // Aqui você pode lançar o erro ou tratá-lo conforme necessário
+      throw error;
     }
   }
+  
 
   private async loadVehicles(): Promise<void> {
     try {
       const vehiclesData = await firstValueFrom(
         this.dataService.getVehicleByOwner(this.userId, this.userToken)
-      )
-      this.vehicles = vehiclesData
-      console.log('Veículos carregados com sucesso: ', this.vehicles)
+      );
+      console.log('Veículos carregados no componente pai: ', vehiclesData);  // Verifique aqui
+      this.vehicles = vehiclesData;
+      console.log('Veículos atribuídos à variável no componente pai: ', this.vehicles);
     } catch (error) {
-      console.error('Erro ao tentar carregar veículos: ', error)
-      throw error
+      console.error('Erro ao tentar carregar veículos: ', error);
+      throw error;
     }
   }
+  
 
   public openAddVehicleDialog(): void {
     const dialogRef = this.dialog.open(DialogComponent, {

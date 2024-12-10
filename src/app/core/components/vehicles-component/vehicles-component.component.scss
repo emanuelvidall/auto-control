@@ -12,6 +12,21 @@ table th:first-child {
   border-top-left-radius: 8px;
 }
 
+ng-container[matColumnDef="expand"] {
+  text-align: right; // Alinha conteúdo à direita
+}
+
+td.mat-cell:last-child, th.mat-header-cell:last-child {
+  text-align: right; // Alinha a última célula e cabeçalho
+  padding-right: 16px; // Adiciona espaçamento da borda direita
+}
+
+button[mat-icon-button] {
+  margin-left: auto; // Empurra o botão para o lado direito
+  display: flex;     // Garante alinhamento correto
+  justify-content: flex-end;
+}
+
 table th:last-child {
   border-top-right-radius: 8px;
 }

@@ -14,7 +14,7 @@ import { SelectedVehiclesComponent } from '../selected-vehicles/selected-vehicle
 const routes: Routes = [
   {
     path: '',
-    component: ExpensesComponent,
+    component: LoginComponent,
   },
   {
     path: 'create-account',

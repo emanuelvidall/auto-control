@@ -43,7 +43,7 @@
         <div class="diagram-container">
           <div class="element-diagram">
             <div class="element-name">{{ element.name }}</div>
-            <div class="element-brand-name">{{ element.brand_name }}</div>
+            <!-- <div class="element-brand-name">{{ element.brand_name }}</div> -->
             <!-- adicionar checagem para exibir ícone de moto -->
             <mat-icon *ngIf="element.type === 1" class="directions-vehicle"
               >directions_car</mat-icon
@@ -65,13 +65,13 @@
           </div>
         </div>
         <div class="actions">
-          <button
+          <!-- <button
             class="button"
             (click)="goToSelectedVehicle(element.id)"
             aria-label="view details"
           >
             <mat-icon class="icon">visibility</mat-icon>
-          </button>
+          </button> -->
           <button
             class="button"
             (click)="openExpenseDialog(element.id)"

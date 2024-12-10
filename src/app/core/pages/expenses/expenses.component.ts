@@ -98,7 +98,7 @@ export class ExpensesComponent implements OnInit {
       (expense) => expense.type_name === 'Manutenção'
     )
     const taxes = this.expenses.filter(
-      (expense) => expense.type_name === 'Impostos'
+      (expense) => expense.type_name === 'Imposto'
     )
     const services = this.expenses.filter(
       (expense) => expense.type_name === 'Revisão'
